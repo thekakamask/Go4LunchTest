@@ -9,11 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Go4Lunch">
+        <activity android:name=".activities.ui.LoginActivity"></activity>
         <activity
             android:name=".activities.ui.MainActivity"
-            android:label="@string/title_activity_main">
-
-        </activity>
+            android:label="@string/title_activity_main"></activity>
     </application>
 
 </manifest>
