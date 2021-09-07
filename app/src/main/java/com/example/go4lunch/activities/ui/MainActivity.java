@@ -18,12 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     @BindView(R.id.main_activity_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.navigation_bottom)
     BottomNavigationView mBottomNavigationView;
     @BindView(R.id.main_activity_nav_view)
     NavigationView mNavigationView;
+
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;

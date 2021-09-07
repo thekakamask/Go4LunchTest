@@ -6,7 +6,7 @@
         android:id="@+id/map_button"
         android:enabled="true"
         android:icon="@drawable/black_map_24dp"
-        android:title="bottom_navigation_menu_map"
+        android:title="@string/bottom_navigation_menu_map"
         app:showsAsAction="ifRoom"
         />
 
@@ -14,7 +14,7 @@
         android:id="@+id/list_button"
         android:enabled="true"
         android:icon="@drawable/black_list_24dp"
-        android:title="bottom_navigation_menu_list"
+        android:title="@string/bottom_navigation_menu_list"
         app:showsAsAction="ifRoom"
         />
 
@@ -22,7 +22,7 @@
         android:id="@+id/coworkers_button"
         android:enabled="true"
         android:icon="@drawable/black_team_24dp"
-        android:title="bottom_navigation_menu_coworkers"
+        android:title="@string/bottom_navigation_menu_coworkers"
         app:showsAsAction="ifRoom"
 
         />
