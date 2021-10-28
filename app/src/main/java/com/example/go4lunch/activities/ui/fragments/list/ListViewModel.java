@@ -1,14 +1,14 @@
-package com.example.go4lunch.activities.ui.home;
+package com.example.go4lunch.activities.ui.fragments.list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class ListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public ListViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

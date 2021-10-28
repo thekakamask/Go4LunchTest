@@ -1,11 +1,17 @@
 package com.example.go4lunch.activities.ui;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.BinderThread;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +22,9 @@ import com.example.go4lunch.utils.UserManager;
 import com.example.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.rpc.context.AttributeContext;
 
@@ -51,26 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.handleResponseAfterSignIn(requestCode, resultCode, data);
-    }
-
 
 
     @OnClick(R.id.google_btn)
     public void onClickGoogleBtn(View v) {
         this.startSigningWithGoogle();
-
-
-    }
-
-    @OnClick(R.id.facebook_btn)
-    public void onClickFacebookBtn(View v) {
-        this.startSigningWithFacebook();
-
-
     }
 
     //CREATE USER IN FIREBASE FOR GOOGLE
@@ -79,16 +72,32 @@ public class LoginActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
         // launch the activity
-        startActivityForResult(
+        //REGISTER FOR ACTIVITY;
+        // launch the activity
+        //REGISTER FOR ACTIVITY;
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build();
+        signInLauncher.launch(signInIntent);
+
+
+        /*startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setIsSmartLockEnabled(false, true)
                         .build(),
-                RC_SIGN_IN);;
-
-
+                RC_SIGN_IN);*/
     }
+
+
+
+    @OnClick(R.id.facebook_btn)
+    public void onClickFacebookBtn(View v) {
+        this.startSigningWithFacebook();
+    }
+
 
     //CREATE USER IN FIREBASE FOR FACEBOOK
     private void startSigningWithFacebook() {
@@ -96,15 +105,32 @@ public class LoginActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.FacebookBuilder().build());
 
         // launch the activity
-        startActivityForResult(
+        //REGISTER FOR ACTIVITY;
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build();
+        signInLauncher.launch(signInIntent);
+
+        /*startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setIsSmartLockEnabled(false, true)
                         .build(),
-                RC_SIGN_IN);
+                RC_SIGN_IN);*/
 
     }
+
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult(result);
+                }
+            }
+    );
 
     //CREATE MESSAGE AFTER USER CONNECTION USE BY THE RESPONSE AFTER SIGN IN
     private void showSnackBar (String message) {
@@ -112,7 +138,46 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //REPONSE AFTER SIGN IN
-    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            //SUCCESSFULLY SIGN IN
+            showSnackBar(getString(R.string.connection_succeed));
+            this.createUserInFirestore();
+            Intent loginIntent = new Intent(this, MainActivity.class);
+            startActivity(loginIntent);
+
+
+        }else {
+            //ERRORS
+            if (response == null) {
+                showSnackBar(getString(R.string.error_authentication_canceled));
+            } else if (response.getError()!= null) {
+                if(response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSnackBar(getString(R.string.error_no_internet));
+                } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    showSnackBar(getString(R.string.error_unknown_error));
+
+                }
+            }
+
+        }
+
+
+    }
+
+
+
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.handleResponseAfterSignIn(requestCode, resultCode, data);
+    }*/
+
+
+
+    /*private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
 
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
@@ -138,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 
     private void createUserInFirestore(){
         UserManager.createUser();

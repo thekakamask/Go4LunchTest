@@ -21,7 +21,9 @@
     <string name="menu_activity_menu_drawer_logout">Log Out</string>
     <string name="main_activity_navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="main_activity_navigation_drawer_close" translatable="false">Close navigation drawer</string>
-
+    <string name="no_restaurant_choose"> at the moment their is not restaurant choosen</string>
+    <string name="deconnexion">you are deconnected</string>
+    <string name="title_bar">I\'m Hungry</string>
     <!--    main activity action search strings-->
     <string name="menu_activity_action_search">Search</string>
 
@@ -32,6 +34,8 @@
     <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
     <string name="connection_succeed">Authentification réussie !</string>
     <string name="unknown_error">Error unknown error</string>
+
+
 
 
 </resources>

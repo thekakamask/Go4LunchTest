@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +59,7 @@ public class UserRepository {
     }
 
     //GET THE COLLECTION REF
-    private static CollectionReference getUsersCollection(){
+    public static CollectionReference getUsersCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_USERS);
     }
 
@@ -97,6 +98,10 @@ public class UserRepository {
         return getUsersCollection()
                 .document(uid) //Setting uID for Document
                 .set(userToCreate);//Setting object for Document
+    }
+
+    public static Task<DocumentSnapshot> getUser(String uid) {
+        return getUsersCollection().document(uid).get();
     }
 
 

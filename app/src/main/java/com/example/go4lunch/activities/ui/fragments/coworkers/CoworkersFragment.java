@@ -1,4 +1,4 @@
-package com.example.go4lunch.activities.ui.home;
+package com.example.go4lunch.activities.ui.fragments.coworkers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,19 +10,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.go4lunch.activities.R;
 
-public class HomeFragment extends Fragment {
+import com.example.go4lunch.R;
 
-    private HomeViewModel homeViewModel;
+public class CoworkersFragment extends Fragment {
+
+    private CoworkersViewModel mCoworkersViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mCoworkersViewModel =
+                new ViewModelProvider(this).get(CoworkersViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_coworkers, container, false);
+        final TextView textView = root.findViewById(R.id.text_dashboard);
+        mCoworkersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

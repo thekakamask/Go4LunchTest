@@ -6,26 +6,19 @@
         android:id="@+id/map_button"
         android:enabled="true"
         android:icon="@drawable/black_map_24dp"
-        android:title="@string/bottom_navigation_menu_map"
-        app:showsAsAction="ifRoom"
-        />
+        android:title="@string/bottom_navigation_menu_map" />
 
     <item
         android:id="@+id/list_button"
         android:enabled="true"
         android:icon="@drawable/black_list_24dp"
-        android:title="@string/bottom_navigation_menu_list"
-        app:showsAsAction="ifRoom"
-        />
+        android:title="@string/bottom_navigation_menu_list" />
 
     <item
         android:id="@+id/coworkers_button"
         android:enabled="true"
         android:icon="@drawable/black_team_24dp"
-        android:title="@string/bottom_navigation_menu_coworkers"
-        app:showsAsAction="ifRoom"
-
-        />
+        android:title="@string/bottom_navigation_menu_coworkers" />
 
 
 </menu>
