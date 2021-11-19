@@ -7,7 +7,7 @@ import java.util.List;
 public class PlaceNearbySearch {
 
     @SerializedName("html_attributions")
-    private List<Object> mHtmlAttributions;
+    private List<String> mHtmlAttributions;
 
     @SerializedName("results")
     private List<PlaceNearbySearchPlace> mResultSearches;
@@ -15,11 +15,11 @@ public class PlaceNearbySearch {
     @SerializedName("status")
     private String mStatus;
 
-    public List<Object> getHtmlAttributions() {
+    public List<String> getHtmlAttributions() {
         return mHtmlAttributions;
     }
 
-    public void setHtmlAttributions(List<Object> htmlAttributions) {
+    public void setHtmlAttributions(List<String> htmlAttributions) {
         mHtmlAttributions = htmlAttributions;
     }
 

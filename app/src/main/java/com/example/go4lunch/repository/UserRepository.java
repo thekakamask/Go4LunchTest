@@ -63,8 +63,8 @@ public class UserRepository {
         return FirebaseFirestore.getInstance().collection(COLLECTION_USERS);
     }
 
-    public Task<DocumentSnapshot> getUserData() {
-        String uid =this.getCurrentUserUID();
+    public Task<DocumentSnapshot> getUserData(String uid) {
+        //String uid =this.getCurrentUserUID();
         if(uid != null) {
             return this.getUsersCollection().document(uid).get();
         }else {
@@ -72,14 +72,14 @@ public class UserRepository {
         }
     }
 
-    public void createUserInFirestore() {
+    public void createUserInFirestore(String uid) {
         //FirebaseUser user = getCurrentUser();
 
             String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
             String userName = getCurrentUser().getDisplayName();
-            String uid = getCurrentUser().getUid();
+            //String uid = getCurrentUser().getUid();
 
-            getUserData().addOnSuccessListener(documentSnapshot -> {
+            getUserData(uid).addOnSuccessListener(documentSnapshot -> {
                 User user =documentSnapshot.toObject(User.class);
 
                 if (user != null) {
@@ -102,6 +102,23 @@ public class UserRepository {
 
     public static Task<DocumentSnapshot> getUser(String uid) {
         return getUsersCollection().document(uid).get();
+    }
+
+    public static Task<Void> deletePlaceId(String uid) {
+        return getUsersCollection().document(uid).update("placeId", null);
+    }
+
+    public static Task<Void> deleteLike(String uid, String placeId) {
+        return getUsersCollection().document(uid).update("like", FieldValue.arrayRemove(placeId));
+    }
+
+    public static Task<Void> updatePlaceId(String uid, String placeId, int currentTime){
+        return getUsersCollection().document(uid).update("place id", placeId, "currentTime", currentTime);
+
+    }
+
+    public static Task<Void> updateLike(String uid, String placeId) {
+        return getUsersCollection().document(uid).update("like", FieldValue.arrayUnion(placeId));
     }
 
 

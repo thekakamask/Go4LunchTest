@@ -11,9 +11,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.DragAndDropPermissions;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +32,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.fragments.coworkers.CoworkersFragment;
 import com.example.go4lunch.activities.ui.fragments.map.MapFragment;
+import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
+import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.repository.UserRepository;
+import com.example.go4lunch.utils.AlertReceiver;
 import com.example.go4lunch.utils.UserManager;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,12 +44,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Disposable mDisposable;
     private String idResto;
+    private PlaceDetail detail;
     private static final int SIGN_OUT_TASK = 100;
 
     //private DrawerLayout drawerLayout; USE FINDVIEW BY ID METHOD
@@ -77,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
         this.configureNavigationView();
         this.configureUINavHeader();
+        this.onTimeSet();
 
         //FOR BOTTOM NAVIGATION VIEW
         mBottomNavigationView.setOnNavigationItemSelectedListener(navigationListener);
@@ -91,6 +104,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.setTitle(R.string.title_bar);
         }
+
+        //FOR ALARM OFF
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.getBoolean("alarmOff", false);
+        sharedPreferences.getBoolean("alarmOn", false);
+        Log.d("TestAlarmOff", String.valueOf(sharedPreferences.getBoolean("AlarmOff", false)));
 
     }
 
@@ -139,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch(id) {
             case R.id.lunch_menu_drawer :
                 if(UserManager.getCurrentUser() != null) {
-                    UserManager.getInstance().getUserData().addOnSuccessListener(documentSnapshot -> {
+                    UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
                         User user =documentSnapshot.toObject(User.class);
                         if (Objects.requireNonNull(user).getIdOfPlace() != null) {
                             userResto(user);
@@ -169,12 +188,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void userResto(User users) {
         idResto = users.getIdOfPlace();
-        executeHttpResquestWithRetrofit();
+        executeHttpRequestWithRetrofit();
     }
 
-    private void executeHttpResquestWithRetrofit() {
-       // this.mDisposable = Go4LunchStream.st
+    private void executeHttpRequestWithRetrofit() {
+       this.mDisposable = StreamRepository.streamFetchDetails(idResto)
+               .subscribeWith(new DisposableObserver<PlaceDetail>() {
+                   @Override
+                   public void onNext(PlaceDetail placeDetail) {
+                       detail = placeDetail;
+                       startForLunch();
+                   }
 
+                   @Override
+                   public void onComplete() {
+                       if (idResto != null) {
+                           Log.d("your lunch request", "your lunch" + detail.getResult());
+                       }
+                   }
+
+                   @Override
+                   public void onError(Throwable e) {
+                       Log.d("onErrorYourLunch", Log.getStackTraceString(e));
+                   }
+               });
+
+
+    }
+
+    public void startForLunch() {
+        Intent intent = new Intent(this, RestaurantActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("placeDetailsResult", detail.getResult());
+        this.startActivity(intent);
 
     }
 
@@ -272,5 +318,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             };
+
+
+    //SETTING HOUR OF NOTIF
+    public void onTimeSet() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 12);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        startAlarm(c);
+    }
+
+    //FOR NOTIF
+    private void startAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent (this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent,0);
+
+        if(c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
+        }
+        Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
 
 }

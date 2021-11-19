@@ -9,7 +9,7 @@ public class AutoCompeteResult {
     @SerializedName("status")
     private String mStatus;
     @SerializedName("preditions")
-    private List<AutoCompetePredictions> mAutoCompetePredictions;
+    private List<AutoCompeteResultPredictions> mAutoCompetePredictions;
 
     public String getStatus() {
         return mStatus;
@@ -19,11 +19,11 @@ public class AutoCompeteResult {
         mStatus = status;
     }
 
-    public List<AutoCompetePredictions> getAutoCompetePredictions() {
+    public List<AutoCompeteResultPredictions> getAutoCompetePredictions() {
         return mAutoCompetePredictions;
     }
 
-    public void setAutoCompetePredictions(List<AutoCompetePredictions> autoCompetePredictions) {
+    public void setAutoCompetePredictions(List<AutoCompeteResultPredictions> autoCompetePredictions) {
         mAutoCompetePredictions = autoCompetePredictions;
     }
 }

@@ -26,6 +26,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.rpc.context.AttributeContext;
 
 import java.util.Arrays;
@@ -143,7 +144,8 @@ public class LoginActivity extends AppCompatActivity {
         if (result.getResultCode() == RESULT_OK) {
             //SUCCESSFULLY SIGN IN
             showSnackBar(getString(R.string.connection_succeed));
-            this.createUserInFirestore();
+            String uid = UserManager.getCurrentUser().getUid();
+            this.createUserInFirestore(uid);
             Intent loginIntent = new Intent(this, MainActivity.class);
             startActivity(loginIntent);
 
@@ -205,8 +207,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }*/
 
-    private void createUserInFirestore(){
-        UserManager.createUser();
+    private void createUserInFirestore(String uid){
+        UserManager.createUser(uid);
 
     }
 }

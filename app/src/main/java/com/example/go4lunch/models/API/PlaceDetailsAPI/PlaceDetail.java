@@ -2,12 +2,13 @@ package com.example.go4lunch.models.API.PlaceDetailsAPI;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PlaceDetail {
+public class PlaceDetail implements Serializable {
 
     @SerializedName("html_attributions")
-    private List<Object> mHtmlAttributions;
+    private List<String> mHtmlAttributions;
 
     @SerializedName("result")
     private PlaceDetailsResult mResult;
@@ -15,11 +16,11 @@ public class PlaceDetail {
     @SerializedName("status")
     private String mStatus;
 
-    public List<Object> getHtmlAttributions() {
+    public List<String> getHtmlAttributions() {
         return mHtmlAttributions;
     }
 
-    public void setHtmlAttributions(List<Object> htmlAttributions) {
+    public void setHtmlAttributions(List<String> htmlAttributions) {
         mHtmlAttributions = htmlAttributions;
     }
 

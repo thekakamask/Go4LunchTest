@@ -1,16 +1,17 @@
-package com.example.go4lunch.models.API.NearbySearchAPI;
+package com.example.go4lunch.models.API.PlaceDetailsAPI;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PlaceNearbySearchPhoto {
-
-    @SerializedName("html_attributions")
-    private List<String> mHtmlAttributions;
+public class PlaceDetailsPhoto implements Serializable {
 
     @SerializedName("height")
     private Long mHeight;
+
+    @SerializedName("html_attributions")
+    private List<String> mHtmlAttributions;
 
     @SerializedName("photo_reference")
     private String mPhotoReference;
@@ -18,20 +19,20 @@ public class PlaceNearbySearchPhoto {
     @SerializedName("width")
     private Long mWidth;
 
-    public List<String> getHtmlAttributions() {
-        return mHtmlAttributions;
-    }
-
-    public void setHtmlAttributions(List<String> htmlAttributions) {
-        mHtmlAttributions = htmlAttributions;
-    }
-
     public Long getHeight() {
         return mHeight;
     }
 
     public void setHeight(Long height) {
         mHeight = height;
+    }
+
+    public List<String> getHtmlAttributions() {
+        return mHtmlAttributions;
+    }
+
+    public void setHtmlAttributions(List<String> htmlAttributions) {
+        mHtmlAttributions = htmlAttributions;
     }
 
     public String getPhotoReference() {

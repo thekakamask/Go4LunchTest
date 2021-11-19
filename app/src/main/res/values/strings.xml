@@ -35,6 +35,21 @@
     <string name="connection_succeed">Authentification réussie !</string>
     <string name="unknown_error">Error unknown error</string>
 
+    <!--  RestaurantActivity -->
+    <string name="header_pic_resto">header of resto picture</string>
+    <!--restaurant buttons-->
+    <string name="like_btn">LIKE</string>
+    <string name="website_btn">WEBSITE</string>
+    <string name="call_btn">CALL</string>
+    <string name="error_no_phone_available">No Phone Available</string>
+    <string name="error_permission_denied">Permission Denied</string>
+    <string name="error_no_website">No Website</string>
+
+    <!--  RestaurantViewHolder -->
+    <string name="eat_at">eat at</string>
+    <string name="no_decision">made no decision at now</string>
+
+
 
 
 

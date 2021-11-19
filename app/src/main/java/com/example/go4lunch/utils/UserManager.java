@@ -4,8 +4,6 @@ import com.example.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Source;
-
 
 
 public class UserManager {
@@ -38,13 +36,29 @@ public class UserManager {
         return (this.getCurrentUser() != null);
     }
 
-    public static void createUser() {
-        mUserRepository.createUserInFirestore();
+    public static void createUser(String uid) {
+        mUserRepository.createUserInFirestore(uid);
     }
 
-    public Task<DocumentSnapshot> getUserData() {
-        String uid =mUserRepository.getCurrentUserUID();
-        mUserRepository.getUserData();
+    public Task<DocumentSnapshot> getUserData(String uid) {
+        //String uid =mUserRepository.getCurrentUserUID();
+        mUserRepository.getUserData(uid);
         return mUserRepository.getUsersCollection().document(uid).get();
+    }
+
+    public static Task<Void> deleteLike(String uid, String placeId) {
+        return mUserRepository.deleteLike(uid, placeId);
+    }
+
+    public static Task<Void> updateLike(String uid, String placeId) {
+        return mUserRepository.updateLike(uid, placeId);
+    }
+
+    public static Task<Void> deletePlaceId(String uid) {
+        return mUserRepository.deletePlaceId(uid);
+    }
+
+    public static Task<Void> updatePlaceId(String uid, String placeId, int currentTime) {
+        return mUserRepository.updatePlaceId(uid, placeId, currentTime);
     }
 }
