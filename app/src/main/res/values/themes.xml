@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Go4Lunch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Go4Lunch.NoActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -12,10 +13,28 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="RatingBarRestaurant" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorAccent</item>
         <item name="colorControlActivated">#FFCA28</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name= "colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <!--For Styleable Toasts-->
+    <style name="personalizedToast">
+        <item name="stColorBackground">#FFEE58</item>
+        <item name="stTextColor">#000</item>
+        <item name="stIconStart">@drawable/black_lunch_24dp</item>
+        <item name="stStrokeColor">@color/colorPrimaryDark</item>
+        <item name="stStrokeWidth">2dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="stLength">SHORT</item>
     </style>
 </resources>

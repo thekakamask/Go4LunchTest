@@ -9,7 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
+import androidx.preference.PreferenceManager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.DragAndDropPermissions;
@@ -31,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.fragments.coworkers.CoworkersFragment;
+import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.activities.ui.fragments.map.MapFragment;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //FOR ALARM OFF
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.getBoolean("alarmOff", false);
         sharedPreferences.getBoolean("alarmOn", false);

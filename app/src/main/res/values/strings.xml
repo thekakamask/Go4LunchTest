@@ -2,6 +2,7 @@
 
     <string name="app_name">Go4Lunch</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="first_activity">LoginActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -49,8 +50,27 @@
     <string name="eat_at">eat at</string>
     <string name="no_decision">made no decision at now</string>
 
+    <!--  AlertReceiver -->
+    <string name="lunch_at">You\re lunching at</string>
+    <string name="with"> with </string>
+    <string name="alone">alone</string>
 
+    <!--  NotificationHelper -->
+    <string name="alarm_title">Today, that is your lunch</string>
 
+    <!--  SettingsActivity -->
+    <string name="alarmOnButton">Alarm on</string>
+    <string name="alarmOffButton">Alarm off</string>
+    <string name="activation_alarm">Activation of the alarm for 12h</string>
+    <string name="desactivation_alarm">Desactivation of the alarm</string>
 
+    <!--  ListFragment -->
+    <string name="listFragment_bar">I\'m Hungry</string>
 
+    <!--  CoworkersFragment -->
+    <string name="avalaible_coworkers">Available Coworkers</string>
+
+    <!--  CoworkersFragmentViewholder -->
+    <string name="eatCoworkers">eat at</string>
+    <string name="noDecided">hasn\'t decided yet</string>
 </resources>

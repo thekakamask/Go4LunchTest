@@ -2,6 +2,7 @@ package com.example.go4lunch.activities.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -75,7 +76,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     @BindView(R.id.restaurant_activity_layout)
     RelativeLayout mRelativeLayout;
 
-    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
+    String GOOGLE_MAP_API_KEY = BuildConfig.MAP_API_KEY;
 
     private String placeId;
     private RequestManager mGlide;
@@ -194,7 +195,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
 
         if(placeDetailsResult != null) {
             UserManager.updatePlaceId(Objects.requireNonNull(UserManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
-            mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.fui_ic_check_circle_black_128dp));   ;
+            mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));   ;
             mFloatingActionButton.setTag(UNSELECTED);
         }
     }
@@ -202,7 +203,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     // REMOVING RESTAURANT CHOICE
     public void removeRestaurant() {
         UserManager.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
-        mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.valid_done_68dp));
+        mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.valid_done_68dp));
         mFloatingActionButton.setTag(UNSELECTED);
     }
 
@@ -295,9 +296,11 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     }
 
 
+
     @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 makePhoneCall(formattedPhoneNumber);
@@ -308,10 +311,11 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     }
 
     private void webButton(String url) {
-        mInternetButton.setOnClickListener(view -> makeWebView(url));
+        //mInternetButton.setOnClickListener(view -> makeWebView(url));
+        mInternetButton.setOnClickListener(view -> openWebPage(url));
     }
 
-    private void makeWebView(String url) {
+    /*private void makeWebView(String url) {
         if (url != null && !url.isEmpty()) {
             Intent intent = new Intent(RestaurantActivity.this, WebViewActivity.class);
             intent.putExtra("website", url);
@@ -319,6 +323,17 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
             startActivity(intent);
         } else {
             showSnackBar(getString(R.string.error_no_website));
+        }
+    }*/
+
+    public void openWebPage(String webUrl) {
+        if (webUrl != null && webUrl.startsWith("http")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                showSnackBar(getString(R.string.error_no_website));
+            }
         }
     }
 

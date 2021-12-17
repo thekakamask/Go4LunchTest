@@ -123,6 +123,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.handleResponseAfterSignIn(requestCode, resultCode, data);
+    }*/
+
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
@@ -171,11 +177,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.handleResponseAfterSignIn(requestCode, resultCode, data);
-    }*/
 
 
 

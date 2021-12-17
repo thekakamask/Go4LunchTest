@@ -11,24 +11,24 @@ import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResult;
 
 public interface Go4LunchService {
 
-    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
+    String GOOGLE_MAP_API_KEY = BuildConfig.MAP_API_KEY;
 
     //GoogleMap API Request
-    @GET("https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"+GOOGLE_MAP_API_KEY)
+    @GET("https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"+ GOOGLE_MAP_API_KEY)
     Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);
 
     /*@GET("maps/api/place/nearbysearch/json?key="+GOOGLE_MAP_API_KEY)
     Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);
 */
     //PlaceDetails API Request
-    @GET("https://maps.googleapis.com/maps/api/place/details/output?parameters"+GOOGLE_MAP_API_KEY)
+    @GET("https://maps.googleapis.com/maps/api/place/details/output?parameters"+ GOOGLE_MAP_API_KEY)
     Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);
 
     /*GET("maps/api/place/details/json?key="+GOOGLE_MAP_API_KEY)
     Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);*/
 
     //Autocomplete API Request
-    @GET("https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters"+GOOGLE_MAP_API_KEY)
+    @GET("https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters"+ GOOGLE_MAP_API_KEY)
     Observable<AutoCompeteResult> getAutocomplete(@Query("input") String input, @Query("radius") int radius, @Query("location") String location, @Query("type") String type);
 
     /*@GET("maps/api/place/autocomplete/json?strictbounds&key="+GOOGLE_MAP_API_KEY)

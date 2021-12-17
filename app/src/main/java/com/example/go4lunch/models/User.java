@@ -40,6 +40,10 @@ public class User {
         this.userChat = false;
     }
 
+    public User() {
+
+    }
+
     //GETTERS
     public String getUid() {return uid;}
     public String getUsername() {return username;}
