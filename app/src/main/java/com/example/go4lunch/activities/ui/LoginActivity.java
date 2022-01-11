@@ -135,6 +135,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
                     onSignInResult(result);
+
+                    //UTILISER UNE LAMBA A LA PLACE DE LINSTANTIATION DE LINTERFACE (ACTIVITYRESULTCALLBACK) avec la variable (result)
+                    // VERIFIER QUE ACTIVITYRESULTCALLBACK EST BIEN UNE INTERFACE GENERIQUE
                 }
             }
     );

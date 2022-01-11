@@ -52,6 +52,19 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
    private GoogleMap mMap;
    private String mPosition;
 
+   //VARIABLES NEEDED FOR ACTIVITY RESULTLAUNCHER
+   final String[] PERMISSIONS = {
+           Manifest.permission.ACCESS_FINE_LOCATION,
+           Manifest.permission.ACCESS_COARSE_LOCATION
+   };
+
+   //BEGIN STANDARD CALL SPECIFICATION AND PREDEFINED TO AN ACTIVITY INITIALISED IN THE ONCREATE
+    private ActivityResultContracts.RequestMultiplePermissions mRequestMultiplePermissionsContract;
+    //LAUNCHER SPECIFICATION FOR A PREVIOUSLY PREPARED CALL TO START THE PROCESS OF EXECUTING AN ACTIVITYRESULT CONTRACT
+    //INITIALISED ON THE ONCREATE
+    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
+    //END ZONE FOR NECESSAIRELY VARIABLES OF ACTIVITYRESULTLAUCHER
+
 
     public BaseFragment() {
         // EMPTY PUBLIC CONSTRUCTOR
@@ -60,19 +73,128 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // BEGIN INITIALISED OBJECTS ACTIVITYRESULTCONTRACTS AND ACTIVITYRESULTLAUNCHER
+        mRequestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
+        multiplePermissionActivityResultLauncher = registerForActivityResult(mRequestMultiplePermissionsContract, isGranted -> {
+                    Log.d(TAG, "launcher result :" + isGranted.toString());
+                    if (isGranted.containsValue(false)) {
+                        Log.d(TAG, "At least one of the permissions was not granted, launching again...");
+                        multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+                    }
+                });
+        //CHECKING PERMISSIONS
+        askPermissions(PERMISSIONS);
     }
+
+    private void askPermissions(String [] PERMISSIONS) {
+        //IF PERMISSIONS ARE NOT ACCORDED
+        if(!hasPermissions(PERMISSIONS)) {
+            Log.d(TAG, "Launching multiple contract permission launcher for ALL required permissions ");
+            multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+        } else {
+            Log.d(TAG, "All permissions are already granted");
+            //ON CONTINUE
+            handleGPS();
+        }
+    }
+
+    private boolean hasPermissions(String[] permissions) {
+        if(permissions != null) {
+            //BROWSE PERMISSIONS
+            for (String permission : permissions) {
+                //CONTEXT DEFINITION
+                Context context = requireContext();
+                if(ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED ) {
+                    Log.d(TAG, "Permission is not granted" + permission);
+                    return false;
+                }
+                Log.d(TAG, "permission already granted:" + permission);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void handleGPS() {
+        //IF WE HAVE PERMISSIONS, WE CONTINUE
+        Context context = requireContext();
+        mLocationManager = (LocationManager) Objects.requireNonNull(requireContext())
+                .getSystemService(Context.LOCATION_SERVICE);
+        assert mLocationManager != null;
+        //VERIFICATION OF THE PERMISSIONS ARE REQUIRED, IF NOT : ERROR
+        if(ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            askPermissions(PERMISSIONS);
+            return;
+        }
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,15000,10, (LocationListener) this);
+            Log.e("GPSProvider", "testGps");
+        } else if (mLocationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.PASSIVE_PROVIDER, 15000, 10, (LocationListener) this);
+            Log.e("PassiveProvider", "testPassive");
+        } else if (mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 10,(LocationListener) this);
+            Log.e("NetworkProvider", "testNetwork");
+        }
+    } //HANDLE GPS
 
     public ActionBar getActionBar() {
         return ((MainActivity) requireActivity()).getSupportActionBar();
     }
 
+
+    public void onLocationChanged(Location location) {
+        double mLatitude = location.getLatitude();
+        double mLongitude = location.getLongitude();
+
+        if (mMap != null) {
+            LatLng googleLocation = new LatLng(mLatitude, mLongitude);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+            mPosition = mLatitude + "," + mLongitude;
+            Log.d("TestLatLng", mPosition);
+        }
+    }
+
+
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mLocationManager != null) {
+            mLocationManager.removeUpdates(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        askPermissions(PERMISSIONS);
+    }
+
+    protected OnFailureListener onFailureListener() {
+        return e -> StyleableToast.makeText(requireContext(), "Unknown Error", R.style.personalizedToast).show();
+    }
+
+    /*public void onProviderDisabled(String provider) { }
+
+    public void onProviderEnabled(String provider) {
+        Log.d("LocationProject", "Provider Enabled");
+    }
+
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }*/
+
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMS_CALLS_ID) {
             checkPermissions();
         }
-    }
+    }*/
 
 
 
@@ -80,7 +202,7 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
 
 
 
-    private void checkPermissions() {
+    /*private void checkPermissions() {
         if (ActivityCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
@@ -108,51 +230,7 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
             mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 10, (LocationListener) this);
             Log.e("NetWorkProvider", "testNetwork");
         }
-    }
-
-
-
-
-    public void onLocationChanged(Location location) {
-        double mLatitude = location.getLatitude();
-        double mLongitude = location.getLongitude();
-
-        if (mMap != null) {
-            LatLng googleLocation = new LatLng(mLatitude, mLongitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
-            mPosition = mLatitude + "," + mLongitude;
-            Log.d("TestLatLng", mPosition);
-        }
-    }
-
-    /*public void onProviderDisabled(String provider) { }
-
-    public void onProviderEnabled(String provider) {
-        Log.d("LocationProject", "Provider Enabled");
-    }
-
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {
     }*/
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mLocationManager != null) {
-            mLocationManager.removeUpdates(this);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkPermissions();
-    }
-
-    protected OnFailureListener onFailureListener() {
-        return e -> StyleableToast.makeText(requireContext(), "Unknown Error", R.style.personalizedToast).show();
-    }
 
 
 

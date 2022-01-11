@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 public class FragmentPermissionsHelper {
 
-    public void startPermissionRequest(FragmentActivity fA, FragmentPermissionsInterface fPI, String mani) {
+    /*public void startPermissionRequest(FragmentActivity fA, FragmentPermissionsInterface fPI, String mani) {
         ActivityResultLauncher<String> requestPermissionLauncher =
                 fA.registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
@@ -23,7 +23,7 @@ public class FragmentPermissionsHelper {
                     }
                 });
         requestPermissionLauncher.launch(
-                Manifest.permission.REQUESTED_PERMISSION);
-    }
+                //Manifest.permission.REQUESTED_PERMISSION);
+    }*/
 
 }

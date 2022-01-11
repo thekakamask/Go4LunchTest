@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 
-public class Go4LunchViewHolder extends RecyclerView.ViewHolder {
+/*public class Go4LunchViewHolder extends RecyclerView.ViewHolder {
     
     
     public Go4LunchViewHolder(@NonNull View itemView) {
@@ -17,4 +17,4 @@ public class Go4LunchViewHolder extends RecyclerView.ViewHolder {
 
     public void updateWithDetails(PlaceDetailsResult result, RequestManager glide, String position) {
     }
-}
+}*/

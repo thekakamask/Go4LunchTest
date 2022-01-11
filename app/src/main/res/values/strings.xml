@@ -67,6 +67,10 @@
     <!--  ListFragment -->
     <string name="listFragment_bar">I\'m Hungry</string>
 
+    <!--  ListViewHolder -->
+    <string name="open_until">Open Until</string>
+    <string name="closing_soon">Closing Soon</string>
+
     <!--  CoworkersFragment -->
     <string name="avalaible_coworkers">Available Coworkers</string>
 

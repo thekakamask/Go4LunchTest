@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +22,8 @@ import com.example.go4lunch.activities.ui.fragments.BaseFragment;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
-import com.example.go4lunch.utils.Go4lunchAdapter;
 import com.example.go4lunch.utils.ItemClickSupport;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.example.go4lunch.views.ListFragmentAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class ListFragment extends BaseFragment implements Serializable {
     @BindView(R.id.RV_listFragment)
     RecyclerView mRecyclerView;
     public List<PlaceDetail> placeDetails;
-    private Go4lunchAdapter mAdapter;
+    private ListFragmentAdapter mAdapter;
     private String mPosition;
     public Disposable mDisposable;
 
@@ -181,7 +179,7 @@ public class ListFragment extends BaseFragment implements Serializable {
         //RESET LIST
         this.placeDetails= new ArrayList<>();
         //CREATION OF THE ADAPTER PASSING THE RESTAURANTS LIST
-        this.mAdapter = new Go4lunchAdapter(this.placeDetails, Glide.with(this), this.mPosition);
+        this.mAdapter = new ListFragmentAdapter(this.placeDetails, Glide.with(this), this.mPosition);
         //ADAPTER TO RV TO ITEMS
         this.mRecyclerView.setAdapter(mAdapter);
         // SET LAYOUTMANAGER WITH POSITON TO ITEMS

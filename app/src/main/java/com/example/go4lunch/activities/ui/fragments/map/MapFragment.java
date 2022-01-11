@@ -204,12 +204,13 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
         mMapFragment.getMapAsync(googleMap -> {
             mGoogleMap = googleMap;
             googleMap.moveCamera(CameraUpdateFactory.zoomBy(15));
-            if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) requireContext(), new String[] {
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) getContext(),new String[] {
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_CALLS_ID);
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                }, PERMS_CALLS_ID);
                 return;
             }
             googleMap.setMyLocationEnabled(true);

@@ -1,4 +1,4 @@
-package com.example.go4lunch.utils;
+package com.example.go4lunch.views;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,21 +10,20 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.R;
-import com.example.go4lunch.activities.ui.fragments.coworkers.CoworkersViewHolder;
 import com.example.go4lunch.models.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import butterknife.BindView;
 
-public class CoworkersAdapter extends FirestoreRecyclerAdapter<User, CoworkersViewHolder> {
+public class CoworkersFragmentAdapter extends FirestoreRecyclerAdapter<User, CoworkersViewHolder> {
 
     @BindView(R.id.coworker_name)
     TextView mCoworkerName;
 
     private RequestManager glide;
 
-    public CoworkersAdapter(FirestoreRecyclerOptions<User> options, RequestManager glide ) {
+    public CoworkersFragmentAdapter(FirestoreRecyclerOptions<User> options, RequestManager glide ) {
         super(options);
         this.glide = glide;
 

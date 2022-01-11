@@ -1,4 +1,4 @@
-package com.example.go4lunch.activities.ui.fragments.coworkers;
+package com.example.go4lunch.views;
 
 import android.app.DownloadManager;
 import android.content.Intent;

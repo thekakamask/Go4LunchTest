@@ -1,16 +1,10 @@
 package com.example.go4lunch.activities.ui.fragments.coworkers;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.fragments.BaseFragment;
-import com.example.go4lunch.activities.ui.fragments.map.MapFragment;
 import com.example.go4lunch.models.User;
-import com.example.go4lunch.utils.CoworkersAdapter;
+import com.example.go4lunch.views.CoworkersFragmentAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,7 +29,7 @@ public class CoworkersFragment extends BaseFragment {
     RecyclerView mRecyclerViewCoworkers;
 
     private Disposable mDisposable;
-    private CoworkersAdapter mCoworkersAdapter;
+    private CoworkersFragmentAdapter mCoworkersFragmentAdapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionUsers = db.collection("users");
 
@@ -68,9 +61,9 @@ public class CoworkersFragment extends BaseFragment {
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)
                 .build();
-        this.mCoworkersAdapter = new CoworkersAdapter(options, Glide.with(this));
+        this.mCoworkersFragmentAdapter = new CoworkersFragmentAdapter(options, Glide.with(this));
         mRecyclerViewCoworkers.setHasFixedSize(true);
-        mRecyclerViewCoworkers.setAdapter(mCoworkersAdapter);
+        mRecyclerViewCoworkers.setAdapter(mCoworkersFragmentAdapter);
         mRecyclerViewCoworkers.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 
@@ -82,13 +75,13 @@ public class CoworkersFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        mCoworkersAdapter.startListening();
+        mCoworkersFragmentAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mCoworkersAdapter.stopListening();
+        mCoworkersFragmentAdapter.stopListening();
     }
 
     @Override
