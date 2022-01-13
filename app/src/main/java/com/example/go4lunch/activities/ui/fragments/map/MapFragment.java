@@ -16,10 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.api.LogDescriptor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -51,6 +52,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 
 
+
 public class MapFragment extends BaseFragment implements LocationListener, Serializable {
 
     private GoogleMap mGoogleMap;
@@ -58,6 +60,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     private Disposable mDisposable;
     private String mPosition;
     private Marker positionMarker;
+    private static final String TAG = "MapFragment";
 
 
 
@@ -202,6 +205,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
 
     private void loadMap() {
         mMapFragment.getMapAsync(googleMap -> {
+            Log.d(TAG, "loadMap: ");
             mGoogleMap = googleMap;
             googleMap.moveCamera(CameraUpdateFactory.zoomBy(15));
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -216,6 +220,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
             googleMap.setMyLocationEnabled(true);
         });
     }
+
 
 
 
