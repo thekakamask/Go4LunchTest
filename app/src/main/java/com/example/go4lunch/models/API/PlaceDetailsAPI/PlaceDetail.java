@@ -8,7 +8,7 @@ import java.util.List;
 public class PlaceDetail implements Serializable {
 
     @SerializedName("html_attributions")
-    private List<String> mHtmlAttributions;
+    private List<Object> mHtmlAttributions;
 
     @SerializedName("result")
     private PlaceDetailsResult mResult;
@@ -16,11 +16,11 @@ public class PlaceDetail implements Serializable {
     @SerializedName("status")
     private String mStatus;
 
-    public List<String> getHtmlAttributions() {
+    public List<Object> getHtmlAttributions() {
         return mHtmlAttributions;
     }
 
-    public void setHtmlAttributions(List<String> htmlAttributions) {
+    public void setHtmlAttributions(List<Object> htmlAttributions) {
         mHtmlAttributions = htmlAttributions;
     }
 

@@ -54,7 +54,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list_photo)
     ImageView mPhoto;
 
-    String GOOGLE_MAP_API_KEY = BuildConfig.MAP_API_KEY;
+    String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
     private float[] distanceResults = new float[3];
     private int diff;
     private String closeHour;
@@ -89,7 +89,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                 this.mOpenHours.setText("closed");
                 this.mOpenHours.setTextColor(Color.RED);
             } else if (result.getPlaceDetailsOpeningHours().getOpenNow().toString().equals("true")) {
-                getHoursInfo(result);
+                //getHoursInfo(result);
             }
         }
 

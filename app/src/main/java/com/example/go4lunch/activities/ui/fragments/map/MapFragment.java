@@ -124,17 +124,22 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     }
 
     private void executeHttpRequestWithRetrofit() {
-        this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 3000, "restaurant")
+        Log.d(TAG, "executeHttpRequestWithRetrofit: COUCOU");
+        //StreamRepository.streamFetchRestaurantDetails(mPosition,3000, "restaurant");
+        this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 3000, "restaurant|cafe|bakery|bar|meal_takeaway|meal_delivery")
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
                     @Override
                     public void onSuccess(List<PlaceDetail> placeDetails) {
                         positionMarker(placeDetails);
+                        Log.d(TAG, "httprequestretrofitOnSuccess" + String.valueOf(placeDetails.size()));
                     }
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TestDetail", Log.getStackTraceString(e));
+                        Log.e(TAG,"TestDetail" + Log.getStackTraceString(e));
                     }
                 });
+        Log.d(TAG, "executeHttpRequestWithRetrofitDisposableTest: " + this.mDisposable);
+
 
         mGoogleMap.setOnInfoWindowClickListener(marker -> {
             //RETRIEVING RESULT
@@ -146,6 +151,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
             startActivity(intent);
 
         });
+
     }
 
     private void executeHttpRequestWithRetrofitAutocomplete(String input) {
@@ -175,19 +181,22 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     }
 
     public void onLocationChanged(Location location) {
+        Log.d(TAG, "onLocationChanged: " + location.toString());
         double mLatitude = location.getLatitude();
         double mLongitude = location.getLongitude();
-
+        Log.d(TAG, "onLocationChanged: (mGoogleMap==null) " +(mGoogleMap==null));
         if (mGoogleMap != null) {
             LatLng googleLocation = new LatLng(mLatitude, mLongitude);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+            //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleLocation, 15));
             mPosition = mLatitude + "," + mLongitude;
-            Log.d("TestLatLng", mPosition);
+            Log.d(TAG, "onLocationChanged: mPosition" + mPosition);
             executeHttpRequestWithRetrofit();
         }
     }
 
     private void positionMarker(List<PlaceDetail> placeDetails) {
+        Log.d(TAG, "positionMarker: ");
         mGoogleMap.clear();
         for (PlaceDetail detail : placeDetails) {
             LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
@@ -199,7 +208,6 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
             positionMarker.showInfoWindow();
             PlaceDetailsResult placeDetailsResult = detail.getResult();
             positionMarker.setTag(placeDetailsResult);
-            Log.d("detailResultMap", String.valueOf(placeDetailsResult));
         }
     }
 
@@ -207,6 +215,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
         mMapFragment.getMapAsync(googleMap -> {
             Log.d(TAG, "loadMap: ");
             mGoogleMap = googleMap;
+            Log.d(TAG, "loadMap: (mGoogleMap==null) " + (mGoogleMap==null));
             googleMap.moveCamera(CameraUpdateFactory.zoomBy(15));
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)

@@ -1,6 +1,8 @@
 package com.example.go4lunch.repository;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResult;
@@ -26,28 +28,50 @@ import io.reactivex.rxjava3.internal.operators.observable.ObservableError;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.http.Query;
 
+import static android.content.ContentValues.TAG;
+
 
 public class StreamRepository {
 
+    private static final String TAG = "StreamRepository";
+    private static Go4LunchService mapPlacesInfo= RetrofitObject.retrofit().create(Go4LunchService.class);
+
+    //JUTILISE A LA BASE PLACENEARBYSEARCH
     public static Observable<PlaceNearbySearch> streamFetchRestaurants(String location, int radius, String type) {
-        Go4LunchService go4LunchService = RetrofitObject.retrofit.create(Go4LunchService.class);
-        return go4LunchService.getRestaurants(location, radius, type)
+        Log.d(TAG, "streamFetchRestaurant: " + location);
+
+        //Go4LunchService go4LunchService = RetrofitObject.retrofit.create(Go4LunchService.class);
+        Log.d(TAG, "streamFetchRestaurants: + mLocation" + location);
+
+        Log.d(TAG, "streamFetchRestaurantsMapPLacesInfogetRestaurant: " + mapPlacesInfo.getRestaurants(location,radius, type));
+
+        Log.d(TAG, "streamFetchRestaurantsMapPLacesInfo: " + mapPlacesInfo);
+
+        return mapPlacesInfo.getRestaurants(location,radius, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10,TimeUnit.SECONDS);
+        /*return go4LunchService.getRestaurants(location, radius, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10,TimeUnit.SECONDS);*/
     }
 
     public static Observable<PlaceDetail> streamFetchDetails(String placeId) {
-        Go4LunchService go4LunchService = RetrofitObject.retrofit.create(Go4LunchService.class);
-        return go4LunchService.getDetails(placeId)
+        //Go4LunchService go4LunchService = RetrofitObject.retrofit.create(Go4LunchService.class);
+        return mapPlacesInfo.getDetails(placeId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10,TimeUnit.SECONDS);
+        /*return go4LunchService.getDetails(placeId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10,TimeUnit.SECONDS);*/
 
     }
 
     public static Observable<AutoCompeteResult> streamFetchAutocomplete(String input, int radius, String location, String type) {
-        Go4LunchService go4LunchService = RetrofitObject.retrofit.create(Go4LunchService.class);
+        Go4LunchService go4LunchService = RetrofitObject.retrofit().create(Go4LunchService.class);
         return go4LunchService.getAutocomplete(input, radius, location, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,10 +80,12 @@ public class StreamRepository {
 
     // 2 chained request
     public static Single<List<PlaceDetail>> streamFetchRestaurantDetails(String location, int radius, String type) {
+        Log.d(TAG, "streamFetchRestaurantDetails: ");
         return streamFetchRestaurants(location, radius, type)
                 .flatMapIterable(new Function<PlaceNearbySearch, List<PlaceNearbySearchPlace>>() {
                     @Override
                     public List<PlaceNearbySearchPlace> apply (PlaceNearbySearch placeNearbySearch) throws Exception {
+                        Log.d(TAG, "applyPlaceNearbySearchPlace: " +  placeNearbySearch.getResultSearches());
                         return placeNearbySearch.getResultSearches();
 
                     }
