@@ -76,7 +76,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     @BindView(R.id.restaurant_activity_layout)
     RelativeLayout mRelativeLayout;
 
-    String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
+    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
 
     private String placeId;
     private RequestManager mGlide;

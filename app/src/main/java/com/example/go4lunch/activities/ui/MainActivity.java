@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
+import com.example.go4lunch.activities.ui.fragments.chat.ChatFragment;
 import com.example.go4lunch.activities.ui.fragments.coworkers.CoworkersFragment;
 import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.activities.ui.fragments.map.MapFragment;
@@ -310,6 +311,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         selectedFragment = new CoworkersFragment();
                         break;
 
+                    case R.id.chat_button:
+                        selectedFragment = new ChatFragment();
+                        break;
                 }
 
                 if (selectedFragment != null) {

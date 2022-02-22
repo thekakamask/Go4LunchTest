@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class PlaceNearbySearchPlace {
+
+    @SerializedName("next_page_token")
+    private String mNextPageToken;
+
     @SerializedName("geometry")
     private PlaceNearbySearchGeometry mGeometry;
 
@@ -34,6 +38,14 @@ public class PlaceNearbySearchPlace {
 
     @SerializedName("types")
     private List<String> mTypes;
+
+    public String getNextPageToken() {
+        return mNextPageToken;
+    }
+
+    public void setNextPageToken(String nextPageToken) {
+        mNextPageToken= nextPageToken;
+    }
 
     public PlaceNearbySearchGeometry getGeometry() {
         return mGeometry;

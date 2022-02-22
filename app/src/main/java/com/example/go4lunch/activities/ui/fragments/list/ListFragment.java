@@ -120,9 +120,10 @@ public class ListFragment extends BaseFragment implements Serializable {
         });
     }
 
+
     private void executeHttpRequestWithRetrofit() {
 
-        this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 2000, "restaurant")
+        this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 3000, "restaurant|cafe|bakery|bar|meal_takeaway|meal_delivery")
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
                     @Override
                     public void onSuccess(@NonNull List<PlaceDetail> placeDetails) {

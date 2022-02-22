@@ -1,6 +1,7 @@
 package com.example.go4lunch.repository;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -9,15 +10,23 @@ import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.models.API.NearbySearchAPI.PlaceNearbySearch;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResult;
+import com.google.android.libraries.places.api.model.Place;
+
+import java.util.Objects;
 
 public interface Go4LunchService {
 
-    String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
+    //String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
+    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
 
     //GoogleMap API Request
     //JUTILISE A LA BASE PLACENEARBYSEARCH DANS LOBSERVABLE
+
     @GET("nearbysearch/json?"+"&key="+ GOOGLE_MAP_API_KEY)
-    Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);
+    Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type) ;
+
+    @GET("nearbysearch/json?"+"&key="+ GOOGLE_MAP_API_KEY)
+    Observable<PlaceNearbySearch> getNextPageRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type, @Query("pagetoken") String nextPageToken) ;
 
     /*@GET("https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"+ GOOGLE_MAP_API_KEY)
     Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);*/

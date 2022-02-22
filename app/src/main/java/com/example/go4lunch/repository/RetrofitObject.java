@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitObject {
 
-    private static OkHttpClient provideOkHttpClient() {
+    /*private static OkHttpClient provideOkHttpClient() {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -20,8 +20,16 @@ public class RetrofitObject {
                 .addInterceptor(logging)
                 .build();
 
-    }
-    public static Retrofit retrofit() {
+    }*/
+
+    public static Retrofit retrofit = new Retrofit.Builder()
+            //.baseUrl("https://maps.googleapis.com/")
+            .baseUrl("https://maps.googleapis.com/maps/api/place/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build();
+
+    /*public static Retrofit retrofit() {
         OkHttpClient okHttpClient = provideOkHttpClient();
         return new Retrofit.Builder()
                 //.baseUrl("https://maps.googleapis.com/")
@@ -30,7 +38,7 @@ public class RetrofitObject {
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
-    }
+    }*/
 
 
     /*= new Retrofit.Builder()
@@ -38,7 +46,6 @@ public class RetrofitObject {
             .baseUrl("https://maps.googleapis.com/maps/api/place/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .client()
             .build();*/
 
 }

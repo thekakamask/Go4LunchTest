@@ -31,6 +31,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -91,9 +92,6 @@ dependencies {
 
     //For styleable Toast
     implementation 'com.muddzdev:styleabletoast:2.2.3'
-
-
-
 
 }
 // apply id: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'

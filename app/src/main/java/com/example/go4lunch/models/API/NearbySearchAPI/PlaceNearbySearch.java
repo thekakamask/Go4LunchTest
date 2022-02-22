@@ -15,6 +15,13 @@ public class PlaceNearbySearch {
     @SerializedName("status")
     private String mStatus;
 
+    @SerializedName("next_page_token")
+    private String mNextPageToken;
+
+    public String getNextPageToken() { return mNextPageToken;}
+
+    public void setNextPageToken(String nextPageToken) { mNextPageToken= nextPageToken;}
+
     public List<Object> getHtmlAttributions() {
         return mHtmlAttributions;
     }
