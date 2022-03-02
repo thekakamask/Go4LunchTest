@@ -76,7 +76,8 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     @BindView(R.id.restaurant_activity_layout)
     RelativeLayout mRelativeLayout;
 
-    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
+
+    String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
 
     private String placeId;
     private RequestManager mGlide;
@@ -203,7 +204,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     // REMOVING RESTAURANT CHOICE
     public void removeRestaurant() {
         UserManager.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
-        mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.valid_done_68dp));
+        mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
         mFloatingActionButton.setTag(UNSELECTED);
     }
 

@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="Image"
-            android:src="@drawable/add_chat_68dp" />
+            android:src="@drawable/fragment_chat_add_chat" />
 
         <!-- TEXT MESSAGE EDIT TEXT -->
         <androidx.appcompat.widget.AppCompatEditText

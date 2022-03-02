@@ -202,7 +202,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
             LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
                     detail.getResult().getGeometry().getLocation().getLng());
             positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker_100dp))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_fragment_restaurant_marker))
                     .title(detail.getResult().getName())
                     .snippet(detail.getResult().getVicinity()));
             positionMarker.showInfoWindow();

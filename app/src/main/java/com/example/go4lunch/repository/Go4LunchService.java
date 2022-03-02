@@ -17,32 +17,29 @@ import java.util.Objects;
 public interface Go4LunchService {
 
     //String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
-    String GOOGLE_MAP_API_KEY = BuildConfig.GOOGLE_MAP_API_KEY;
-
+    String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
+//    String GOOGLE_MAP_API_KEY = MAPS_API_KEY;
     //GoogleMap API Request
     //JUTILISE A LA BASE PLACENEARBYSEARCH DANS LOBSERVABLE
 
     @GET("nearbysearch/json?"+"&key="+ GOOGLE_MAP_API_KEY)
     Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type) ;
 
-    @GET("nearbysearch/json?"+"&key="+ GOOGLE_MAP_API_KEY)
-    Observable<PlaceNearbySearch> getNextPageRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type, @Query("pagetoken") String nextPageToken) ;
+    /*@GET("nearbysearch/json?")
+    Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type, @Query("key") String key ) ;*/
 
-    /*@GET("https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"+ GOOGLE_MAP_API_KEY)
-    Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);*/
+//    @GET("nearbysearch/json?"+"&key="+ GOOGLE_MAP_API_KEY)
+//    Observable<PlaceNearbySearch> getNextPageRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type, @Query("pagetoken") String nextPageToken) ;
 
-    /*@GET("maps/api/place/nearbysearch/json?key="+GOOGLE_MAP_API_KEY)
-    Observable<PlaceNearbySearch> getRestaurants(@Query("location") String location, @Query("radius") int radius, @Query("type") String type);
-*/
     //PlaceDetails API Request
+
+
     @GET("details/json?"+"&key=" + GOOGLE_MAP_API_KEY)
     Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);
 
-    /*@GET("https://maps.googleapis.com/maps/api/place/details/output?parameters"+ GOOGLE_MAP_API_KEY)
-    Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);*/
 
-    /*GET("maps/api/place/details/json?key="+GOOGLE_MAP_API_KEY)
-    Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);*/
+    /*@GET("details/json?")
+    Observable<PlaceDetail> getDetails(@Query("place_id") String placeId, @Query ("key") String key);*/
 
     //Autocomplete API Request
     @GET("https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters"+ GOOGLE_MAP_API_KEY)

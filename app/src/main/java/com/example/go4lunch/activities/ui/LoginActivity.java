@@ -14,10 +14,12 @@ import butterknife.OnClick;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.utils.UserManager;
 import com.example.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -33,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
+import static android.content.ContentValues.TAG;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.d(TAG, "onCreate: " + BuildConfig.API_KEY);
 
         ButterKnife.bind(this);
     }

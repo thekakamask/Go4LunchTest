@@ -23,7 +23,7 @@
         android:clickable="true"
         android:elevation="8dp"
         android:focusable="true"
-        android:src="@drawable/valid_done_68dp"
+        android:src="@drawable/activity_restaurant_valid_done"
         app:fabSize="auto"/>
 
     <FrameLayout
@@ -79,7 +79,7 @@
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="20dp"
             android:backgroundTint="#FFFFFF"
-            android:drawableTop="@drawable/restaurant_phone_48dp"
+            android:drawableTop="@drawable/activity_restaurant_phone"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/call_btn"
             android:textAlignment="center"
@@ -91,7 +91,7 @@
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:layout_gravity="center|center_vertical"
-            android:drawableTop="@drawable/restaurant_star_48dp"
+            android:drawableTop="@drawable/activity_restaurant_star"
             android:backgroundTint="#FFFFFF"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/like_btn"
@@ -105,7 +105,7 @@
             android:layout_height="95dp"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="20dp"
-            android:drawableTop="@drawable/restaurant_internet_48dp"
+            android:drawableTop="@drawable/activity_restaurant_internet"
             android:backgroundTint="#FFFFFF"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/website_btn"

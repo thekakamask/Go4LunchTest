@@ -22,14 +22,14 @@
             android:id="@+id/chat_item_profile_container_profile_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            app:srcCompat="@drawable/user_chat_400dp" />
+            app:srcCompat="@drawable/fragment_chat_item_user_chat" />
 
         <!-- IMAGE PROFILE 2 -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/chat_item_profile"
             android:layout_width="15dip"
             android:layout_height="15dip"
-            app:srcCompat="@drawable/user_chat_400dp" />
+            app:srcCompat="@drawable/fragment_chat_item_user_chat" />
 
     </LinearLayout>
 

@@ -9,18 +9,18 @@
         <item
 
             android:id="@+id/lunch_menu_drawer"
-            android:icon="@drawable/black_lunch_24dp"
+            android:icon="@drawable/main_activity_menu_drawer_black_lunch"
             android:title="@string/menu_activity_menu_drawer_lunch"/>
 
         <item
             android:id="@+id/settings_menu_drawer"
-            android:icon="@drawable/black_parameters_24dp"
+            android:icon="@drawable/main_activity_menu_drawer_black_parameters"
             android:title="@string/menu_activity_menu_drawer_settings"/>
             />
 
         <item
             android:id="@+id/logout_menu_drawer"
-            android:icon="@drawable/black_logout_24dp"
+            android:icon="@drawable/main_activity_menu_drawer_black_logout"
             android:title="@string/menu_activity_menu_drawer_logout"/>
             />
 

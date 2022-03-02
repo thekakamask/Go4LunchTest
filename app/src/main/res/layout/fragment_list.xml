@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/RV_listFragment"
         android:id="@+id/SV_listFragment"
-        app:searchIcon="@drawable/search_48dp"/>
+        app:searchIcon="@drawable/fragment_list_search"/>
 
 
 

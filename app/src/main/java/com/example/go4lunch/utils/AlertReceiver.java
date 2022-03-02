@@ -67,6 +67,7 @@ public class AlertReceiver extends BroadcastReceiver {
                         Log.d("RestoNotifError", Log.getStackTraceString(e));
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onComplete() {
                         if(userIdNotif != null) {

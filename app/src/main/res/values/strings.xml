@@ -2,6 +2,8 @@
 
     <string name="app_name">Go4Lunch</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="first_activity">LoginActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -84,5 +86,6 @@
     <string name="enter_text">Enter Text</string>
     <string name="button_title_chat_send"> Send </string>
     <string name="chat_coworkers">Chat with Coworkers</string>
+    <string name="title_activity_maps_fragment">Map</string>
 
 </resources>

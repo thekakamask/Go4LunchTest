@@ -56,7 +56,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), IDChannel)
                 .setContentTitle(getString(R.string.alarm_title))
                 .setContentText(notifMessage)
-                .setSmallIcon(R.drawable.launch_black_72dp)
+                .setSmallIcon(R.drawable.notification_helper_launch_black)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notifMessage))
                 .setSound(alarmSound);
     }

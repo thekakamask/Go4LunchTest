@@ -31,7 +31,7 @@
     <style name="personalizedToast">
         <item name="stColorBackground">#FFEE58</item>
         <item name="stTextColor">#000</item>
-        <item name="stIconStart">@drawable/black_lunch_24dp</item>
+        <item name="stIconStart">@drawable/notification_helper_launch_black</item>
         <item name="stStrokeColor">@color/colorPrimaryDark</item>
         <item name="stStrokeWidth">2dp</item>
         <item name="cornerRadius">5dp</item>

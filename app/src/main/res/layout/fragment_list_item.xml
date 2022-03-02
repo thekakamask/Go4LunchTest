@@ -7,7 +7,7 @@
     android:elevation="5dp"
     android:orientation="horizontal"
     android:padding="20dp"
-    app:cardBackgroundColor="#F0F4C3"
+    app:cardBackgroundColor="#f5f5f5"
     app:cardCornerRadius="5dp">
 
     <RelativeLayout
@@ -54,7 +54,7 @@
             android:layout_marginStart="240dp"
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@+id/list_adress"
-            android:drawableStart="@drawable/identity_black_24dp"
+            android:drawableStart="@drawable/fragment_list_item_identity_black"
             android:text="" />
 
         <TextView

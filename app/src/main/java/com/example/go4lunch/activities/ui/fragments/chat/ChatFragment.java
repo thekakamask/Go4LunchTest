@@ -78,8 +78,8 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
         View view= inflater.inflate(R.layout.fragment_chat, container, false);
         ButterKnife.bind(this,view);
 
-        this.configureRecyclerView();
-        this.getCurrentUserFromFirestore();
+        /*this.configureRecyclerView();
+        this.getCurrentUserFromFirestore();*/
 
         // BEGIN INITIALISED OBJECTS ACTIVITYRESULTCONTRACTS AND ACTIVITYRESULTLAUNCHER
         mRequestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
@@ -106,7 +106,7 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
     }
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
@@ -116,7 +116,7 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.handleResponse(requestCode, resultCode, data);
-    }
+    }*/
 
     @Override
     public void onDataChanged() {

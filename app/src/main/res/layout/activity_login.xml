@@ -22,7 +22,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:background="#ffff"
-            android:drawableStart="@drawable/google_24dp"
+            android:drawableStart="@drawable/activity_login_google"
             android:hint="Continue with Google"
             android:onClick="onClickGoogleBtn"
             android:paddingStart="6dp"/>
@@ -36,7 +36,7 @@
             android:layout_height="37dp"
             android:layout_width="212dp"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/facebook_24dp"
+            android:drawableStart="@drawable/activity_login_facebook"
             android:background="#3b5998"
             android:hint="Continue with Facebook"
             android:layout_marginBottom="150dp"

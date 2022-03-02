@@ -5,25 +5,25 @@
     <item
         android:id="@+id/map_button"
         android:enabled="true"
-        android:icon="@drawable/black_map_24dp"
+        android:icon="@drawable/bottom_navigation_menu_black_map"
         android:title="@string/bottom_navigation_menu_map" />
 
     <item
         android:id="@+id/list_button"
         android:enabled="true"
-        android:icon="@drawable/black_list_24dp"
+        android:icon="@drawable/bottom_navigation_menu_black_list"
         android:title="@string/bottom_navigation_menu_list" />
 
     <item
         android:id="@+id/coworkers_button"
         android:enabled="true"
-        android:icon="@drawable/black_team_24dp"
+        android:icon="@drawable/bottom_navigation_menu_black_team"
         android:title="@string/bottom_navigation_menu_coworkers" />
 
     <item
         android:id="@+id/chat_button"
         android:enabled="true"
-        android:icon="@drawable/chat_24dp"
+        android:icon="@drawable/bottom_navigation_menu_chat"
         android:title="@string/bottom_navigation_menu_chat"
         app:showAsAction="ifRoom" />
 
