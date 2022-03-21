@@ -91,9 +91,9 @@ public class UserRepository {
 
     }
 
-    private static Task<Void> createUser(String uid, String username, String urlPicture, String placeId, ArrayList<String> like, int currentTime) {
+    private static Task<Void> createUser(String uid, String username, String urlPicture, String idOfPlace, ArrayList<String> like, int currentTime) {
         //Create user object
-        User userToCreate = new User(uid, username, urlPicture, placeId, like, currentTime);
+        User userToCreate = new User(uid, username, urlPicture, idOfPlace, like, currentTime);
         //Add a new user Document in Firestore
         return getUsersCollection()
                 .document(uid) //Setting uID for Document
@@ -104,21 +104,21 @@ public class UserRepository {
         return getUsersCollection().document(uid).get();
     }
 
-    public static Task<Void> deletePlaceId(String uid) {
-        return getUsersCollection().document(uid).update("placeId", null);
+    public static Task<Void> deleteIdOfPlace(String uid) {
+        return getUsersCollection().document(uid).update("idOfPlace", null);
     }
 
-    public static Task<Void> deleteLike(String uid, String placeId) {
-        return getUsersCollection().document(uid).update("like", FieldValue.arrayRemove(placeId));
+    public static Task<Void> deleteLike(String uid, String idOfPlace) {
+        return getUsersCollection().document(uid).update("like", FieldValue.arrayRemove(idOfPlace));
     }
 
-    public static Task<Void> updatePlaceId(String uid, String placeId, int currentTime){
-        return getUsersCollection().document(uid).update("place id", placeId, "currentTime", currentTime);
+    public static Task<Void> updateIdOfPlace(String uid, String idOfPlace, int currentTime){
+        return getUsersCollection().document(uid).update("idOfPlace", idOfPlace, "currentTime", currentTime);
 
     }
 
-    public static Task<Void> updateLike(String uid, String placeId) {
-        return getUsersCollection().document(uid).update("like", FieldValue.arrayUnion(placeId));
+    public static Task<Void> updateLike(String uid, String idOfPlace) {
+        return getUsersCollection().document(uid).update("like", FieldValue.arrayUnion(idOfPlace));
     }
 
 

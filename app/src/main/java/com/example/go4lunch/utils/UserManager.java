@@ -54,19 +54,19 @@ public class UserManager {
         UserRepository.getUsersCollection();
     }*/
 
-    public static Task<Void> deleteLike(String uid, String placeId) {
-        return mUserRepository.deleteLike(uid, placeId);
+    public static Task<Void> deleteLike(String uid, String idOfPlace) {
+        return mUserRepository.deleteLike(uid, idOfPlace);
     }
 
-    public static Task<Void> updateLike(String uid, String placeId) {
-        return mUserRepository.updateLike(uid, placeId);
+    public static Task<Void> updateLike(String uid, String idOfPlace) {
+        return mUserRepository.updateLike(uid, idOfPlace);
     }
 
-    public static Task<Void> deletePlaceId(String uid) {
-        return mUserRepository.deletePlaceId(uid);
+    public static Task<Void> deleteIdOfPlace(String uid) {
+        return mUserRepository.deleteIdOfPlace(uid);
     }
 
-    public static Task<Void> updatePlaceId(String uid, String placeId, int currentTime) {
-        return mUserRepository.updatePlaceId(uid, placeId, currentTime);
+    public static Task<Void> updateIdOfPlace(String uid, String idOfPlace, int currentTime) {
+        return mUserRepository.updateIdOfPlace(uid, idOfPlace, currentTime);
     }
 }

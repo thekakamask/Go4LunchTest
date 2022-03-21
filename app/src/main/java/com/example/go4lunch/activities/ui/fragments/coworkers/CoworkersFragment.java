@@ -57,6 +57,7 @@ public class CoworkersFragment extends BaseFragment {
     }
 
     private void setUpRecyclerView() {
+
         Query query = collectionUsers.orderBy("placeId", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)

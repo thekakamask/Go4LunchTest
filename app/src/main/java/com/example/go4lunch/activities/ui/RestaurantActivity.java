@@ -157,6 +157,9 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
             UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 if (user!= null) {
+                    //ERREUR
+                    //java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.util.ArrayList.isEmpty()' on a null object reference
+                    //        at com.example.go4lunch.activities.ui.RestaurantActivity.lambda$restaurantLiked$1$RestaurantActivity(RestaurantActivity.java:160)
                     if(!user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
                         UserManager.deleteLike(UserManager.getCurrentUser().getUid(), placeRestaurantId);
                         mStarButton.setBackgroundResource(R.color.starButt_transparent);
@@ -195,7 +198,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
         }
 
         if(placeDetailsResult != null) {
-            UserManager.updatePlaceId(Objects.requireNonNull(UserManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
+            UserManager.updateIdOfPlace(Objects.requireNonNull(UserManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
             mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));   ;
             mFloatingActionButton.setTag(UNSELECTED);
         }
@@ -203,7 +206,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
 
     // REMOVING RESTAURANT CHOICE
     public void removeRestaurant() {
-        UserManager.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
+        UserManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
         mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
         mFloatingActionButton.setTag(UNSELECTED);
     }

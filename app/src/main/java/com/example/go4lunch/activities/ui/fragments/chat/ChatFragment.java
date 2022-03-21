@@ -54,19 +54,6 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     private String chat;
     private Uri mUriImageSelected;
 
-    //VARIABLES NEEDED FOR ACTIVITY RESULTLAUNCHER
-    final String[] PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-
-    //BEGIN STANDARD CALL SPECIFICATION AND PREDEFINED TO AN ACTIVITY INITIALISED IN THE ONCREATE
-    private ActivityResultContracts.RequestMultiplePermissions mRequestMultiplePermissionsContract;
-    //LAUNCHER SPECIFICATION FOR A PREVIOUSLY PREPARED CALL TO START THE PROCESS OF EXECUTING AN ACTIVITYRESULT CONTRACT
-    //INITIALISED ON THE ONCREATE
-    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
-    //END ZONE FOR NECESSAIRELY VARIABLES OF ACTIVITYRESULTLAUCHER
-
 
     public ChatFragment() {
         //EMPTY CONSTRUCTOR
@@ -81,18 +68,6 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
         /*this.configureRecyclerView();
         this.getCurrentUserFromFirestore();*/
 
-        // BEGIN INITIALISED OBJECTS ACTIVITYRESULTCONTRACTS AND ACTIVITYRESULTLAUNCHER
-        mRequestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
-        multiplePermissionActivityResultLauncher = registerForActivityResult(mRequestMultiplePermissionsContract, isGranted -> {
-            Log.d(TAG, "launcher result :" + isGranted.toString());
-            if (isGranted.containsValue(false)) {
-                Log.d(TAG, "At least one of the permissions was not granted, launching again...");
-                multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
-            }
-        });
-        //CHECKING PERMISSIONS
-        askPermissions(PERMISSIONS);
-
         return view;
     }
 
@@ -100,10 +75,6 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     public void onViewCreated(View view, Bundle saveInstanceState) {
         super.onViewCreated(view, saveInstanceState);
         getActionBar().setTitle(R.string.chat_coworkers);
-    }
-
-    private void askPermissions(String [] PERMISSIONS) {
-
     }
 
    /* @Override

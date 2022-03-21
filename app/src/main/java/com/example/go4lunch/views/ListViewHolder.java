@@ -54,7 +54,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list_photo)
     ImageView mPhoto;
 
-    String GOOGLE_MAP_API_KEY = "AIzaSyBrdvHdbW8KQiRGj7dUolbL6mLtszf2g0g";
+    String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
     private float[] distanceResults = new float[3];
     private int diff;
     private String closeHour;
@@ -156,9 +156,9 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    private void numberCoworkers(String placeId) {
+    private void numberCoworkers(String idOfPlace) {
         UserManager.getUsersCollection()
-                .whereEqualTo("placeId", placeId)
+                .whereEqualTo("idOfPlace", idOfPlace)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -171,6 +171,10 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                             String coworkersNumber = "(" + numberCoworkers + ")";
                             mCoworkers.setText(coworkersNumber);
                         } else {
+                            //ERREUR
+                            //E/numberMatesError: Error getting documents:
+                            //com.google.firebase.firestore.FirebaseFirestoreException: PERMISSION_DENIED: Missing or insufficient permissions.
+                            //ERREUR REGLE SI JE CHANGE UNE AUTHORISATION DANS LES REGLES DE FIRESTORE.
                             Log.e("numberMatesError", "Error getting documents: ", task.getException());
                         }
                     }
