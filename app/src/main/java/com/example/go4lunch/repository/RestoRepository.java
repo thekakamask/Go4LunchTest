@@ -15,9 +15,9 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public class RestoRepository {
+/*public class RestoRepository {
 
-    /*private static final String TAG = "RestoRepository";
+    private static final String TAG = "RestoRepository";
     private final String ESTABLISHMENT_TYPE="restaurant";
     private int radius = 1500;
     private String location = "48.854685336064264, 2.3467574997969596"; // chatelet
@@ -151,6 +151,6 @@ public class RestoRepository {
                     }
 
                 });
-    }*/
+    }
 
-}
+}*/

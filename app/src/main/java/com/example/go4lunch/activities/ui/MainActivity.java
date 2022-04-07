@@ -33,6 +33,7 @@ import com.example.go4lunch.activities.ui.fragments.chat.ChatFragment;
 import com.example.go4lunch.activities.ui.fragments.coworkers.CoworkersFragment;
 import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.activities.ui.fragments.map.MapFragment;
+import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
@@ -54,16 +55,23 @@ import butterknife.ButterKnife;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.main_activity_toolbar)
+// 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
+// UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
+// CHAQUE CHANGEMENT EST INDIQUE PAR 1µ AU DEBUT
+
+// 1µ : AVANT CHANGEMENT : extends AppCompatActivity et @BindView avec le layout et la toolbar et les deux navigationsViews
+// APRES CHANGEMENT : extends BaseActivity<ActivityMainBinding> (le bind du xml activity_main)
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements NavigationView.OnNavigationItemSelectedListener {
+
+    /*@BindView(R.id.main_activity_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.navigation_bottom)
     BottomNavigationView mBottomNavigationView;
     @BindView(R.id.main_activity_nav_view)
     NavigationView mNavigationView;
     @BindView(R.id.main_activity_drawer_layout)
-    DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;*/
 
 
 
@@ -78,12 +86,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PlaceDetail detail;
     private String idResto;   */
 
-
+    //1µ : DEBUT AJOUT (inflate du layout de activity_main)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    ActivityMainBinding getViewBinding() {
+        return ActivityMainBinding.inflate(getLayoutInflater());
+    }
+
+    //1µ :FIN AJOUT
+
+    // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_main)
+    // et ButterKnife.bind(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        //setContentView(R.layout.activity_main);
+        //ButterKnife.bind(this);
 
         // A°6 CONFIGURE ALL VIEWS
         this.configureToolbar();
@@ -93,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.onTimeSet();
 
         //FOR BOTTOM NAVIGATION VIEW
-        mBottomNavigationView.setOnNavigationItemSelectedListener(navigationListener);
+        //1µ : remplacement de mBottonNavigationView (qui etait lié avec @BindView(R.id.navigation_bottom) BottomNavigationView mBottomNavigationView;
+        // par binding.navigationBottom (navigation_bottom (id de l'xml) sans le _)
+        binding.navigationBottom.setOnNavigationItemSelectedListener(navigationListener);
 
 
         //MAPFRAGMENT CONNECTION WITH ACTIVITY
@@ -116,17 +135,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // A°1 CONFIGURE TOOLBAR
+    //1µ : remplacement de mToolbar (qui etait lié avec @BindView(R.id.main_activity_toolbar) Toolbar mToolbar;
+    // par binding.mainActivityToolbar  (main_activity_toolbar (id de l'xml) mais sans les _)
     private void configureToolbar() {
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(binding.mainActivityToolbar);
     }
 
     // A°2 CONFIGURE DRAWER LAYOUT
+    //1µ : remplacement de mDrawerLayout (qui etait lié avec @BindView(R.id.main_activity_drawer_layout) DrawerLayout mDrawerLayout;
+    // par binding.mainActivityDrawerLayout  (main_activity_drawer_layout (id de l'xml) mais sans les _)
+    // pareil pour la toolbar (voir ligne 138)
     private void configureDrawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, mToolbar,
+                binding.mainActivityDrawerLayout, binding.mainActivityToolbar,
                 R.string.main_activity_navigation_drawer_open,
                 R.string.main_activity_navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
+        binding.mainActivityDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
     /* USE FIND VIEW BY ID METHOD
@@ -142,8 +166,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }*/
 
     // A°3 CONFIGURE NAVIGATION VIEW
+    //1µ : remplacement de mNavigationView (qui etait lié avec @BindView(R.id.main_activity_nav_view) NavigationView mNavigationView;
+    // par binding.mainActivityNavView (main_activity_nav_view (id de l'xml) sans le _)
     private void configureNavigationView() {
-        mNavigationView.setNavigationItemSelectedListener(this);
+        binding.mainActivityNavView.setNavigationItemSelectedListener(this);
     }
 
     //USE FINDVIEW BY ID METHOD
@@ -184,7 +210,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        //1µ : remplacement de mDrawerLayout (qui etait lié avec @BindView(R.id.main_activity_drawer_layout) DrawerLayout mDrawerLayout;
+        // par binding.mainActivityDrawerLayout  (main_activity_drawer_layout (id de l'xml) mais sans les _)
+        this.binding.mainActivityDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -246,26 +274,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
     }
 
+    //1µ : remplacement de mDrawerLayout (qui etait lié avec @BindView(R.id.main_activity_drawer_layout) DrawerLayout mDrawerLayout;
+    // par binding.mainActivityDrawerLayout  (main_activity_drawer_layout (id de l'xml) mais sans les _)
     private void showSnackBar (String message) {
-        Snackbar.make(mDrawerLayout, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(binding.mainActivityDrawerLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
 
+    //1µ : remplacement de mDrawerLayout (qui etait lié avec @BindView(R.id.main_activity_drawer_layout) DrawerLayout mDrawerLayout;
+    // par binding.mainActivityDrawerLayout  (main_activity_drawer_layout (id de l'xml) mais sans les _)
     @Override
     public void onBackPressed() {
         // A°5 HANDLE BACK CLICK TO CLOSE MENU
-        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (this.binding.mainActivityDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.binding.mainActivityDrawerLayout.closeDrawer(GravityCompat.START);
         }else {
             super.onBackPressed();
         }
 
     }
 
+    //1µ : remplacement de mNavigationView (qui etait lié avec @BindView(R.id.main_activity_nav_view) NavigationView mNavigationView;
+    //  par binding.mainActivityNavView (main_activity_nav_view (id de l'xml) sans le _)
     private void configureUINavHeader() {
         if (UserManager.getCurrentUser() != null) {
             //RETURN LAYOUT
-            View headerContainer = mNavigationView.getHeaderView(0);
+            View headerContainer = binding.mainActivityNavView.getHeaderView(0);
             ImageView mPhotoHead = headerContainer.findViewById(R.id.header_photo);
             TextView mNameHead = headerContainer.findViewById(R.id.header_name);
             TextView mMailHead = headerContainer.findViewById(R.id.header_mail);

@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.databinding.ActivityRestaurantBinding;
+import com.example.go4lunch.databinding.SettingActivityBinding;
 import com.example.go4lunch.utils.AlertReceiver;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -25,79 +27,103 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends AppCompatActivity {
+// 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
+// UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
+// CHAQUE CHANGEMENT EST INDIQUE PAR 1µ AU DEBUT
 
-    @BindView(R.id.alarmOn)
+// 1µ : AVANT CHANGEMENT : extends AppCompatActivity et @BindView avec le relative layout et les deux boutons du XML
+// APRES CHANGEMENT : extends BaseActivity<SettingActivity> (le bind du xml activity_main)
+public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
+
+    /*@BindView(R.id.alarmOn)
     Button mAlarmOn;
     @BindView(R.id.alarmOff)
     Button mAlarmOff;
     @BindView(R.id.settings_activity_layout)
-    RelativeLayout mRelativeLayout;
+    RelativeLayout mRelativeLayout;*/
 
     private Calendar c;
 
+    //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    SettingActivityBinding getViewBinding() {
+        return SettingActivityBinding.inflate(getLayoutInflater());
+    }
+    //1µ :FIN AJOUT
+
+    // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_restaurant)
+    // et ButterKnife.bind(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_activity);
-        ButterKnife.bind(this);
+        /*setContentView(R.layout.setting_activity);
+        ButterKnife.bind(this);*/
 
         this.alarmOn();
         this.alarmOff();
 
-        if(mAlarmOn.isEnabled() && mAlarmOff.isEnabled()) {
-            mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
+        //1µ : remplacement de mAlarmOn (qui etait lié avec @BindView(R.id.alarmOn) Button mAlarmOn;
+        // par binding.alarmOn (star_btn (id de l'xml) sans le _)
+        // et aussi avec @BindView(R.id.alarmOff)  Button mAlarmOff;
+        if(binding.alarmOn.isEnabled() && binding.alarmOff.isEnabled()) {
+            binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
 
-        } else if (!mAlarmOn.isEnabled() && !mAlarmOff.isEnabled()) {
-            mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+        } else if (!binding.alarmOn.isEnabled() && !binding.alarmOff.isEnabled()) {
+            binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
         }
     }
 
+    //1µ : remplacement de mAlarmOn (qui etait lié avec @BindView(R.id.alarmOn) Button mAlarmOn;
+    // par binding.alarmOn (star_btn (id de l'xml) sans le _)
+    // et aussi avec @BindView(R.id.alarmOff)  Button mAlarmOff;
     private void alarmOn() {
-        mAlarmOn.setOnClickListener(new View.OnClickListener() {
+        binding.alarmOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onTimeSet();
                 showSnackBar(getString(R.string.activation_alarm));
 
-                if(mAlarmOn.isEnabled()) {
-                    mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
-                    mAlarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                } else if (!mAlarmOn.isEnabled()) {
-                    mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                    mAlarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
+                if(binding.alarmOn.isEnabled()) {
+                    binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
+                    binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                } else if (!binding.alarmOn.isEnabled()) {
+                    binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                    binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
                 }
 
                 SharedPreferences sharedPreferences = PreferenceManager.
                         getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putBoolean("alarmOn", mAlarmOn.isEnabled());
+                editor.putBoolean("alarmOn", binding.alarmOn.isEnabled());
                 editor.apply();
             }
         });
     }
 
+    //1µ : remplacement de mAlarmOn (qui etait lié avec @BindView(R.id.alarmOn) Button mAlarmOn;
+    // par binding.alarmOn (star_btn (id de l'xml) sans le _)
+    // et aussi avec @BindView(R.id.alarmOff)  Button mAlarmOff;
     private void alarmOff() {
-        mAlarmOff.setOnClickListener( v -> {
+        binding.alarmOff.setOnClickListener( v -> {
 
-            if(mAlarmOff.isEnabled()) {
+            if(binding.alarmOff.isEnabled()) {
                 cancelAlarm();
                 //mAlarmOff.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
                 //mAlarmOn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                mAlarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
+                binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
                 showSnackBar(getString(R.string.desactivation_alarm));
-            } else if (!mAlarmOff.isEnabled()) {
+            } else if (!binding.alarmOff.isEnabled()) {
                 onTimeSet();
                 //mAlarmOff.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 //mAlarmOn.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
-                mAlarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                mAlarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.quantum_white_100));
+                binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.quantum_white_100));
                 showSnackBar(getString(R.string.activation_alarm));
 
                 SharedPreferences sharedPreferences= androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("alarmOff", mAlarmOff.isEnabled());
+                editor.putBoolean("alarmOff", binding.alarmOff.isEnabled());
                 editor.apply();
 
             }
@@ -127,8 +153,10 @@ public class SettingsActivity extends AppCompatActivity {
         Objects.requireNonNull(alarmManager).cancel(pendingIntent);
     }
 
+    //1µ : remplacement de mRelativeLayout (qui etait lié avec @BindView(R.id.settings_activity_layout) RelativeLayout mRelativeLayout;
+    // par binding.settingsActivityLayout (settings_activity_layout (id de l'xml) sans le _)
     private void showSnackBar (String message) {
-        Snackbar.make(mRelativeLayout, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(binding.settingsActivityLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
 

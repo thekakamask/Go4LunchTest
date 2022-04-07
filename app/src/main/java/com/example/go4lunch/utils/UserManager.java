@@ -1,5 +1,6 @@
 package com.example.go4lunch.utils;
 
+import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,4 +70,5 @@ public class UserManager {
     public static Task<Void> updateIdOfPlace(String uid, String idOfPlace, int currentTime) {
         return mUserRepository.updateIdOfPlace(uid, idOfPlace, currentTime);
     }
+
 }

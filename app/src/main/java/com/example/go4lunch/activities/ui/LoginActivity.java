@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.databinding.ActivityLoginBinding;
 import com.example.go4lunch.utils.UserManager;
 import com.example.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -35,32 +36,45 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+// 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
+// UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
+// CHAQUE CHANGEMENT EST INDIQUE PAR 1µ AU DEBUT
 import static android.content.ContentValues.TAG;
 
+// 1µ : AVANT CHANGEMENT : extends AppCompatActivity et @BindView avec le layout et les 2 buttons
+// APRES CHANGEMENT : extends BaseActivity<ActivityLoginBinding> (le bind du xml activity_login)
+public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
-public class LoginActivity extends AppCompatActivity {
-
-    @BindView(R.id.main_activity_login_layout)
+    /*@BindView(R.id.main_activity_login_layout)
     RelativeLayout mRelativeLayout;
     @BindView(R.id.google_btn)
     Button mGoogleBtn;
     @BindView(R.id.facebook_btn)
-    Button mFacebookBtn;
+    Button mFacebookBtn;*/
+
+
 
     private static final int RC_SIGN_IN = 100;
     //pk ce chiffre et pas un autre?
 
     private UserManager mUserManager = UserManager.getInstance();
 
-
-
+    //1µ : DEBUT AJOUT (inflate du layout de activity_login)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    ActivityLoginBinding getViewBinding() {
+        return ActivityLoginBinding.inflate(getLayoutInflater());
+    }
+    //1µ :FIN AJOUT
+
+    // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_login)
+    // et ButterKnife.bind(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //setContentView(R.layout.activity_login);
         Log.d(TAG, "onCreate: " + BuildConfig.API_KEY);
 
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
     }
 
 
@@ -146,8 +160,10 @@ public class LoginActivity extends AppCompatActivity {
     );
 
     //CREATE MESSAGE AFTER USER CONNECTION USE BY THE RESPONSE AFTER SIGN IN
+    // 1µ : REMPLACEMENT DE mRelativeLayout (le bind etait fait ligne 47/48)
+    // par binding.main_activity_login_layout (l'id du relative layout dans l'xml : navigation_bottom  mais sans le _)
     private void showSnackBar (String message) {
-        Snackbar.make(mRelativeLayout, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(binding.mainActivityLoginLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     //REPONSE AFTER SIGN IN

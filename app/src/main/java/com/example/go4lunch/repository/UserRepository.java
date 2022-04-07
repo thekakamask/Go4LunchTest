@@ -85,7 +85,7 @@ public class UserRepository {
                 if (user != null) {
                     createUser(uid, userName, urlPicture, user.getIdOfPlace(), user.getLike(), user.getCurrentTime()).addOnFailureListener(onFailureListener());
                 } else {
-                    createUser(uid, userName, urlPicture, null, null, 0).addOnFailureListener(onFailureListener());
+                    createUser(uid, userName, urlPicture, "" , new ArrayList<>() , 0).addOnFailureListener(onFailureListener());
                 }
             });
 

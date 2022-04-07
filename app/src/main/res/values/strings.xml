@@ -82,8 +82,8 @@
     <string name="noDecided">hasn\'t decided yet</string>
 
     <!--  ChatFragment -->
-    <string name="text_view_chat_empty">Chat empty</string>
-    <string name="enter_text">Enter Text</string>
+    <string name="text_view_chat_empty">this thread is empty</string>
+    <string name="enter_text">Enter your message</string>
     <string name="button_title_chat_send"> Send </string>
     <string name="chat_coworkers">Chat with Coworkers</string>
     <string name="title_activity_maps_fragment">Map</string>

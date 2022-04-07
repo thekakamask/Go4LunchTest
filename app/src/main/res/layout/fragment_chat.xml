@@ -8,76 +8,80 @@
 
     <!-- RECYCLER VIEW CONTAINER -->
     <LinearLayout
+        android:id="@+id/fragment_chat_RV_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/chat_recycler_view_container"
-        android:layout_above="@id/chat_add_message_container"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/fragment_chat_message_container">
 
-        <!-- MESSAGE RECYCLER VIEW EMPTY -->
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/chat_text_view_recycler_view_empty"
+        <!--MESSAGE RECYCLER VIEW EMPTY -->
+        <TextView
+            android:id="@+id/fragment_chat_empty_RV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_large_margin"
             android:text="@string/text_view_chat_empty"
-            android:textAlignment="center" />
-        <!-- RECYCLER VIEW -->
+            android:textAlignment="center"
+            android:layout_margin="20dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chat_recycler_view"
+            android:id="@+id/fragment_chat_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <!-- IMAGE CHOSEN PREVIEW -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/chat_image_chosen_preview"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:layout_above="@id/chat_add_message_container"
-        android:layout_margin="@dimen/default_margin"
-        android:contentDescription="Image preview" />
+    <ImageView
+        android:id="@+id/fragment_chat_image_PV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_above="@+id/fragment_chat_message_container"/>
 
-    <!-- ADD MESSAGE CONTAINER -->
+
+    <!--ADD MESSAGE CONTAINER -->
     <LinearLayout
-        android:id="@+id/chat_add_message_container"
+        android:id="@+id/fragment_chat_message_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/default_margin">
+        android:layout_margin="10dp">
 
         <!-- ADD FILE BUTTON -->
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/chat_add_file_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="46dp"
+        <ImageButton
+            android:id="@+id/fragment_chat_addFileButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:contentDescription="Image"
-            android:src="@drawable/fragment_chat_add_chat" />
+            android:src="@drawable/fragment_chat_add_chat"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+            <!--android:background="@color/colorOnPrimary" pourquoi lorsque je fait ca lespace du bouton
+            change-->
 
-        <!-- TEXT MESSAGE EDIT TEXT -->
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/chat_message_edit_text"
+        <!--TEXT MESSAGE EDIT TEXT -->
+        <EditText
+            android:id="@+id/fragment_chat_chatEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/enter_text"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
-            android:textSize="@dimen/default_text_size" />
+            android:textSize="13sp"
+            android:hint="@string/enter_text"/>
 
         <!-- ADD MESSAGE BUTTON -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/chat_send_button"
+        <Button
+            android:id="@+id/fragment_chat_sendBtn"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_title_chat_send"
-            android:textColor="@color/black"/>
+            android:text="ENVOYER"/>
+            <!-- j'arrive a changer les couleurs principales exemple : ?attr/colorPrimary et les autres mais
+            je n'arrive pas a changer ?android:attr/colorBackground quelles differences ? -->
+           <!-- android:textColor="@color/black"
+            android:backgroundTint="@color/white"
+            style="?android:attr/borderlessButtonStyle"-->
 
     </LinearLayout>
-
-
 
 </RelativeLayout>

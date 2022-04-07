@@ -2,6 +2,7 @@ package com.example.go4lunch.activities.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,8 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
+import com.example.go4lunch.databinding.ActivityMainBinding;
+import com.example.go4lunch.databinding.ActivityRestaurantBinding;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.utils.UserManager;
@@ -52,10 +55,16 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 import static com.example.go4lunch.utils.DatesHours.getCurrentTime;
 
-public class RestaurantActivity extends AppCompatActivity implements Serializable {
+// 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
+// UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
+// CHAQUE CHANGEMENT EST INDIQUE PAR 1µ AU DEBUT
+
+// 1µ : AVANT CHANGEMENT : extends AppCompatActivity et @BindView avec le recyclerview, le layout et tous les elements du XML
+// APRES CHANGEMENT : extends BaseActivity<ActivityRestaurantBinding> (le bind du xml activity_main)
+public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> implements Serializable {
 
 
-    @BindView(R.id.header_pic_resto)
+    /*@BindView(R.id.header_pic_resto)
     ImageView mRestoPhoto;
     @BindView(R.id.floating_act_btn)
     FloatingActionButton mFloatingActionButton;
@@ -74,7 +83,7 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     @BindView(R.id.restaurant_RV)
     RecyclerView mRestaurantRecyclerView;
     @BindView(R.id.restaurant_activity_layout)
-    RelativeLayout mRelativeLayout;
+    RelativeLayout mRelativeLayout;*/
 
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
@@ -83,18 +92,29 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     private RequestManager mGlide;
     private static final String SELECTED = "SELECTED";
     private static final String UNSELECTED = "UNSELECTED";
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionUsers = db.collection("users");
+    //change after update (put final at db)
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //change after update (put final at collectionUsers)
+    private final CollectionReference collectionUsers = db.collection("users");
     private RestaurantAdapter restaurantAdapter;
     private String formattedPhoneNumber;
     private Disposable mDisposable;
     private static final int REQUEST_CALL=100;
 
+    //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    ActivityRestaurantBinding getViewBinding() {
+        return ActivityRestaurantBinding.inflate(getLayoutInflater());
+    }
+    //1µ :FIN AJOUT
+
+    // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_restaurant)
+    // et ButterKnife.bind(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant);
-        ButterKnife.bind(this);
+        /*setContentView(R.layout.activity_restaurant);
+        ButterKnife.bind(this);*/
 
         this.starBtn();
         this.floatingBtn();
@@ -119,9 +139,13 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
                     User user = documentSnapshot.toObject(User.class);
                     if (user != null){
                         if (user.getLike() != null && !user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
-                            mStarButton.setBackgroundColor(Color.BLUE);
+
+                            //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
+                            // par binding.starBtn (star_btn (id de l'xml) sans le _)
+
+                            binding.starBtn.setBackgroundColor(Color.BLUE);
                         } else {
-                            mStarButton.setBackgroundColor(Color.TRANSPARENT);
+                            binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
                         }
                     }
                 }
@@ -138,9 +162,12 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     }
 
     // LIKE BUTTON
+    //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
+    // par binding.starBtn (star_btn (id de l'xml) sans le _)
     private void starBtn() {
-        mStarButton.setOnClickListener(view -> restaurantLiked());
+        binding.starBtn.setOnClickListener(view -> restaurantLiked());
     }
+
 
     // LIKE/DISLIKE
     public void restaurantLiked() {
@@ -162,10 +189,12 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
                     //        at com.example.go4lunch.activities.ui.RestaurantActivity.lambda$restaurantLiked$1$RestaurantActivity(RestaurantActivity.java:160)
                     if(!user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
                         UserManager.deleteLike(UserManager.getCurrentUser().getUid(), placeRestaurantId);
-                        mStarButton.setBackgroundResource(R.color.starButt_transparent);
+                        //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
+                        // par binding.starBtn (star_btn (id de l'xml) sans le _)
+                        binding.starBtn.setBackgroundResource(R.color.starButt_transparent);
                     }else{
                         UserManager.updateLike(UserManager.getCurrentUser().getUid(), placeRestaurantId);
-                        mStarButton.setBackgroundResource(R.color.starButt_yellow);
+                        binding.starBtn.setBackgroundResource(R.color.starButt_yellow);
                     }
                 }
             });
@@ -174,12 +203,14 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     }
 
     //FLOATING BUTTON
+    //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
+    // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
     private void floatingBtn() {
-        mFloatingActionButton.setOnClickListener( v -> {
+        binding.floatingActBtn.setOnClickListener( v -> {
             if(v.getId() == R.id.floating_act_btn)
-                if (SELECTED.equals(mFloatingActionButton.getTag())) {
+                if (SELECTED.equals(binding.floatingActBtn.getTag())) {
                     selectedRestaurant();
-                }else if (mFloatingActionButton.isSelected()) {
+                }else if (binding.floatingActBtn.isSelected()) {
                     selectedRestaurant();
                 } else {
                     removeRestaurant();
@@ -197,20 +228,26 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
             placeDetailsResult = (PlaceDetailsResult) bundle.getSerializable("placeDetailsResult");
         }
 
+        //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
+        // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
         if(placeDetailsResult != null) {
             UserManager.updateIdOfPlace(Objects.requireNonNull(UserManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
-            mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));   ;
-            mFloatingActionButton.setTag(UNSELECTED);
+            binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));
+            binding.floatingActBtn.setTag(UNSELECTED);
         }
     }
 
     // REMOVING RESTAURANT CHOICE
+    //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
+    // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
     public void removeRestaurant() {
         UserManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
-        mFloatingActionButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
-        mFloatingActionButton.setTag(UNSELECTED);
+        binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
+        binding.floatingActBtn.setTag(UNSELECTED);
     }
 
+    //1µ : remplacement de mRestaurantRecyclerView (qui etait lié avec @BindView(R.id.restaurant_RV) RecyclerView mRestaurantRecyclerView;
+    // par binding.restaurantRV (restaurant_RV (id de l'xml) sans le _)
     private void setUpRV(String placeId) {
 
         Query query = collectionUsers.whereEqualTo("place id", placeId);
@@ -219,9 +256,9 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
                 .setQuery(query, User.class)
                 .build();
         this.restaurantAdapter = new RestaurantAdapter(options, Glide.with(this));
-        mRestaurantRecyclerView.setHasFixedSize(true);
-        mRestaurantRecyclerView.setAdapter(restaurantAdapter);
-        mRestaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.restaurantRV.setHasFixedSize(true);
+        binding.restaurantRV.setAdapter(restaurantAdapter);
+        binding.restaurantRV.setLayoutManager(new LinearLayoutManager(this));
     }
 
     // RETRIEVE DATA FOR LISTFRAGMENT
@@ -240,6 +277,10 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
     }
 
     // UPDATE UI
+    //1µ : remplacement de mRestoPhoto (qui etait lié avec @BindView(R.id.header_pic_resto) ImageView mRestoPhoto;
+    // par binding.headerPicResto (header_pic_resto (id de l'xml) sans le _)
+    // meme chose pour mRestoName ( @BindView(R.id.resto_name) TextView mRestoName;) par binding.restoName
+    // et mRestoAddress ( @BindView(R.id.resto_address) TextView mRestoAddress;) par binding.restoAddress
     private void updateUI(PlaceDetailsResult placeDetailsResult, RequestManager glide) {
         mGlide=glide;
 
@@ -249,14 +290,14 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
                  .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=photo_reference=" +
                          placeDetailsResult.getPhotos().get(0).getPhotoReference() + "&key=" + GOOGLE_MAP_API_KEY)
                  .apply(RequestOptions.centerCropTransform())
-                 .into(mRestoPhoto);
+                 .into(binding.headerPicResto);
         }else{
-            mRestoPhoto.setImageResource(R.drawable.no_pic);
+            binding.headerPicResto.setImageResource(R.drawable.no_pic);
         }
         //RESTAURANT NAME
-        mRestoName.setText(placeDetailsResult.getName());
+        binding.restoName.setText(placeDetailsResult.getName());
         //RESTAURANT ADRESS
-        mRestoAddress.setText(placeDetailsResult.getVicinity());
+        binding.restoAddress.setText(placeDetailsResult.getVicinity());
         //RESTAURANT RATING
         restaurantRating(placeDetailsResult);
         //RESTAURANT PHONE
@@ -267,21 +308,25 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
         webButton(url);
     }
 
+    //1µ : remplacement de mRatingBar (qui etait lié avec @BindView(R.id.rating_bar) RatingBar mRatingBar;
+    // par binding.ratingBar (rating_Bar (id de l'xml) sans le _)
     private void restaurantRating(PlaceDetailsResult placeDetailsResult) {
         if (placeDetailsResult.getRating() != null) {
             double restaurantRating = placeDetailsResult.getRating();
             double rating = (restaurantRating/5) *3;
-            this.mRatingBar.setRating((float) rating);
-            this.mRatingBar.setVisibility(View.VISIBLE);
+            this.binding.ratingBar.setRating((float) rating);
+            this.binding.ratingBar.setVisibility(View.VISIBLE);
 
         } else {
-            this.mRatingBar.setVisibility(View.GONE);
+            this.binding.ratingBar.setVisibility(View.GONE);
         }
 
     }
 
+    //1µ : remplacement de mPhoneButton (qui etait lié avec @BindView(R.id.phone_btn) Button mPhoneButton;
+    // par binding.phoneBtn (phone_btn (id de l'xml) sans le _)
     private void phoneButton(String formattedPhoneNumber) {
-        mPhoneButton.setOnClickListener(view -> makePhoneCall(formattedPhoneNumber));
+        binding.phoneBtn.setOnClickListener(view -> makePhoneCall(formattedPhoneNumber));
 
     }
 
@@ -314,12 +359,14 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
         }
     }
 
+    //1µ : remplacement de mInternetButton (qui etait lié avec @BindView(R.id.internet_btn) Button mInternetButton;
+    // par binding.internetBtn (internet_btn (id de l'xml) sans le _)
     private void webButton(String url) {
         //mInternetButton.setOnClickListener(view -> makeWebView(url));
-        mInternetButton.setOnClickListener(view -> openWebPage(url));
+        binding.internetBtn.setOnClickListener(view -> openWebPage(url));
     }
 
-    /*private void makeWebView(String url) {
+    /* private void makeWebView(String url) {
         if (url != null && !url.isEmpty()) {
             Intent intent = new Intent(RestaurantActivity.this, WebViewActivity.class);
             intent.putExtra("website", url);
@@ -341,8 +388,10 @@ public class RestaurantActivity extends AppCompatActivity implements Serializabl
         }
     }
 
+    //1µ : remplacement de mRelativeLayout (qui etait lié avec @BindView(R.id.restaurant_activity_layout) RelativeLayout mRelativeLayout;
+    // par binding.restaurantActivityLayout (restaurant_activity_layout (id de l'xml) sans le _)
     private void showSnackBar (String message) {
-        Snackbar.make(mRelativeLayout, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(binding.restaurantActivityLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

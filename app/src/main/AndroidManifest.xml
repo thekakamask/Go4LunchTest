@@ -48,25 +48,25 @@
             android:name=".activities.ui.MainActivity"
             android:label="@string/title_activity_main"
             android:parentActivityName=".activities.ui.LoginActivity">
-            <meta-data
+            <!--<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ui.MainActivity" />
+                android:value=".activities.ui.MainActivity" />-->
         </activity>
         <activity
             android:name=".activities.ui.SettingsActivity"
             android:label="@string/title_activity_setting"
             android:parentActivityName=".activities.ui.MainActivity">
-            <meta-data
+            <!--<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ui.SettingsActivity" />
+                android:value=".activities.ui.SettingsActivity" />-->
         </activity>
         <activity
             android:name=".activities.ui.RestaurantActivity"
             android:label="@string/title_activity_restaurant"
             android:parentActivityName=".activities.ui.MainActivity">
-            <meta-data
+            <!--<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ui.RestaurantActivity" />
+                android:value=".activities.ui.RestaurantActivity" />-->
         </activity>
 
         <!--
