@@ -79,66 +79,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
         colorRemoteUser = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
     }
 
-    public void updateWithMessage(Message message, String currentUserId, RequestManager glide) {
-        //CHECK IF CURRENT USER IS THE SENDER
-        Boolean isCurrentUser = message.getUserSender().getUid().equals(currentUserId);
-
-        //UPDATE MESSAGE TEXTVIEW
-        this.messageText.setText(message.getMessage());
-        this.messageText.setTextAlignment(isCurrentUser ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START);
-
-        //UPDATE DATE TEXTVIEW
-        if(message.getDateCreated() != null)
-            this.dateText.setText(convertDateHours(message.getDateCreated()));
-
-        //UPDATE IMAGEVIEW COWORKER
-        this.imageViewCoworker.setVisibility(message.getUserSender().getUserChat() ? View.VISIBLE : View.INVISIBLE);
-
-        //UPDATE PROFILE PICTURE IMAGEVIEW
-        if(message.getUserSender().getUrlPicture() != null)
-            glide.load(message.getUserSender().getUrlPicture())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(imageViewProfile);
-
-        //UPDATE IMAGE SENDED
-        if(message.getUrlImage() != null) {
-            glide.load(message.getUrlImage())
-                    .into(imageViewSent);
-            this.imageViewSent.setVisibility(View.VISIBLE);
-        } else {
-            this.imageViewSent.setVisibility(View.GONE);
-        }
-
-        //UPDATE MESSAGE BUBLE COLOR BACKGROUNd
-        textMessageContainer.setBackgroundColor(isCurrentUser ? colorCurrentUser : colorRemoteUser);
-
-        //UPDATE ALL VIEWS ALIGNEMENT DEPENDING IS CURENT USER OR NOT
-        this.updateDesignDependingUser(isCurrentUser);
-    }
-
-    private void updateDesignDependingUser(Boolean isSender) {
-
-        // PROFILE CONTAINER
-        RelativeLayout.LayoutParams paramsLayoutHeader = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsLayoutHeader.addRule(isSender ? RelativeLayout.ALIGN_PARENT_RIGHT : RelativeLayout.ALIGN_PARENT_LEFT);
-        this.profileContainer.setLayoutParams(paramsLayoutHeader);
-
-        // MESSAGE CONTAINER
-        RelativeLayout.LayoutParams paramsLayoutContent = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsLayoutContent.addRule(isSender ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF, R.id.fragment_chat_item_profileContainer);
-        this.messageContainer.setLayoutParams(paramsLayoutContent);
-
-        // CARDVIEW IMAGE SEND
-        RelativeLayout.LayoutParams paramsImageView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsImageView.addRule(isSender ? RelativeLayout.ALIGN_LEFT : RelativeLayout.ALIGN_RIGHT, R.id.fragment_chat_item_messageTextContainer);
-        this.cardViewImageSent.setLayoutParams(paramsImageView);
-
-        this.rootView.requestLayout();
-
-
-         }
-
-    /*public void updateWithMessage(Message message, RequestManager glide) {
+    public void updateWithMessage(Message message, RequestManager glide) {
         //UPDATE MESSAGE
         messageText.setText(message.getMessage());
         messageText.setTextAlignment(isSender? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START);
@@ -156,7 +97,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
                     .into(imageViewProfile);
 
         //UPDATE IMAGE SENT
-        if(message.getUserSender().getUrlPicture() != null) {
+        if(message.getUrlImage()!= null) {
             glide.load(message.getUrlImage())
                     .into(imageViewSent);
             imageViewSent.setVisibility(View.VISIBLE);
@@ -213,6 +154,65 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     private String convertDateToHour(Date date) {
         DateFormat dfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return dfTime.format(date);
+    }
+
+    /*public void updateWithMessage(Message message, String currentUserId, RequestManager glide) {
+        //CHECK IF CURRENT USER IS THE SENDER
+        Boolean isCurrentUser = message.getUserSender().getUid().equals(currentUserId);
+
+        //UPDATE MESSAGE TEXTVIEW
+        this.messageText.setText(message.getMessage());
+        this.messageText.setTextAlignment(isCurrentUser ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START);
+
+        //UPDATE DATE TEXTVIEW
+        if(message.getDateCreated() != null)
+            this.dateText.setText(convertDateHours(message.getDateCreated()));
+
+        //UPDATE IMAGEVIEW COWORKER
+        this.imageViewCoworker.setVisibility(message.getUserSender().getUserChat() ? View.VISIBLE : View.INVISIBLE);
+
+        //UPDATE PROFILE PICTURE IMAGEVIEW
+        if(message.getUserSender().getUrlPicture() != null)
+            glide.load(message.getUserSender().getUrlPicture())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imageViewProfile);
+
+        //UPDATE IMAGE SENDED
+        if(message.getUrlImage() != null) {
+            glide.load(message.getUrlImage())
+                    .into(imageViewSent);
+            this.imageViewSent.setVisibility(View.VISIBLE);
+        } else {
+            this.imageViewSent.setVisibility(View.GONE);
+        }
+
+        //UPDATE MESSAGE BUBLE COLOR BACKGROUND
+        textMessageContainer.setBackgroundColor(isCurrentUser ? colorCurrentUser : colorRemoteUser);
+
+        //UPDATE ALL VIEWS ALIGNEMENT DEPENDING IS CURENT USER OR NOT
+        this.updateDesignDependingUser(isCurrentUser);
+    }
+
+    private void updateDesignDependingUser(Boolean isSender) {
+
+        // PROFILE CONTAINER
+        RelativeLayout.LayoutParams paramsLayoutHeader = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutHeader.addRule(isSender ? RelativeLayout.ALIGN_PARENT_RIGHT : RelativeLayout.ALIGN_PARENT_LEFT);
+        this.profileContainer.setLayoutParams(paramsLayoutHeader);
+
+        // MESSAGE CONTAINER
+        RelativeLayout.LayoutParams paramsLayoutContent = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutContent.addRule(isSender ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF, R.id.fragment_chat_item_profileContainer);
+        this.messageContainer.setLayoutParams(paramsLayoutContent);
+
+        // CARDVIEW IMAGE SEND
+        RelativeLayout.LayoutParams paramsImageView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        paramsImageView.addRule(isSender ? RelativeLayout.ALIGN_LEFT : RelativeLayout.ALIGN_RIGHT, R.id.fragment_chat_item_messageTextContainer);
+        this.cardViewImageSent.setLayoutParams(paramsImageView);
+
+        this.rootView.requestLayout();
+
+
     }*/
 
 

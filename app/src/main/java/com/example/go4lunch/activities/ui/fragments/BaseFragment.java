@@ -47,6 +47,9 @@ import static android.content.ContentValues.TAG;
 
 public abstract class BaseFragment extends Fragment implements LocationListener {
 
+    //REGARDER LA DOC VIEWBINDING SUR ANDROID QUI CONCERNE LES FRAGMENTS. LE FAIRE POUR UN FRAGMENT (PAS DE BASE FRAGMENT, METTRE EN PLACE JUSTE POUR UN FRAGMENT) ET
+    // APRES REPRODUIRE POUR TOUS
+
    protected static final int PERMS_CALLS_ID=200;
    public LocationManager mLocationManager;
    private GoogleMap mMap;

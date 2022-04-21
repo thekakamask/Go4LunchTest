@@ -42,7 +42,7 @@ public class UserManager {
         mUserRepository.createUserInFirestore(uid);
     }
 
-    public Task<DocumentSnapshot> getUserData(String uid) {
+    public static Task<DocumentSnapshot> getUserData(String uid) {
         //String uid =mUserRepository.getCurrentUserUID();
         mUserRepository.getUserData(uid);
         return mUserRepository.getUsersCollection().document(uid).get();

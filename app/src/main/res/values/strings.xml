@@ -65,7 +65,7 @@
     <string name="alarmOnButton">Alarm on</string>
     <string name="alarmOffButton">Alarm off</string>
     <string name="activation_alarm">Activation of the alarm for 12h</string>
-    <string name="desactivation_alarm">Desactivation of the alarm</string>
+    <string name="desactivation_alarm">Deactivation of the alarm</string>
 
     <!--  ListFragment -->
     <string name="listFragment_bar">I\'m Hungry</string>
@@ -87,5 +87,10 @@
     <string name="button_title_chat_send"> Send </string>
     <string name="chat_coworkers">Chat with Coworkers</string>
     <string name="title_activity_maps_fragment">Map</string>
+    <!--  ChatFragment permission asking -->
+    <string name="popup_title_permission_files_access">This application need permission to work</string>
+    <string name="files_access_granted">You have the right to access to images</string>
+    <string name="toast_title_no_image_choosen">No selected image&#8230; </string>
+
 
 </resources>

@@ -105,6 +105,9 @@ dependencies {
 
     //For styleable Toast
     implementation 'com.muddzdev:styleabletoast:2.2.3'
+    
+    //EASY PERMISSIONS
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 }
 
