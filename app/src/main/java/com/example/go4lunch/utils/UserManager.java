@@ -49,7 +49,8 @@ public class UserManager {
     }
 
     public static CollectionReference getUsersCollection() {
-        return UserRepository.getUsersCollection();
+        //return UserRepository.getUsersCollection();
+        return mUserRepository.getUsersCollection();
     }
     /*public static CollectionReference getUserCollection(){
         UserRepository.getUsersCollection();

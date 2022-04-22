@@ -85,6 +85,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
     //implementation 'com.facebook.android:facebook-android-sdk:8.x'
     implementation 'com.facebook.android:facebook-login:8.1.0'
+    implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
 
     //for Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

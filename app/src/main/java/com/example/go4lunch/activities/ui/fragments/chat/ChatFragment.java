@@ -51,6 +51,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import static com.example.go4lunch.utils.UserManager.getCurrentUser;
+import static com.example.go4lunch.utils.UserManager.getUsersCollection;
 
 import org.w3c.dom.Text;
 
@@ -85,11 +86,11 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
     //    DECLARATION
     private ChatAdapter chatAdapter;
-    private ChatManager chatManager;
-    private UserManager userManager;
+    private ChatManager chatManager = ChatManager.getInstance();
+    private UserManager userManager = UserManager.getInstance();
 
 
-    private User modelCurrentUser;
+    private User currentUser;
     private String chat;
     private Uri uriImageSelected;
 
@@ -114,7 +115,7 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
 
     private void getCurrentUserFromFirestore() {
-        UserManager.getUserData(Objects.requireNonNull(getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> modelCurrentUser = documentSnapshot.toObject(User.class));
+        UserManager.getUserData(Objects.requireNonNull(getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
     }
 
     private void configureRecyclerView() {
@@ -143,10 +144,25 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     }
 
     private void sendMessage() {
+        //CHECK IF TEXT NOT NULL
         boolean canSendMessage = !TextUtils.isEmpty(textEdit.getText().toString());
 
         if (canSendMessage) {
-            chatManager.createMessageForChat(textEdit.getText().toString(), modelCurrentUser);
+            String messageText= textEdit.getText().toString();
+
+
+            if (imagePreviewContainer.getDrawable() == null) {
+
+                //CREATE NEW MESSAGE FOR CHAT
+                chatManager.createMessageForChat(messageText, currentUser);
+
+
+
+            } else {
+                // CREATE NEW MESSAGE WITH IMAGE
+                chatManager.sendMessageWithImageForChat(this.uriImageSelected, messageText, currentUser );
+                imagePreviewContainer.setImageDrawable(null);
+            }
         }
         textEdit.setText("");
     }
