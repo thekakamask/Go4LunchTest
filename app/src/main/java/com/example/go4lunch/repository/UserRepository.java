@@ -1,5 +1,6 @@
 package com.example.go4lunch.repository;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -7,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,14 +16,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.internal.$Gson$Types;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class UserRepository {
+public final class UserRepository {
 
+    @SuppressLint("StaticFieldLeak")
     private static volatile UserRepository instance;
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     private static final String COLLECTION_USERS = "users";
@@ -43,30 +45,34 @@ public class UserRepository {
         }
     }
 
+    public void setContext(Context context) {
+        UserRepository.context = context;
+    }
+
     @Nullable
     public FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public static OnFailureListener onFailureListener(){
+    public OnFailureListener onFailureListener(){
         return e -> Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_LONG).show();
     }
 
-    @Nullable
+    /*@Nullable
     public String getCurrentUserUID() {
         FirebaseUser user = getCurrentUser();
         return (user != null)? user.getUid(): null;
-    }
+    }*/
 
     //GET THE COLLECTION REF
-    public static CollectionReference getUsersCollection(){
+    public CollectionReference getUsersCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_USERS);
     }
 
     public Task<DocumentSnapshot> getUserData(String uid) {
         //String uid =this.getCurrentUserUID();
         if(uid != null) {
-            return this.getUsersCollection().document(uid).get();
+            return getUsersCollection().document(uid).get();
         }else {
             return null;
         }
@@ -75,7 +81,7 @@ public class UserRepository {
     public void createUserInFirestore(String uid) {
         //FirebaseUser user = getCurrentUser();
 
-            String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
+            String urlPicture = (Objects.requireNonNull(getCurrentUser()).getPhotoUrl() != null) ? Objects.requireNonNull(getCurrentUser().getPhotoUrl()).toString() : null;
             String userName = getCurrentUser().getDisplayName();
             //String uid = getCurrentUser().getUid();
 
@@ -91,7 +97,7 @@ public class UserRepository {
 
     }
 
-    private static Task<Void> createUser(String uid, String username, String urlPicture, String idOfPlace, ArrayList<String> like, int currentTime) {
+    private Task<Void> createUser(String uid, String username, String urlPicture, String idOfPlace, ArrayList<String> like, int currentTime) {
         //Create user object
         User userToCreate = new User(uid, username, urlPicture, idOfPlace, like, currentTime);
         //Add a new user Document in Firestore
@@ -100,25 +106,25 @@ public class UserRepository {
                 .set(userToCreate);//Setting object for Document
     }
 
-    public static Task<DocumentSnapshot> getUser(String uid) {
+    /*public static Task<DocumentSnapshot> getUser(String uid) {
         return getUsersCollection().document(uid).get();
+    }*/
+
+    public void deleteIdOfPlace(String uid) {
+        getUsersCollection().document(uid).update("idOfPlace", null);
     }
 
-    public static Task<Void> deleteIdOfPlace(String uid) {
-        return getUsersCollection().document(uid).update("idOfPlace", null);
+    public void deleteLike(String uid, String idOfPlace) {
+        getUsersCollection().document(uid).update("like", FieldValue.arrayRemove(idOfPlace));
     }
 
-    public static Task<Void> deleteLike(String uid, String idOfPlace) {
-        return getUsersCollection().document(uid).update("like", FieldValue.arrayRemove(idOfPlace));
-    }
-
-    public static Task<Void> updateIdOfPlace(String uid, String idOfPlace, int currentTime){
-        return getUsersCollection().document(uid).update("idOfPlace", idOfPlace, "currentTime", currentTime);
+    public void updateIdOfPlace(String uid, String idOfPlace, int currentTime){
+        getUsersCollection().document(uid).update("idOfPlace", idOfPlace, "currentTime", currentTime);
 
     }
 
-    public static Task<Void> updateLike(String uid, String idOfPlace) {
-        return getUsersCollection().document(uid).update("like", FieldValue.arrayUnion(idOfPlace));
+    public void updateLike(String uid, String idOfPlace) {
+        getUsersCollection().document(uid).update("like", FieldValue.arrayUnion(idOfPlace));
     }
 
 

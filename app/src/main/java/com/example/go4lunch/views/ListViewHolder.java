@@ -58,6 +58,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     private float[] distanceResults = new float[3];
     private int diff;
     private String closeHour;
+    private UserManager userManager = UserManager.getInstance();
 
 
     public ListViewHolder(@NonNull View itemView) {
@@ -157,7 +158,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void numberCoworkers(String idOfPlace) {
-        UserManager.getUsersCollection()
+        userManager.getUsersCollection()
                 .whereEqualTo("idOfPlace", idOfPlace)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

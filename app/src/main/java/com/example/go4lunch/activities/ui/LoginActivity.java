@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     private static final int RC_SIGN_IN = 100;
     //pk ce chiffre et pas un autre?
 
-    private UserManager mUserManager = UserManager.getInstance();
+    private UserManager userManager = UserManager.getInstance();
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_login)
     @Override
@@ -172,7 +172,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
         if (result.getResultCode() == RESULT_OK) {
             //SUCCESSFULLY SIGN IN
             showSnackBar(getString(R.string.connection_succeed));
-            String uid = UserManager.getCurrentUser().getUid();
+            String uid = userManager.getCurrentUser().getUid();
             this.createUserInFirestore(uid);
             Intent loginIntent = new Intent(this, MainActivity.class);
             startActivity(loginIntent);
@@ -231,7 +231,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     }*/
 
     private void createUserInFirestore(String uid){
-        UserManager.createUser(uid);
+        userManager.createUser(uid);
 
     }
 }

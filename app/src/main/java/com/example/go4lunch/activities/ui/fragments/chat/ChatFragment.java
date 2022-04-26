@@ -48,12 +48,6 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
-
-import static com.example.go4lunch.utils.UserManager.getCurrentUser;
-import static com.example.go4lunch.utils.UserManager.getUsersCollection;
-
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -91,7 +85,6 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
 
     private User currentUser;
-    private String chat;
     private Uri uriImageSelected;
 
     public ChatFragment() {
@@ -115,11 +108,11 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
 
     private void getCurrentUserFromFirestore() {
-        UserManager.getUserData(Objects.requireNonNull(getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
+        userManager.getUserData(Objects.requireNonNull(userManager.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
     }
 
     private void configureRecyclerView() {
-        chatAdapter = new ChatAdapter(generateOptionsForAdapter(chatManager.getAllMessageForChat(chat)),
+        chatAdapter = new ChatAdapter(generateOptionsForAdapter(chatManager.getAllMessageForChat()),
                 Glide.with(this), this);
 
         chatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {

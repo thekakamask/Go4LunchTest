@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     private String idResto;
     private PlaceDetail detail;
     private static final int SIGN_OUT_TASK = 100;
+    private UserManager userManager = UserManager.getInstance();
 
     //private DrawerLayout drawerLayout; USE FINDVIEW BY ID METHOD
     //private NavigationView navigationView; USE FINDVIEW BY ID METHOD
@@ -185,8 +186,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         int id = item.getItemId();
         switch(id) {
             case R.id.lunch_menu_drawer :
-                if(UserManager.getCurrentUser() != null) {
-                    UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+                if(userManager.getCurrentUser() != null) {
+                    UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
                         User user =documentSnapshot.toObject(User.class);
                         if (Objects.requireNonNull(user).getIdOfPlace() != null) {
                             userResto(user);
@@ -255,7 +256,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     }
 
     private void signOutFromUserFirebase() {
-        if (UserManager.getCurrentUser() != null) {
+        if (userManager.getCurrentUser() != null) {
             AuthUI.getInstance()
                     .signOut(this)
                     .addOnSuccessListener(this, this.updateUIAfterRestRequestsCompleted(SIGN_OUT_TASK));
@@ -297,16 +298,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     //1µ : remplacement de mNavigationView (qui etait lié avec @BindView(R.id.main_activity_nav_view) NavigationView mNavigationView;
     //  par binding.mainActivityNavView (main_activity_nav_view (id de l'xml) sans le _)
     private void configureUINavHeader() {
-        if (UserManager.getCurrentUser() != null) {
+        if (userManager.getCurrentUser() != null) {
             //RETURN LAYOUT
             View headerContainer = binding.mainActivityNavView.getHeaderView(0);
             ImageView mPhotoHead = headerContainer.findViewById(R.id.header_photo);
             TextView mNameHead = headerContainer.findViewById(R.id.header_name);
             TextView mMailHead = headerContainer.findViewById(R.id.header_mail);
             //GET PHOTO IN FIREBASE
-            if(UserManager.getCurrentUser().getPhotoUrl() != null) {
+            if(userManager.getCurrentUser().getPhotoUrl() != null) {
                 Glide.with(this)
-                        .load(UserManager.getCurrentUser().getPhotoUrl())
+                        .load(userManager.getCurrentUser().getPhotoUrl())
                         .apply(RequestOptions.circleCropTransform())
                         .into(mPhotoHead);
             } else {
@@ -314,11 +315,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             }
 
             //GET NAME
-            String name = TextUtils.isEmpty(UserManager.getCurrentUser().getDisplayName()) ?
-                    ("No Username") : UserManager.getCurrentUser().getDisplayName();
+            String name = TextUtils.isEmpty(userManager.getCurrentUser().getDisplayName()) ?
+                    ("No Username") : userManager.getCurrentUser().getDisplayName();
             //GET EMAIL
-            String email = TextUtils.isEmpty(UserManager.getCurrentUser().getEmail()) ?
-                    ("No Email Found") : UserManager.getCurrentUser().getEmail();
+            String email = TextUtils.isEmpty(userManager.getCurrentUser().getEmail()) ?
+                    ("No Email Found") : userManager.getCurrentUser().getEmail();
             //Update With data
             mNameHead.setText(name);
             mMailHead.setText(email);

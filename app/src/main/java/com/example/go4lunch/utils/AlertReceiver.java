@@ -23,6 +23,7 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class AlertReceiver extends BroadcastReceiver {
 
+    private UserManager userManager = UserManager.getInstance();
     private String userIdNotif;
     private PlaceDetail detail;
     private String restoNameNotif;
@@ -38,7 +39,7 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         // PLACEID AND TIME REQUEST
-        UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+        UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
             User user = documentSnapshot.toObject(User.class);
             if (user != null) {
                 if (!user.getIdOfPlace().isEmpty() && (user.getCurrentTime() <= 1200) && (user.getCurrentTime() > 0)) {
@@ -85,7 +86,7 @@ public class AlertReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void notifCoworkers(String userIdNotif, int timeUser) {
 
-        UserManager.getUsersCollection()
+        userManager.getUsersCollection()
                 .whereEqualTo("placeId", userIdNotif)
                 .whereEqualTo("currentTime", timeUser)
                 .whereLessThan("currentTime", 1200)

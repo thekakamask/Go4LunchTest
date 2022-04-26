@@ -1,6 +1,7 @@
 package com.example.go4lunch.utils;
 
-import com.example.go4lunch.models.User;
+import android.annotation.SuppressLint;
+
 import com.example.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -11,10 +12,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 public class UserManager {
 
     private static volatile UserManager instance;
-    private static UserRepository mUserRepository;
+    @SuppressLint("StaticFieldLeak")
+    private final UserRepository userRepository;
 
     private UserManager() {
-        mUserRepository= UserRepository.getInstance();
+        userRepository= UserRepository.getInstance();
     }
 
     public static UserManager getInstance() {
@@ -30,46 +32,46 @@ public class UserManager {
         }
     }
 
-    public static FirebaseUser getCurrentUser() {
-        return mUserRepository.getCurrentUser();
+    public FirebaseUser getCurrentUser() {
+        return userRepository.getCurrentUser();
     }
 
-    public Boolean isCurrentUserLogged() {
+    /*public Boolean isCurrentUserLogged() {
         return (this.getCurrentUser() != null);
+    }*/
+
+    public void createUser(String uid) {
+        userRepository.createUserInFirestore(uid);
     }
 
-    public static void createUser(String uid) {
-        mUserRepository.createUserInFirestore(uid);
-    }
-
-    public static Task<DocumentSnapshot> getUserData(String uid) {
+    public Task<DocumentSnapshot> getUserData(String uid) {
         //String uid =mUserRepository.getCurrentUserUID();
-        mUserRepository.getUserData(uid);
-        return mUserRepository.getUsersCollection().document(uid).get();
+        userRepository.getUserData(uid);
+        return userRepository.getUsersCollection().document(uid).get();
     }
 
-    public static CollectionReference getUsersCollection() {
+    public CollectionReference getUsersCollection() {
         //return UserRepository.getUsersCollection();
-        return mUserRepository.getUsersCollection();
+        return userRepository.getUsersCollection();
     }
     /*public static CollectionReference getUserCollection(){
         UserRepository.getUsersCollection();
     }*/
 
-    public static Task<Void> deleteLike(String uid, String idOfPlace) {
-        return mUserRepository.deleteLike(uid, idOfPlace);
+    public void deleteLike(String uid, String idOfPlace) {
+        userRepository.deleteLike(uid, idOfPlace);
     }
 
-    public static Task<Void> updateLike(String uid, String idOfPlace) {
-        return mUserRepository.updateLike(uid, idOfPlace);
+    public void updateLike(String uid, String idOfPlace) {
+        userRepository.updateLike(uid, idOfPlace);
     }
 
-    public static Task<Void> deleteIdOfPlace(String uid) {
-        return mUserRepository.deleteIdOfPlace(uid);
+    public void deleteIdOfPlace(String uid) {
+        userRepository.deleteIdOfPlace(uid);
     }
 
-    public static Task<Void> updateIdOfPlace(String uid, String idOfPlace, int currentTime) {
-        return mUserRepository.updateIdOfPlace(uid, idOfPlace, currentTime);
+    public void updateIdOfPlace(String uid, String idOfPlace, int currentTime) {
+        userRepository.updateIdOfPlace(uid, idOfPlace, currentTime);
     }
 
 }

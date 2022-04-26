@@ -3,18 +3,16 @@ package com.example.go4lunch.repository;
 import android.net.Uri;
 
 import com.example.go4lunch.models.User;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 
 public class ChatManager {
 
     private static volatile ChatManager instance;
-    private static ChatRepository mChatRepository;
+    private ChatRepository chatRepository;
 
     private ChatManager() {
-        mChatRepository = ChatRepository.getInstance();
+        chatRepository= ChatRepository.getInstance();
+
     }
 
     public static ChatManager getInstance() {
@@ -30,37 +28,33 @@ public class ChatManager {
         }
     }
 
-    public static CollectionReference getUsersCollection() {
+    /*public static CollectionReference getUsersCollection() {
         //return ChatRepository.getChatCollection();
-        return mChatRepository.getChatCollection();
-    }
+        return ChatRepository.getChatCollection();
+    }*/
 
-    public static Task<DocumentReference> createMessageForChat(String textMessage, User userSender) {
+    public void createMessageForChat(String textMessage, User userSender) {
         //return ChatRepository.createMessageForChat(textMessage, userSender);
-        return mChatRepository.createMessageForChat(textMessage, userSender);
+        chatRepository.createMessageForChat(textMessage, userSender);
     }
 
-    public static Task<DocumentReference> createMessageWithImageForChat(String urlImage, String textMessage, User userSender ) {
+    /*public static Task<DocumentReference> createMessageWithImageForChat(String urlImage, String textMessage, User userSender ) {
         //return ChatRepository.createMessageWithImageForChat(urlImage, textMessage, userSender);
-        return mChatRepository.createMessageWithImageForChat(urlImage, textMessage, userSender);
-    }
+        return ChatRepository.createMessageWithImageForChat(urlImage, textMessage, userSender);
+    }*/
 
     public void sendMessageWithImageForChat(Uri imageUri, String textMessage, User userSender) {
-        mChatRepository.uploadImage(imageUri).addOnSuccessListener(taskSnapshot -> {
-            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-                mChatRepository.createMessageWithImageForChat(uri.toString(), textMessage, userSender);
-            });
-        });
+        chatRepository.uploadImage(imageUri).addOnSuccessListener(taskSnapshot -> taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> chatRepository.createMessageWithImageForChat(uri.toString(), textMessage, userSender)));
     }
 
-    public static Task<DocumentReference> sendMessageWithImageForChatTest(Uri imageUri, String textMessage, User userSender) {
-        mChatRepository.uploadImage(imageUri);
-        return mChatRepository.createMessageWithImageForChat(imageUri.toString(), textMessage, userSender);
-    }
+    /*public static Task<DocumentReference> sendMessageWithImageForChatTest(Uri imageUri, String textMessage, User userSender) {
+        ChatRepository.uploadImage(imageUri);
+        return ChatRepository.createMessageWithImageForChat(imageUri.toString(), textMessage, userSender);
+    }*/
 
-    public static Query getAllMessageForChat(String chat) {
+    public Query getAllMessageForChat() {
         //return ChatRepository.getAllMessageForChat(chat);
-        return mChatRepository.getAllMessageForChat(chat);
+        return chatRepository.getAllMessageForChat();
 
     }
 

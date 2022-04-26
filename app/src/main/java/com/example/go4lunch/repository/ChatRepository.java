@@ -4,10 +4,7 @@ import android.net.Uri;
 
 import com.example.go4lunch.models.Message;
 import com.example.go4lunch.models.User;
-import com.example.go4lunch.utils.UserManager;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,7 +13,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-public class ChatRepository {
+public final class ChatRepository {
 
     public static final String CHAT_COLLECTION ="chats";
 
@@ -38,11 +35,11 @@ public class ChatRepository {
         }
     }
 
-    public static CollectionReference getChatCollection() {
+    public CollectionReference getChatCollection() {
         return FirebaseFirestore.getInstance().collection(CHAT_COLLECTION);
     }
 
-    public static Query getAllMessageForChat(String chat) {
+    public Query getAllMessageForChat() {
         return FirebaseFirestore.getInstance()
 
                 .collection(CHAT_COLLECTION)
@@ -50,24 +47,24 @@ public class ChatRepository {
                 .limit(50);
     }
 
-    public static Task<DocumentReference> createMessageForChat(String textMessage, User userSender) {
+    public void createMessageForChat(String textMessage, User userSender) {
 
         // CREATE THE MESSAGE OBJECT
         Message message = new Message(textMessage, userSender);
         //STORE MESSSAGE TO FIRESTORE
-        return ChatRepository.getChatCollection()
+        instance.getChatCollection()
                 .add(message);
     }
 
-    public static Task<DocumentReference> createMessageWithImageForChat(String urlImage, String textMessage, User userSender) {
+    public void createMessageWithImageForChat(String urlImage, String textMessage, User userSender) {
         Message message = new Message(textMessage, urlImage, userSender);
 
         //STORE MESSAGE ON FIRESTORE
-        return ChatRepository.getChatCollection()
+        instance.getChatCollection()
                 .add(message);
     }
 
-    public static UploadTask uploadImage(Uri imageUri) {
+    public UploadTask uploadImage(Uri imageUri) {
         String uuid = UUID.randomUUID().toString(); //GENERATE UNIQUE STRING
 
         StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);

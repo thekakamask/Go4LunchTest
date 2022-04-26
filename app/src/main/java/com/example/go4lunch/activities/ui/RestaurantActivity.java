@@ -87,6 +87,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
 
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
+    private UserManager userManager = UserManager.getInstance();
 
     private String placeId;
     private RequestManager mGlide;
@@ -133,7 +134,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
             //UserManager.getInstance().getUserData(Objects.requireNonNull(UserManager.getCurrentUser()).getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
@@ -181,19 +182,19 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         }
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
-            UserManager.getInstance().getUserData(UserManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 if (user!= null) {
                     //ERREUR
                     //java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.util.ArrayList.isEmpty()' on a null object reference
                     //        at com.example.go4lunch.activities.ui.RestaurantActivity.lambda$restaurantLiked$1$RestaurantActivity(RestaurantActivity.java:160)
                     if(!user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
-                        UserManager.deleteLike(UserManager.getCurrentUser().getUid(), placeRestaurantId);
+                        userManager.deleteLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
                         //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
                         // par binding.starBtn (star_btn (id de l'xml) sans le _)
                         binding.starBtn.setBackgroundResource(R.color.starButt_transparent);
                     }else{
-                        UserManager.updateLike(UserManager.getCurrentUser().getUid(), placeRestaurantId);
+                        userManager.updateLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
                         binding.starBtn.setBackgroundResource(R.color.starButt_yellow);
                     }
                 }
@@ -231,7 +232,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
         // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
         if(placeDetailsResult != null) {
-            UserManager.updateIdOfPlace(Objects.requireNonNull(UserManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
+            userManager.updateIdOfPlace(Objects.requireNonNull(userManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
             binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));
             binding.floatingActBtn.setTag(UNSELECTED);
         }
@@ -241,7 +242,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
     // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
     public void removeRestaurant() {
-        UserManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(UserManager.getCurrentUser().getUid())));
+        userManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(userManager.getCurrentUser().getUid())));
         binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
         binding.floatingActBtn.setTag(UNSELECTED);
     }
