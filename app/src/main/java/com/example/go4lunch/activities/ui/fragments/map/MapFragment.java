@@ -260,4 +260,6 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
         if (this.mDisposable != null && !this.mDisposable.isDisposed())
             this.mDisposable.dispose();
     }
+
+
 }

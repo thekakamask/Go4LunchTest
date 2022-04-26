@@ -182,15 +182,9 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
         return e -> StyleableToast.makeText(requireContext(), "Unknown Error", R.style.personalizedToast).show();
     }
 
-    /*public void onProviderDisabled(String provider) { }
-
-    public void onProviderEnabled(String provider) {
-        Log.d("LocationProject", "Provider Enabled");
-    }
-
-
+    // THESE METHOD FOR API BELOW 30 (API 21 IS NOW FONCTIONNABLE)
     public void onStatusChanged(String provider, int status, Bundle extras) {
-    }*/
+    }
 
     /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
