@@ -82,7 +82,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.menu_activity_actionsearch, menu);
+        inflater.inflate(R.menu.menu_activity_action_search, menu);
         MenuItem item = menu.findItem(R.id.actionSearch);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
         SearchView searchView = (SearchView) item.getActionView();

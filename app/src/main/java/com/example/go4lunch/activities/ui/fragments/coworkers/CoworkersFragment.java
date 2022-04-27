@@ -50,7 +50,7 @@ public class CoworkersFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActionBar().setTitle(R.string.avalaible_coworkers);
+        getActionBar().setTitle(R.string.available_coworkers);
     }
 
     private void setUpRecyclerView() {

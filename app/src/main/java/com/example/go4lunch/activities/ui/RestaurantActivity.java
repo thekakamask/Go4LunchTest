@@ -262,14 +262,14 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
                  .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=photo_reference=" +
                          placeDetailsResult.getPhotos().get(0).getPhotoReference() + "&key=" + GOOGLE_MAP_API_KEY)
                  .apply(RequestOptions.centerCropTransform())
-                 .into(binding.headerPicResto);
+                 .into(binding.headerPicRestaurant);
         }else{
-            binding.headerPicResto.setImageResource(R.drawable.no_pic);
+            binding.headerPicRestaurant.setImageResource(R.drawable.no_pic);
         }
         //RESTAURANT NAME
-        binding.restoName.setText(placeDetailsResult.getName());
+        binding.restaurantName.setText(placeDetailsResult.getName());
         //RESTAURANT ADRESS
-        binding.restoAddress.setText(placeDetailsResult.getVicinity());
+        binding.restaurantAddress.setText(placeDetailsResult.getVicinity());
         //RESTAURANT RATING
         restaurantRating(placeDetailsResult);
         //RESTAURANT PHONE

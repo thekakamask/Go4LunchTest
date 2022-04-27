@@ -8,7 +8,8 @@
     android:elevation="4dp"
     android:orientation="horizontal"
     app:cardBackgroundColor="#FFCCBC"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="5dp"
+    tools:targetApi="lollipop">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:id="@+id/restaurant_user_photo"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:contentDescription="restaurantUserPhoto"/>
+            android:contentDescription="@string/restaurant_user_photo_content_description"/>
 
         <TextView
             android:layout_width="280dp"

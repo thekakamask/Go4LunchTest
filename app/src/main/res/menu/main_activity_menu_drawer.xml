@@ -16,13 +16,11 @@
             android:id="@+id/settings_menu_drawer"
             android:icon="@drawable/main_activity_menu_drawer_black_parameters"
             android:title="@string/menu_activity_menu_drawer_settings"/>
-            />
 
         <item
             android:id="@+id/logout_menu_drawer"
             android:icon="@drawable/main_activity_menu_drawer_black_logout"
             android:title="@string/menu_activity_menu_drawer_logout"/>
-            />
 
 
     </group>

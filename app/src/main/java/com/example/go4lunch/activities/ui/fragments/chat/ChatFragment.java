@@ -188,7 +188,7 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
                     .apply(RequestOptions.circleCropTransform())
                     .into(imagePreviewContainer);
         } else {
-            showSnackBar(getString(R.string.toast_title_no_image_choosen));
+            showSnackBar(getString(R.string.toast_title_no_image_chosen));
         }
     }
 

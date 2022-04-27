@@ -16,9 +16,10 @@
         android:background="@color/colorPrimary"
         android:elevation="10dp"
         android:text="@string/alarmOnButton"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#000"
-        app:cornerRadius="100dp"/>
+        app:cornerRadius="100dp"
+        tools:targetApi="lollipop" />
 
     <Button
         android:id="@+id/alarmOff"
@@ -29,9 +30,10 @@
         android:background="@color/colorPrimary"
         android:elevation="10dp"
         android:text="@string/alarmOffButton"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#000"
-        app:cornerRadius="100dp"/>
+        app:cornerRadius="100dp"
+        tools:targetApi="lollipop" />
 
 
 </RelativeLayout>

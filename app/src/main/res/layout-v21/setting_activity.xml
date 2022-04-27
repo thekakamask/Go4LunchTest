@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="activities.ui.SettingsActivity"
+    android:id="@+id/settings_activity_layout">
+
+    <Button
+        android:id="@+id/alarmOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        android:text="@string/alarmOnButton"
+        android:textSize="15sp"
+        android:textColor="#000"
+        app:cornerRadius="100dp"/>
+
+    <Button
+        android:id="@+id/alarmOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        android:text="@string/alarmOffButton"
+        android:textSize="15sp"
+        android:textColor="#000"
+        app:cornerRadius="100dp"/>
+
+
+</RelativeLayout>

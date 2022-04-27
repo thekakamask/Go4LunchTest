@@ -91,10 +91,10 @@ public class CoworkersViewHolder extends RecyclerView.ViewHolder {
                     public void onComplete() {
                         if (idResto != null) {
                             restoName = detail.getResult().getName();
-                            mCoworkerName.setText(userName + " " + itemView.getContext().getString(R.string.eatCoworkers) + " " + restoName);
+                            mCoworkerName.setText(userName + " " + itemView.getContext().getString(R.string.eat_coworkers) + " " + restoName);
                             Log.d("OnCompleteRestoName", "restoName" + idResto);
                         } else {
-                            mCoworkerName.setText(userName + " " + itemView.getContext().getString(R.string.noDecided));
+                            mCoworkerName.setText(userName + " " + itemView.getContext().getString(R.string.no_decided));
                             Log.d("RestoName", "noResto" + userName);
                         }
 

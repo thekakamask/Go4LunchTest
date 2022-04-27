@@ -27,7 +27,8 @@
             android:id="@+id/fragment_chat_item_profileImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:srcCompat="@drawable/fragment_chat_item_user_chat" />
+            app:srcCompat="@drawable/fragment_chat_item_user_chat"
+            android:contentDescription="@string/image_profile_content_description" />
 
         <!-- IMAGE COWORKER PROFILE-->
         <ImageView

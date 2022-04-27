@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/go4lunch_header"
-        />
+        android:contentDescription="@string/nav_header_image_content_description" />
 
     <ImageView
         android:id="@+id/header_photo"

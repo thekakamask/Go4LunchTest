@@ -33,7 +33,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list_distance)
     TextView mDistance;
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.list_adress)
+    @BindView(R.id.list_address)
     TextView mAdress;
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_coworkers)

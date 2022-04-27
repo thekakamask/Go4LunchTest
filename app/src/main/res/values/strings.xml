@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">Go4Lunch</string>
     <string name="title_activity_main">MainActivity</string>
@@ -13,6 +13,10 @@
     <string name="facebook_application_id">4513689965341886</string>
     <string name="fb_login_protocol_scheme">fb4513689965341886</string>
 
+    <!--    login activity  -->
+    <string name="google_connection_button_text">Continue with Google</string>
+    <string name="facebook_connection_button_text">Continue with Facebook</string>
+
     <!--    main activity bottom navigation menu strings  -->
     <string name="bottom_navigation_menu_map">Map View</string>
     <string name="bottom_navigation_menu_list">List View</string>
@@ -25,22 +29,24 @@
     <string name="menu_activity_menu_drawer_logout">Log Out</string>
     <string name="main_activity_navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="main_activity_navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="no_restaurant_choose"> at the moment their is not restaurant choosen</string>
-    <string name="deconnexion">you are deconnected</string>
+    <string name="no_restaurant_choose"> at the moment their is not restaurant chosen</string>
+    <string name="log_out">you are disconnected</string>
     <string name="title_bar">I\'m Hungry</string>
+    <string name="nav_header_image_content_description">Image of the header</string>
+
     <!--    main activity action search strings-->
     <string name="menu_activity_action_search">Search</string>
 
     <!--    connection firebase message-->
-    <string name="error_not_connected">Vous devez vous connecter !</string>
-    <string name="error_authentication_canceled">Authentification annulée&#8230;</string>
-    <string name="error_no_internet">Aucune connexion internet !</string>
-    <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
-    <string name="connection_succeed">Authentification réussie !</string>
+    <string name="error_not_connected">please connect your account !</string>
+    <string name="error_authentication_canceled">Authentication cancelled&#8230;</string>
+    <string name="error_no_internet">No internet connection!</string>
+    <string name="error_unknown_error">Unknown error&#8230;</string>
+    <string name="connection_succeed">Authentication successful!</string>
     <string name="unknown_error">Error unknown error</string>
 
     <!--  RestaurantActivity -->
-    <string name="header_pic_resto">header of resto picture</string>
+    <string name="header_pic_restaurant">header of restaurant picture</string>
     <!--restaurant buttons-->
     <string name="like_btn">LIKE</string>
     <string name="website_btn">WEBSITE</string>
@@ -52,6 +58,7 @@
     <!--  RestaurantViewHolder -->
     <string name="eat_at">eat at</string>
     <string name="no_decision">made no decision at now</string>
+    <string name="restaurant_user_photo_content_description">restaurant user photo</string>
 
     <!--  AlertReceiver -->
     <string name="lunch_at">You\re lunching at</string>
@@ -65,21 +72,23 @@
     <string name="alarmOnButton">Alarm on</string>
     <string name="alarmOffButton">Alarm off</string>
     <string name="activation_alarm">Activation of the alarm for 12h</string>
-    <string name="desactivation_alarm">Deactivation of the alarm</string>
+    <string name="deactivation_alarm">Deactivation of the alarm</string>
 
     <!--  ListFragment -->
     <string name="listFragment_bar">I\'m Hungry</string>
+    <string name="restaurant_image_content_description">Image of the restaurant</string>
 
     <!--  ListViewHolder -->
     <string name="open_until">Open Until</string>
     <string name="closing_soon">Closing Soon</string>
 
     <!--  CoworkersFragment -->
-    <string name="avalaible_coworkers">Available Coworkers</string>
+    <string name="available_coworkers">Available Coworkers</string>
 
     <!--  CoworkersFragmentViewholder -->
-    <string name="eatCoworkers">eat at</string>
-    <string name="noDecided">hasn\'t decided yet</string>
+    <string name="eat_coworkers">eat at</string>
+    <string name="no_decided">has not decided yet</string>
+    <string name="coworker_photo_description">coworker Photo</string>
 
     <!--  ChatFragment -->
     <string name="text_view_chat_empty">this thread is empty</string>
@@ -87,10 +96,14 @@
     <string name="button_title_chat_send"> Send </string>
     <string name="chat_coworkers">Chat with Coworkers</string>
     <string name="title_activity_maps_fragment">Map</string>
+    <string name="image_preview_content_description">image preview</string>
+    <string name="image_add_button_content_description">image add button</string>
+    <string name="image_profile_content_description">image of your profile</string>
+
     <!--  ChatFragment permission asking -->
     <string name="popup_title_permission_files_access">This application need permission to work</string>
     <string name="files_access_granted">You have the right to access to images</string>
-    <string name="toast_title_no_image_choosen">No selected image&#8230; </string>
+    <string name="toast_title_no_image_chosen">No selected image&#8230; </string>
 
 
 </resources>

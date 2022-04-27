@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_activity_login_layout"
     android:layout_width="match_parent"
@@ -10,11 +9,12 @@
     tools:context=".activities.ui.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/connection_btn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:id="@+id/connection_btn">
+        tools:ignore="UselessParent">
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -24,29 +24,24 @@
             android:layout_gravity="center"
             android:background="#ffff"
             android:drawableStart="@drawable/activity_login_google"
-            android:hint="Continue with Google"
+            android:hint="@string/google_connection_button_text"
             android:onClick="onClickGoogleBtn"
-            android:paddingStart="6dp"/>
-
-
-
+            android:paddingStart="6dp"
+            tools:ignore="RtlSymmetry,UsingOnClickInXml" />
 
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/facebook_btn"
-            android:layout_height="37dp"
             android:layout_width="212dp"
+            android:layout_height="37dp"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/activity_login_facebook"
-            android:background="#3b5998"
-            android:hint="Continue with Facebook"
             android:layout_marginBottom="150dp"
+            android:background="#3b5998"
+            android:drawableStart="@drawable/activity_login_facebook"
+            android:hint="@string/facebook_connection_button_text"
             android:onClick="onClickFacebookBtn"
-            android:paddingStart="6dp"/>
-
-
-
-
+            android:paddingStart="6dp"
+            tools:ignore="RtlSymmetry,UsingOnClickInXml" />
 
 
     </LinearLayout>

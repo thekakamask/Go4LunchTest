@@ -96,7 +96,7 @@ public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
                 //mAlarmOn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
-                showSnackBar(getString(R.string.desactivation_alarm));
+                showSnackBar(getString(R.string.deactivation_alarm));
             } else if (!binding.alarmOff.isEnabled()) {
                 onTimeSet();
                 //mAlarmOff.setBackgroundColor(getResources().getColor(R.color.colorPrimary));

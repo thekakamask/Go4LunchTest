@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
                 break;
             case R.id.logout_menu_drawer :
                 signOutFromUserFirebase();
-                showSnackBar(getString(R.string.deconnexion));
+                showSnackBar(getString(R.string.log_out));
                 break;
         }
 

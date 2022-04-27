@@ -9,10 +9,10 @@
     tools:context=".activities.ui.RestaurantActivity">
 
     <ImageView
-        android:id="@+id/header_pic_resto"
+        android:id="@+id/header_pic_restaurant"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="@string/header_pic_resto" />
+        android:contentDescription="@string/header_pic_restaurant" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_act_btn"
@@ -24,7 +24,9 @@
         android:elevation="8dp"
         android:focusable="true"
         android:src="@drawable/activity_restaurant_valid_done"
-        app:fabSize="auto"/>
+        app:fabSize="auto"
+        android:contentDescription="validation"
+        tools:targetApi="lollipop" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,7 +35,7 @@
         android:background="@color/colorPrimaryDark">
 
         <TextView
-            android:id="@+id/resto_name"
+            android:id="@+id/restaurant_name"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:textColor="#ffff"
@@ -43,7 +45,7 @@
             android:text="" />
 
         <TextView
-            android:id="@+id/resto_address"
+            android:id="@+id/restaurant_address"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:textColor="#ffff"
@@ -118,10 +120,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/restaurant_RV"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/frame_action_btn"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_below="@+id/frame_action_btn"
+        android:layout_marginTop="8dp" />
 
 
 
