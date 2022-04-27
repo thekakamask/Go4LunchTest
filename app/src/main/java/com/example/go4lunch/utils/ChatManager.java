@@ -1,14 +1,14 @@
-package com.example.go4lunch.repository;
+package com.example.go4lunch.utils;
 
 import android.net.Uri;
-
 import com.example.go4lunch.models.User;
+import com.example.go4lunch.repository.ChatRepository;
 import com.google.firebase.firestore.Query;
 
 public class ChatManager {
 
     private static volatile ChatManager instance;
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     private ChatManager() {
         chatRepository= ChatRepository.getInstance();

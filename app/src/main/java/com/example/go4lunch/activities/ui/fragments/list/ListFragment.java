@@ -200,6 +200,18 @@ public class ListFragment extends BaseFragment implements Serializable {
                     startActivity(intent);
                 }));
 
+        ItemClickSupport.addTo(mRecyclerView,R.layout.fragment_list_item)
+                .setOnItemLongClickListener(((mRecyclerView, mPosition, v) -> {
+
+                    PlaceDetailsResult placeDetailsResult = placeDetails.get(mPosition).getResult();
+                    Intent intent = new Intent(getActivity(), RestaurantActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("placeDetailsResult", placeDetailsResult);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    return false;
+                }));
+
     }
 
     public void onLocationChanged(Location location) {

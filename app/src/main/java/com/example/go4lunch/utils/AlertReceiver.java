@@ -5,25 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.Objects;
-
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class AlertReceiver extends BroadcastReceiver {
 
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
     private String userIdNotif;
     private PlaceDetail detail;
     private String restoNameNotif;
@@ -48,6 +44,9 @@ public class AlertReceiver extends BroadcastReceiver {
                     timeUser = user.getCurrentTime();
                     executeHttpRequestWithRetrofit();
                     Log.d("IdNotifTest", userIdNotif);
+
+                    if (this.mDisposable != null && !this.mDisposable.isDisposed())
+                        this.mDisposable.dispose();
                 }
             }
         });
@@ -117,4 +116,8 @@ public class AlertReceiver extends BroadcastReceiver {
                         }
                 });
     }
+
+
+
+
 }

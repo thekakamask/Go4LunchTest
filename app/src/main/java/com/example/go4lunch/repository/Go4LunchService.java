@@ -1,18 +1,12 @@
 package com.example.go4lunch.repository;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-
 import com.example.go4lunch.BuildConfig;
-import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.models.API.NearbySearchAPI.PlaceNearbySearch;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResult;
-import com.google.android.libraries.places.api.model.Place;
-
-import java.util.Objects;
 
 public interface Go4LunchService {
 

@@ -1,7 +1,6 @@
 package com.example.go4lunch.repository;
 
 import android.net.Uri;
-
 import com.example.go4lunch.models.Message;
 import com.example.go4lunch.models.User;
 import com.google.firebase.firestore.CollectionReference;
@@ -10,7 +9,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.util.UUID;
 
 public final class ChatRepository {

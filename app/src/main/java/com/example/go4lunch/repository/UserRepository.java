@@ -3,9 +3,7 @@ package com.example.go4lunch.repository;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Objects;
 

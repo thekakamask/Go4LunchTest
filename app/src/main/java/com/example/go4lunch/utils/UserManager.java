@@ -1,13 +1,11 @@
 package com.example.go4lunch.utils;
 
 import android.annotation.SuppressLint;
-
 import com.example.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-
 
 public class UserManager {
 

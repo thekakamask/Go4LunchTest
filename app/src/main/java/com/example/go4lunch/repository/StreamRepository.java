@@ -1,47 +1,27 @@
 package com.example.go4lunch.repository;
 
-
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
 import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResult;
 import com.example.go4lunch.models.API.AutoCompleteAPI.AutoCompeteResultPredictions;
 import com.example.go4lunch.models.API.NearbySearchAPI.PlaceNearbySearch;
 import com.example.go4lunch.models.API.NearbySearchAPI.PlaceNearbySearchPlace;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
-import com.google.android.gms.common.api.GoogleApi;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.Place;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.internal.operators.observable.ObservableError;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.http.Query;
-
-import static android.content.ContentValues.TAG;
-
 
 public class StreamRepository {
 
     private static final String TAG = "StreamRepository";
 
 //    private static Go4LunchService mapPlacesInfo= RetrofitObject.retrofit().create(Go4LunchService.class);
-    private static Go4LunchService mapPlacesInfo = RetrofitObject.retrofit.create(Go4LunchService.class);
+    private final static Go4LunchService mapPlacesInfo = RetrofitObject.retrofit.create(Go4LunchService.class);
 
     //JUTILISE A LA BASE PLACENEARBYSEARCH
     public static Observable<PlaceNearbySearch> streamFetchRestaurants(String location, int radius, String type) {
@@ -89,21 +69,12 @@ public class StreamRepository {
     public static Single<List<PlaceDetail>> streamFetchRestaurantDetails(String location, int radius, String type) {
         Log.d(TAG, "streamFetchRestaurantDetails: ");
         return streamFetchRestaurants(location, radius, type)
-                .flatMapIterable(new Function<PlaceNearbySearch, List<PlaceNearbySearchPlace>>() {
-                    @Override
-                    public List<PlaceNearbySearchPlace> apply (PlaceNearbySearch placeNearbySearch) throws Exception {
-                        Log.d(TAG, "applyPlaceNearbySearchPlace: " +  placeNearbySearch.getResultSearches());
-                        String nextPageToken = placeNearbySearch.getNextPageToken();
-                        return placeNearbySearch.getResultSearches();
+                .flatMapIterable((Function<PlaceNearbySearch, List<PlaceNearbySearchPlace>>) placeNearbySearch -> {
+                    Log.d(TAG, "applyPlaceNearbySearchPlace: " +  placeNearbySearch.getResultSearches());
+                    return placeNearbySearch.getResultSearches();
 
-                    }
                 })
-                .flatMap(new Function<PlaceNearbySearchPlace, Observable<PlaceDetail>>() {
-                    @Override
-                    public Observable<PlaceDetail> apply (PlaceNearbySearchPlace placeNearbySearchPlace) throws Exception {
-                        return streamFetchDetails(placeNearbySearchPlace.getPlaceId());
-                    }
-                })
+                .flatMap((Function<PlaceNearbySearchPlace, Observable<PlaceDetail>>) placeNearbySearchPlace -> streamFetchDetails(placeNearbySearchPlace.getPlaceId()))
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -137,10 +108,10 @@ public class StreamRepository {
     public static Single<List<PlaceDetail>> streamFetchAutocompleteInfos(String input, int radius, String location, String type) {
         return streamFetchAutocomplete(input, radius, location, type)
                 .flatMapIterable(new Function<AutoCompeteResult, List<AutoCompeteResultPredictions>>() {
-                    List<AutoCompeteResultPredictions> food = new ArrayList<>();
+                    final List<AutoCompeteResultPredictions> food = new ArrayList<>();
 
                     @Override
-                    public List<AutoCompeteResultPredictions> apply (AutoCompeteResult autoCompeteResult) throws Exception {
+                    public List<AutoCompeteResultPredictions> apply (AutoCompeteResult autoCompeteResult) {
                         for (AutoCompeteResultPredictions prediction : autoCompeteResult.getAutoCompetePredictions()) {
                             if (prediction.getTypes().contains("food")) {
                                 food.add(prediction);
@@ -149,12 +120,7 @@ public class StreamRepository {
                         return food;
                     }
                 })
-                .flatMap(new Function<AutoCompeteResultPredictions, ObservableSource<PlaceDetail>>() {
-                    @Override
-                    public ObservableSource<PlaceDetail> apply (AutoCompeteResultPredictions prediction) throws Exception {
-                        return streamFetchDetails(prediction.getPlaceId());
-                    }
-                })
+                .flatMap((Function<AutoCompeteResultPredictions, ObservableSource<PlaceDetail>>) prediction -> streamFetchDetails(prediction.getPlaceId()))
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
