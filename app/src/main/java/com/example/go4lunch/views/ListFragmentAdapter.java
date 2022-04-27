@@ -1,26 +1,21 @@
 package com.example.go4lunch.views;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
-
 import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     private String mPosition;
-    private RequestManager glide;
-    private List<PlaceDetail> placeDetails;
+    private final RequestManager glide;
+    private final List<PlaceDetail> placeDetails;
 
 
     public void setPosition(String position) {

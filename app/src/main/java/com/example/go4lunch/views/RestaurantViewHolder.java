@@ -1,5 +1,6 @@
 package com.example.go4lunch.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +26,10 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_user_photo)
     ImageView mRestaurantUserPhoto;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_user_name)
     TextView mRestaurantUserName;
 
@@ -41,16 +44,13 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this,itemView);
         //FOR RESTAURANT SHEET ON CLICK
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (detail != null) {
-                    Intent intent = new Intent (v.getContext(), RestaurantActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("placeDetailsResult", detail.getResult());
-                    intent.putExtras(bundle);
-                    v.getContext().startActivity(intent);
-                }
+        itemView.setOnClickListener(v -> {
+            if (detail != null) {
+                Intent intent = new Intent (v.getContext(), RestaurantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("placeDetailsResult", detail.getResult());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
             }
         });
     }
@@ -68,6 +68,9 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
             mRestaurantUserPhoto.setImageResource(R.drawable.no_pic);
         }
 
+        if (this.mDisposable != null && !this.mDisposable.isDisposed())
+            this.mDisposable.dispose();
+
     }
 
     private void executeHttpRequestWithRetrofit() {
@@ -84,6 +87,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
                         Log.d("onErrorWorkPartner", Log.getStackTraceString(e));
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete() {
                         if(idResto !=null) {

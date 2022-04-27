@@ -1,32 +1,23 @@
 package com.example.go4lunch.views;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.solver.state.State;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.Message;
-
-import bolts.Bolts;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.go4lunch.utils.DatesHours.convertDateHours;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,40 +26,50 @@ import java.util.Locale;
 public class ChatViewHolder extends RecyclerView.ViewHolder {
 
     //ROOTVIEW
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_layout)
     ConstraintLayout rootView;
 
     //CONTAINER PROFILE
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_profileContainer)
     LinearLayout profileContainer;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_profileImage)
     ImageView imageViewProfile;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_profileCoworker)
     ImageView imageViewCoworker;
 
     //MESSAGE CONTAINER
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_messageContainer)
     LinearLayout messageContainer;
     //IMAGE SENDED CONTAINER
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_imageCardView)
     CardView cardViewImageSent;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_ImageViewSend)
     ImageView imageViewSent;
     //TEXT MESSAGE CONTAINER
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_messageTextContainer)
     LinearLayout textMessageContainer;
     // TEXT MESSAGE
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_messageTextView)
     TextView messageText;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_item_dateTextView)
     TextView dateText;
 
     //FOR DATA
     private final int colorCurrentUser;
     private final int colorRemoteUser;
-    private boolean isSender;
+    public boolean isSender;
 
-    public ChatViewHolder(@NonNull View itemView, boolean isSender) {
+    public ChatViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
 

@@ -2,8 +2,6 @@ package com.example.go4lunch.activities.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,48 +9,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
-import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.databinding.ActivityRestaurantBinding;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.utils.UserManager;
 import com.example.go4lunch.views.RestaurantAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
 import java.io.Serializable;
 import java.util.Objects;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.rxjava3.disposables.Disposable;
-
 import static com.example.go4lunch.utils.DatesHours.getCurrentTime;
 
 // 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
@@ -87,8 +66,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
 
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
-    private UserManager userManager = UserManager.getInstance();
-
+    private final UserManager userManager = UserManager.getInstance();
     private String placeId;
     private RequestManager mGlide;
     private static final String SELECTED = "SELECTED";
@@ -98,8 +76,6 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     //change after update (put final at collectionUsers)
     private final CollectionReference collectionUsers = db.collection("users");
     private RestaurantAdapter restaurantAdapter;
-    private String formattedPhoneNumber;
-    private Disposable mDisposable;
     private static final int REQUEST_CALL=100;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
@@ -134,20 +110,17 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
             //UserManager.getInstance().getUserData(Objects.requireNonNull(UserManager.getCurrentUser()).getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null){
-                        if (user.getLike() != null && !user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
+            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null){
+                    if (user.getLike() != null && !user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
 
-                            //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
-                            // par binding.starBtn (star_btn (id de l'xml) sans le _)
+                        //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
+                        // par binding.starBtn (star_btn (id de l'xml) sans le _)
 
-                            binding.starBtn.setBackgroundColor(Color.BLUE);
-                        } else {
-                            binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
-                        }
+                        binding.starBtn.setBackgroundColor(Color.BLUE);
+                    } else {
+                        binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }
             });
@@ -158,8 +131,6 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         if(actionBar != null) {
             actionBar.hide();
         }
-
-
     }
 
     // LIKE BUTTON
@@ -351,6 +322,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        String formattedPhoneNumber = null;
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 makePhoneCall(formattedPhoneNumber);
@@ -407,20 +379,13 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         restaurantAdapter.stopListening();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.disposeWhenDestroy();
-    }
 
     @Override
     public void onResume() {
         super.onResume();
     }
 
-    private void disposeWhenDestroy() {
-        if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
-    }
+
 
 
 }

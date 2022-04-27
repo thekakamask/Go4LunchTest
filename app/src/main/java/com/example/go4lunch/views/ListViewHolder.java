@@ -1,19 +1,14 @@
 package com.example.go4lunch.views;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
@@ -21,44 +16,41 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsOpeningHoursPeriod;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.utils.UserManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Period;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.Calendar;
 import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static com.example.go4lunch.utils.DatesHours.convertStringHours;
 import static com.example.go4lunch.utils.DatesHours.getCurrentTime;
 
 public class ListViewHolder extends RecyclerView.ViewHolder {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_name)
     TextView mName;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_distance)
     TextView mDistance;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_adress)
     TextView mAdress;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_coworkers)
     TextView mCoworkers;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_open_hours)
     TextView mOpenHours;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_rating)
     RatingBar mRatingBar;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_photo)
     ImageView mPhoto;
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
-    private float[] distanceResults = new float[3];
-    private int diff;
-    private String closeHour;
-    private UserManager userManager = UserManager.getInstance();
+    private final float[] distanceResults = new float[3];
+    private final UserManager userManager = UserManager.getInstance();
 
 
     public ListViewHolder(@NonNull View itemView) {
@@ -68,6 +60,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         getCurrentTime();
     }
 
+    @SuppressLint("SetTextI18n")
     public void updateWithDetails(PlaceDetailsResult result, RequestManager glide, String mPosition) {
 
         //RESTAURANT NAME
@@ -90,7 +83,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                 this.mOpenHours.setText("closed");
                 this.mOpenHours.setTextColor(Color.RED);
             } else if (result.getPlaceDetailsOpeningHours().getOpenNow().toString().equals("true")) {
-                //getHoursInfo(result);
+                getHoursInfo(result);
             }
         }
 
@@ -115,7 +108,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private String getHoursInfo(PlaceDetailsResult result) {
+    @SuppressLint("SetTextI18n")
+    private void getHoursInfo(PlaceDetailsResult result) {
         int[] days = {0,1,2,3,4,5,6};
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK) -1;
@@ -126,7 +120,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                 Log.d("closeHour", String.valueOf(closeHour));
                 int hourClose = Integer.parseInt(closeHour);
                 Log.d("hourClose", String.valueOf(hourClose));
-                diff = getCurrentTime() - hourClose;
+                int diff = getCurrentTime() - hourClose;
                 Log.d("diff", String.valueOf(diff));
 
                 if (p.getPeriodOpen().getDay() == days[day] && diff <-100) {
@@ -144,7 +138,6 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
             }
         }
 
-        return closeHour;
     }
 
     private void restaurantDistance(String startLocation, com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsLocation endLocation ) {
@@ -161,23 +154,20 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         userManager.getUsersCollection()
                 .whereEqualTo("idOfPlace", idOfPlace)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
-                                Log.d("numberWorkmates", documentSnapshot.getId() + " " + documentSnapshot.getData());
-                            }
-                            int numberCoworkers = Objects.requireNonNull(task.getResult().size());
-                            String coworkersNumber = "(" + numberCoworkers + ")";
-                            mCoworkers.setText(coworkersNumber);
-                        } else {
-                            //ERREUR
-                            //E/numberMatesError: Error getting documents:
-                            //com.google.firebase.firestore.FirebaseFirestoreException: PERMISSION_DENIED: Missing or insufficient permissions.
-                            //ERREUR REGLE SI JE CHANGE UNE AUTHORISATION DANS LES REGLES DE FIRESTORE.
-                            Log.e("numberMatesError", "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                            Log.d("numberWorkmates", documentSnapshot.getId() + " " + documentSnapshot.getData());
                         }
+                        int numberCoworkers = task.getResult().size();
+                        String coworkersNumber = "(" + numberCoworkers + ")";
+                        mCoworkers.setText(coworkersNumber);
+                    } else {
+                        //ERREUR
+                        //E/numberMatesError: Error getting documents:
+                        //com.google.firebase.firestore.FirebaseFirestoreException: PERMISSION_DENIED: Missing or insufficient permissions.
+                        //ERREUR REGLE SI JE CHANGE UNE AUTHORISATION DANS LES REGLES DE FIRESTORE.
+                        Log.e("numberMatesError", "Error getting documents: ", task.getException());
                     }
                 });
     }

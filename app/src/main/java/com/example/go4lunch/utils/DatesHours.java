@@ -33,8 +33,8 @@ public class DatesHours {
         return hour1 + ":" + hour2;
     }
 
-    public static String convertDateHours(Date date) {
+    /*public static String convertDateHours(Date date) {
         @SuppressLint("SimpleDateFormat") DateFormat dfTime = new SimpleDateFormat("HH:mm");
         return dfTime.format(date);
-    }
+    }*/
 }

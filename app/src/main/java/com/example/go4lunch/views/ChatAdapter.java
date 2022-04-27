@@ -1,15 +1,10 @@
 package com.example.go4lunch.views;
 
-import android.app.DownloadManager;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
-
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.R;
-import com.example.go4lunch.activities.ui.fragments.chat.ChatFragment;
 import com.example.go4lunch.models.Message;
 import com.example.go4lunch.utils.UserManager;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -23,7 +18,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<com.example.go4lunch.m
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
      *
-     * @param
+     *
      */
 
     public interface Listener {
@@ -41,7 +36,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<com.example.go4lunch.m
     //private final String idCurrentUser;
 
     //FOR COMMUNICATION
-    private Listener callback;
+    private final Listener callback;
 
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, RequestManager glide, Listener callback) {
         super(options);
@@ -54,16 +49,17 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<com.example.go4lunch.m
     public int getItemViewType(int position) {
         //DETERMINE THE TYPE OF THE MESAGE BY IF THE USER IS THE SENDER OR NOT
         String currentUserId = UserManager.getInstance().getCurrentUser().getUid();
-        Boolean isSender = getItem(position).getUserSender().getUid().equals(currentUserId);
+        boolean isSender = getItem(position).getUserSender().getUid().equals(currentUserId);
 
         return (isSender) ? SENDER_TYPE : RECEIVER_TYPE;
     }
 
 
+    @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ChatViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_chat_item, parent, false), viewType ==1);
+                .inflate(R.layout.fragment_chat_item, parent, false));
     }
 
     @Override
@@ -77,15 +73,6 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<com.example.go4lunch.m
         super.onDataChanged();
         this.callback.onDataChanged();
     }
-
-
-
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
 
 
 }

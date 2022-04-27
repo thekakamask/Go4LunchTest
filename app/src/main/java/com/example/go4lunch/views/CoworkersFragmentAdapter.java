@@ -1,5 +1,6 @@
 package com.example.go4lunch.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,11 @@ import butterknife.BindView;
 
 public class CoworkersFragmentAdapter extends FirestoreRecyclerAdapter<User, CoworkersViewHolder> {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.coworker_name)
     TextView mCoworkerName;
 
-    private RequestManager glide;
+    private final RequestManager glide;
 
     public CoworkersFragmentAdapter(FirestoreRecyclerOptions<User> options, RequestManager glide ) {
         super(options);

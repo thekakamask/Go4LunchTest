@@ -1,6 +1,7 @@
 package com.example.go4lunch.activities.ui.fragments.chat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,14 +16,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
@@ -35,34 +34,39 @@ import com.example.go4lunch.views.ChatAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.Query;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
 import static android.app.Activity.RESULT_OK;
-
 import java.util.Objects;
 
 public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
     /*@BindView(R.id.fragment_chat_RV_container)
     LinearLayout LinearLayout;*/
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chat_fragment_layout)
     RelativeLayout mRelativeLayout;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_empty_RV)
     TextView ThreadTitle;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_RV)
     RecyclerView messageRecyclerView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_image_PV)
     ImageView imagePreviewContainer;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_message_container)
     LinearLayout messageContainer;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_addFileButton)
     ImageButton imageAddButton;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_chatEditText)
     TextView textEdit;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_chat_sendBtn)
     Button sendButton;
 
@@ -70,12 +74,11 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
 
     private static final int RC_IMAGE_PERMS = 100;
-    private static final int RC_CHOOSE_PHOTO = 200;
 
     //    DECLARATION
     private ChatAdapter chatAdapter;
-    private ChatManager chatManager = ChatManager.getInstance();
-    private UserManager userManager = UserManager.getInstance();
+    private final ChatManager chatManager = ChatManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
 
     private User currentUser;
@@ -122,11 +125,9 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     }
 
     private void setupListeners() {
-        sendButton.setOnClickListener(view -> {sendMessage();
-        });
+        sendButton.setOnClickListener(view -> sendMessage());
 
-        imageAddButton.setOnClickListener(view -> {addFile();
-        });
+        imageAddButton.setOnClickListener(view -> addFile());
 
     }
 
@@ -173,18 +174,14 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
     private final ActivityResultLauncher<Intent> pictureLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            pictureAccess(result);
-                        }
-                    }
+                    this::pictureAccess
             );
 
     private void pictureAccess(ActivityResult result) {
         if(result.getResultCode() == RESULT_OK) { //SUCCESS
             Intent data;
             data = result.getData();
+            assert data != null;
             this.uriImageSelected = data.getData();
             Glide.with(this) //SHOWING PREVIEW OF IMAGE
                     .load(this.uriImageSelected)
@@ -230,7 +227,7 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
     }*/
 
     @Override
-    public void onViewCreated(View view, Bundle saveInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle saveInstanceState) {
         super.onViewCreated(view, saveInstanceState);
         getActionBar().setTitle(R.string.chat_coworkers);
     }

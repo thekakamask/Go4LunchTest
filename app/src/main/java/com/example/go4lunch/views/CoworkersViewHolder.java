@@ -1,18 +1,13 @@
 package com.example.go4lunch.views;
 
-import android.app.DownloadManager;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
@@ -20,7 +15,6 @@ import com.example.go4lunch.activities.ui.RestaurantActivity;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -29,8 +23,10 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class CoworkersViewHolder extends RecyclerView.ViewHolder {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.coworker_photo)
     ImageView mCoworkerphoto;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.coworker_name)
     TextView mCoworkerName;
 
@@ -71,6 +67,8 @@ public class CoworkersViewHolder extends RecyclerView.ViewHolder {
         } else {
             mCoworkerphoto.setImageResource(R.drawable.no_pic);
         }
+
+        if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
     }
 
     private void executeHttpRequestRetrofit() {
@@ -88,6 +86,7 @@ public class CoworkersViewHolder extends RecyclerView.ViewHolder {
                         Log.d("onErrorWorkmates", Log.getStackTraceString(e));
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete() {
                         if (idResto != null) {

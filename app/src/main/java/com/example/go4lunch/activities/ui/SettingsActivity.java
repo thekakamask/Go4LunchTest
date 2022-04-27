@@ -1,31 +1,20 @@
 package com.example.go4lunch.activities.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
-
 import com.example.go4lunch.R;
-import com.example.go4lunch.databinding.ActivityRestaurantBinding;
 import com.example.go4lunch.databinding.SettingActivityBinding;
 import com.example.go4lunch.utils.AlertReceiver;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Calendar;
 import java.util.Objects;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 // 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
 // UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
@@ -41,8 +30,6 @@ public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
     Button mAlarmOff;
     @BindView(R.id.settings_activity_layout)
     RelativeLayout mRelativeLayout;*/
-
-    private Calendar c;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
     @Override
@@ -77,26 +64,23 @@ public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
     // par binding.alarmOn (star_btn (id de l'xml) sans le _)
     // et aussi avec @BindView(R.id.alarmOff)  Button mAlarmOff;
     private void alarmOn() {
-        binding.alarmOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onTimeSet();
-                showSnackBar(getString(R.string.activation_alarm));
+        binding.alarmOn.setOnClickListener(v -> {
+            onTimeSet();
+            showSnackBar(getString(R.string.activation_alarm));
 
-                if(binding.alarmOn.isEnabled()) {
-                    binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
-                    binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                } else if (!binding.alarmOn.isEnabled()) {
-                    binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                    binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
-                }
-
-                SharedPreferences sharedPreferences = PreferenceManager.
-                        getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putBoolean("alarmOn", binding.alarmOn.isEnabled());
-                editor.apply();
+            if(binding.alarmOn.isEnabled()) {
+                binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
+                binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            } else if (!binding.alarmOn.isEnabled()) {
+                binding.alarmOn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                binding.alarmOff.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.quantum_white_100));
             }
+
+            SharedPreferences sharedPreferences = PreferenceManager.
+                    getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putBoolean("alarmOn", binding.alarmOn.isEnabled());
+            editor.apply();
         });
     }
 
@@ -133,7 +117,7 @@ public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
     private void cancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent (this,AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent, 0);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent, 0);
         Objects.requireNonNull(alarmManager).cancel(pendingIntent);
 
     }
@@ -143,13 +127,13 @@ public class SettingsActivity extends BaseActivity<SettingActivityBinding> {
         c.set(Calendar.HOUR_OF_DAY, 12);
         c.set(Calendar.MINUTE,0);
         c.set(Calendar.SECOND,0);
-        startAlarm(c);
+        startAlarm();
     }
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm() {
         AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent, 0);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent, 0);
         Objects.requireNonNull(alarmManager).cancel(pendingIntent);
     }
 

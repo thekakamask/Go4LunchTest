@@ -2,10 +2,8 @@ package com.example.go4lunch.activities.ui.fragments.map;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -16,20 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.RestaurantActivity;
 import com.example.go4lunch.activities.ui.fragments.BaseFragment;
-import com.example.go4lunch.activities.ui.fragments.list.ListFragment;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
@@ -40,18 +30,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.api.LogDescriptor;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
-
 import butterknife.ButterKnife;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
-
-
 
 public class MapFragment extends BaseFragment implements LocationListener, Serializable {
 
@@ -88,7 +71,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     }
 
     @Override
-    public void onViewCreated(View view, Bundle saveInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle saveInstanceState) {
         super.onViewCreated(view, saveInstanceState);
         mMapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -131,7 +114,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
                     @Override
                     public void onSuccess(List<PlaceDetail> placeDetails) {
                         positionMarker(placeDetails);
-                        Log.d(TAG, "httprequestretrofitOnSuccess" + String.valueOf(placeDetails.size()));
+                        Log.d(TAG, "httprequestretrofitOnSuccess" + placeDetails.size());
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -205,6 +188,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_fragment_restaurant_marker))
                     .title(detail.getResult().getName())
                     .snippet(detail.getResult().getVicinity()));
+            assert positionMarker != null;
             positionMarker.showInfoWindow();
             PlaceDetailsResult placeDetailsResult = detail.getResult();
             positionMarker.setTag(placeDetailsResult);
@@ -215,12 +199,12 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
         mMapFragment.getMapAsync(googleMap -> {
             Log.d(TAG, "loadMap: ");
             mGoogleMap = googleMap;
-            Log.d(TAG, "loadMap: (mGoogleMap==null) " + (mGoogleMap==null));
+            Log.d(TAG, "loadMap: (mGoogleMap==null) " + false);
             googleMap.moveCamera(CameraUpdateFactory.zoomBy(15));
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) getContext(),new String[] {
+                ActivityCompat.requestPermissions((Activity) requireContext(),new String[] {
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 }, PERMS_CALLS_ID);

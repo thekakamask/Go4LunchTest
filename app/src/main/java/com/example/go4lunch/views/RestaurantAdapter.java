@@ -4,28 +4,22 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import butterknife.BindView;
-
 public class RestaurantAdapter extends FirestoreRecyclerAdapter<User, RestaurantViewHolder> {
 
 
-    private RequestManager glide;
+    private final RequestManager glide;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
      */
     public RestaurantAdapter(@NonNull FirestoreRecyclerOptions<User> options, RequestManager glide) {
         super(options);

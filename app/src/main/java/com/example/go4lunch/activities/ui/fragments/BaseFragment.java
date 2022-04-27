@@ -1,48 +1,24 @@
 package com.example.go4lunch.activities.ui.fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StyleableRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
-import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.MainActivity;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.muddzdev.styleabletoast.StyleableToast;
-
 import java.util.Objects;
-
-import butterknife.ButterKnife;
-
 import static android.content.ContentValues.TAG;
 
 public abstract class BaseFragment extends Fragment implements LocationListener {
@@ -52,17 +28,14 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
 
    protected static final int PERMS_CALLS_ID=200;
    public LocationManager mLocationManager;
-   private GoogleMap mMap;
-   private String mPosition;
+   public GoogleMap mMap;
 
-   //VARIABLES NEEDED FOR ACTIVITY RESULTLAUNCHER
+    //VARIABLES NEEDED FOR ACTIVITY RESULTLAUNCHER
    final String[] PERMISSIONS = {
            Manifest.permission.ACCESS_FINE_LOCATION,
            Manifest.permission.ACCESS_COARSE_LOCATION
    };
 
-   //BEGIN STANDARD CALL SPECIFICATION AND PREDEFINED TO AN ACTIVITY INITIALISED IN THE ONCREATE
-    private ActivityResultContracts.RequestMultiplePermissions mRequestMultiplePermissionsContract;
     //LAUNCHER SPECIFICATION FOR A PREVIOUSLY PREPARED CALL TO START THE PROCESS OF EXECUTING AN ACTIVITYRESULT CONTRACT
     //INITIALISED ON THE ONCREATE
     private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
@@ -78,8 +51,9 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
         super.onCreate(savedInstanceState);
 
         // BEGIN INITIALISED OBJECTS ACTIVITYRESULTCONTRACTS AND ACTIVITYRESULTLAUNCHER
-        mRequestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
-        multiplePermissionActivityResultLauncher = registerForActivityResult(mRequestMultiplePermissionsContract, isGranted -> {
+        //BEGIN STANDARD CALL SPECIFICATION AND PREDEFINED TO AN ACTIVITY INITIALISED IN THE ONCREATE
+        ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
+        multiplePermissionActivityResultLauncher = registerForActivityResult(requestMultiplePermissionsContract, isGranted -> {
                     Log.d(TAG, "launcher result :" + isGranted.toString());
                     if (isGranted.containsValue(false)) {
                         Log.d(TAG, "At least one of the permissions was not granted, launching again...");
@@ -158,8 +132,8 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
         if (mMap != null) {
             LatLng googleLocation = new LatLng(mLatitude, mLongitude);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
-            mPosition = mLatitude + "," + mLongitude;
-            Log.d("TestLatLng", mPosition);
+            String position = mLatitude + "," + mLongitude;
+            Log.d("TestLatLng", position);
         }
     }
 
@@ -178,9 +152,9 @@ public abstract class BaseFragment extends Fragment implements LocationListener 
         askPermissions(PERMISSIONS);
     }
 
-    protected OnFailureListener onFailureListener() {
+    /*protected OnFailureListener onFailureListener() {
         return e -> StyleableToast.makeText(requireContext(), "Unknown Error", R.style.personalizedToast).show();
-    }
+    }*/
 
     // THESE METHOD FOR API BELOW 30 (API 21 IS NOW FONCTIONNABLE)
     public void onStatusChanged(String provider, int status, Bundle extras) {

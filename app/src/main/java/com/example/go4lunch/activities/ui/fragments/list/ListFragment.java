@@ -1,5 +1,6 @@
 package com.example.go4lunch.activities.ui.fragments.list;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,11 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.RestaurantActivity;
@@ -24,11 +23,9 @@ import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.utils.ItemClickSupport;
 import com.example.go4lunch.views.ListFragmentAdapter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -48,6 +45,7 @@ public class ListFragment extends BaseFragment implements Serializable {
         return R.layout.fragment_map;
     }*/
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.RV_listFragment)
     RecyclerView mRecyclerView;
     public List<PlaceDetail> placeDetails;
@@ -82,7 +80,7 @@ public class ListFragment extends BaseFragment implements Serializable {
 
 
     @Override
-    public void onViewCreated(View view, Bundle saveInstanceState) {
+    public void onViewCreated(@androidx.annotation.NonNull View view, Bundle saveInstanceState) {
         super.onViewCreated(view, saveInstanceState);
         getActionBar().setTitle(R.string.listFragment_bar);
     }
@@ -95,7 +93,7 @@ public class ListFragment extends BaseFragment implements Serializable {
     }*/
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@androidx.annotation.NonNull Menu menu, @androidx.annotation.NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_activity_actionsearch, menu);
@@ -161,6 +159,7 @@ public class ListFragment extends BaseFragment implements Serializable {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateUI(List<PlaceDetail> placeDetails) {
 
         this.placeDetails.clear();

@@ -1,24 +1,12 @@
 package com.example.go4lunch.activities.ui;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.BinderThread;
-import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.databinding.ActivityLoginBinding;
 import com.example.go4lunch.utils.UserManager;
@@ -29,10 +17,6 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.rpc.context.AttributeContext;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,12 +36,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     @BindView(R.id.facebook_btn)
     Button mFacebookBtn;*/
 
-
-
-    private static final int RC_SIGN_IN = 100;
-    //pk ce chiffre et pas un autre?
-
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_login)
     @Override
@@ -79,6 +58,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
 
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.google_btn)
     public void onClickGoogleBtn(View v) {
         this.startSigningWithGoogle();
@@ -86,7 +66,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
     //CREATE USER IN FIREBASE FOR GOOGLE
     private void startSigningWithGoogle() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        List<AuthUI.IdpConfig> providers = Collections.singletonList(
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
         // launch the activity
@@ -111,6 +91,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
 
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.facebook_btn)
     public void onClickFacebookBtn(View v) {
         this.startSigningWithFacebook();
@@ -119,7 +100,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
     //CREATE USER IN FIREBASE FOR FACEBOOK
     private void startSigningWithFacebook() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        List<AuthUI.IdpConfig> providers = Collections.singletonList(
                 new AuthUI.IdpConfig.FacebookBuilder().build());
 
         // launch the activity
@@ -146,17 +127,11 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }*/
 
+    //UTILISER UNE LAMBA A LA PLACE DE LINSTANTIATION DE LINTERFACE (ACTIVITYRESULTCALLBACK) avec la variable (result)
+    // VERIFIER QUE ACTIVITYRESULTCALLBACK EST BIEN UNE INTERFACE GENERIQUE
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-
-                    //UTILISER UNE LAMBA A LA PLACE DE LINSTANTIATION DE LINTERFACE (ACTIVITYRESULTCALLBACK) avec la variable (result)
-                    // VERIFIER QUE ACTIVITYRESULTCALLBACK EST BIEN UNE INTERFACE GENERIQUE
-                }
-            }
+            this::onSignInResult
     );
 
     //CREATE MESSAGE AFTER USER CONNECTION USE BY THE RESPONSE AFTER SIGN IN

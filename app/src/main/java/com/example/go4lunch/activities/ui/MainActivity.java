@@ -1,16 +1,12 @@
 package com.example.go4lunch.activities.ui;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StyleableRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
-
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,13 +15,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.DragAndDropPermissions;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
@@ -37,7 +30,6 @@ import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
-import com.example.go4lunch.repository.UserRepository;
 import com.example.go4lunch.utils.AlertReceiver;
 import com.example.go4lunch.utils.UserManager;
 import com.firebase.ui.auth.AuthUI;
@@ -45,13 +37,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Calendar;
 import java.util.Objects;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 
@@ -78,8 +65,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     private Disposable mDisposable;
     private String idResto;
     private PlaceDetail detail;
-    private static final int SIGN_OUT_TASK = 100;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     //private DrawerLayout drawerLayout; USE FINDVIEW BY ID METHOD
     //private NavigationView navigationView; USE FINDVIEW BY ID METHOD
@@ -135,6 +121,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.disposeWhenDestroy();
+    }
+
     // A°1 CONFIGURE TOOLBAR
     //1µ : remplacement de mToolbar (qui etait lié avec @BindView(R.id.main_activity_toolbar) Toolbar mToolbar;
     // par binding.mainActivityToolbar  (main_activity_toolbar (id de l'xml) mais sans les _)
@@ -179,6 +171,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         navigationView.setNavigationItemSelectedListener(this);
     }*/
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -259,20 +252,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         if (userManager.getCurrentUser() != null) {
             AuthUI.getInstance()
                     .signOut(this)
-                    .addOnSuccessListener(this, this.updateUIAfterRestRequestsCompleted(SIGN_OUT_TASK));
+                    .addOnSuccessListener(this, this.updateUIAfterRestRequestsCompleted());
         }
     }
 
-    private OnSuccessListener<Void> updateUIAfterRestRequestsCompleted(final int origin) {
-        return aVoid -> {
-            switch (origin) {
-                case SIGN_OUT_TASK:
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        };
+    private OnSuccessListener<Void> updateUIAfterRestRequestsCompleted() {
+        return aVoid -> finish();
     }
 
     //1µ : remplacement de mDrawerLayout (qui etait lié avec @BindView(R.id.main_activity_drawer_layout) DrawerLayout mDrawerLayout;
@@ -329,7 +314,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         }
     }
     // CONNECTION ON FRAGMENTS WITH BUTTON
-    private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
+    @SuppressLint("NonConstantResourceId")
+    private final BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
             menuItem -> {
                 Fragment selectedFragment = null;
 
@@ -373,12 +359,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     private void startAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent (this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent,0);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1, intent,0);
 
         if(c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
         Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void disposeWhenDestroy() {
+        if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
     }
 
 }
