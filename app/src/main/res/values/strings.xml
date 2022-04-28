@@ -14,8 +14,8 @@
     <string name="fb_login_protocol_scheme">fb4513689965341886</string>
 
     <!--    login activity  -->
-    <string name="google_connection_button_text">Continue with Google</string>
-    <string name="facebook_connection_button_text">Continue with Facebook</string>
+    <string name="google_connection_button_text">Sign in with Google</string>
+    <string name="facebook_connection_button_text">Sign in with Facebook</string>
 
     <!--    main activity bottom navigation menu strings  -->
     <string name="bottom_navigation_menu_map">Map View</string>

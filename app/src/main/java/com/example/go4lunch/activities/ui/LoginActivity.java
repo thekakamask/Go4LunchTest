@@ -1,9 +1,12 @@
 package com.example.go4lunch.activities.ui;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.RequiresApi;
+
 import butterknife.OnClick;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,14 +50,27 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
     // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_login)
     // et ButterKnife.bind(this);
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_login);
         Log.d(TAG, "onCreate: " + BuildConfig.API_KEY);
-
         //ButterKnife.bind(this);
+        //setTextColor();
+
     }
+
+    /*public void setTextColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.googleBtn.setTextColor(getApplication().getResources().getColor(android.R.color.white, getApplicationContext().getTheme()));
+            binding.facebookBtn.setTextColor(getApplication().getResources().getColor(android.R.color.white, getApplicationContext().getTheme()));
+        }else {
+            binding.googleBtn.setTextColor(getApplication().getResources().getColor(android.R.color.white));
+            binding.facebookBtn.setTextColor(getApplication().getResources().getColor(android.R.color.white));
+
+        }
+    }*/
 
 
 

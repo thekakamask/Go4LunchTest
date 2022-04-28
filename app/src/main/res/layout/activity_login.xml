@@ -16,31 +16,34 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/google_btn"
-            android:layout_width="212dp"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:background="#ffff"
-            android:drawableStart="@drawable/activity_login_google"
-            android:hint="@string/google_connection_button_text"
-            android:onClick="onClickGoogleBtn"
-            android:paddingStart="6dp"
-            tools:ignore="RtlSymmetry,UsingOnClickInXml" />
-
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/facebook_btn"
-            android:layout_width="212dp"
-            android:layout_height="37dp"
+            android:layout_width="320dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="150dp"
-            android:background="#3b5998"
+            android:background="@drawable/round_background_facebook_blue"
             android:drawableStart="@drawable/activity_login_facebook"
             android:hint="@string/facebook_connection_button_text"
             android:onClick="onClickFacebookBtn"
-            android:paddingStart="6dp"
+            android:paddingStart="10dp"
+            android:textSize="20sp"
+            android:textColorHint="@color/white"
+            tools:ignore="RtlSymmetry,UsingOnClickInXml" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/google_btn"
+            android:layout_width="320dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/round_background_google_red"
+            android:drawableStart="@drawable/activity_login_google"
+            android:hint="@string/google_connection_button_text"
+            android:onClick="onClickGoogleBtn"
+            android:paddingStart="10dp"
+            android:textColorHint="@color/white"
+            android:textSize="20sp"
             tools:ignore="RtlSymmetry,UsingOnClickInXml" />
 
 

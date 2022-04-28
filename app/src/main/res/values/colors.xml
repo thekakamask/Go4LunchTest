@@ -18,4 +18,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="starButt_transparent">#00000000</color>
     <color name="starButt_yellow">#ffeb3b</color>
+    <color name="google_plus_red">#DB4437</color>
+    <color name="facebook_blue">#4267B2</color>
 </resources>
