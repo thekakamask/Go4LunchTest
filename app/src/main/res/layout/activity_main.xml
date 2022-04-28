@@ -22,6 +22,9 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/menu_activity_action_search"
+            android:background="@color/colorPrimary"
+            app:itemTextColor="@color/white"
+            android:theme="@style/Toolbar"
             />
 
         <FrameLayout
@@ -53,6 +56,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/main_activity_menu_drawer_nav_header"
         app:menu="@menu/main_activity_menu_drawer"
+        android:background="@color/colorPrimary"
+        app:itemTextColor="@color/white"
+
 
         />
 
