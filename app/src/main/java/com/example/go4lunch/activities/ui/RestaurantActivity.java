@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityRestaurantBinding;
@@ -120,7 +119,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
 
                         binding.starBtn.setBackgroundColor(Color.BLUE);
                     } else {
-                        binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
+                        //binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }
             });
@@ -259,9 +258,8 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         //photos with Glide
         if (placeDetailsResult.getPhotos() != null && !placeDetailsResult.getPhotos().isEmpty()) {
             Glide.with(this)
-                 .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=photo_reference=" +
+                 .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" +
                          placeDetailsResult.getPhotos().get(0).getPhotoReference() + "&key=" + GOOGLE_MAP_API_KEY)
-                 .apply(RequestOptions.centerCropTransform())
                  .into(binding.headerPicRestaurant);
         }else{
             binding.headerPicRestaurant.setImageResource(R.drawable.no_pic);

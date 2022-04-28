@@ -12,6 +12,7 @@
         android:id="@+id/header_pic_restaurant"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:scaleType="fitXY"
         android:contentDescription="@string/header_pic_restaurant" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -26,33 +27,34 @@
         android:src="@drawable/activity_restaurant_valid_done"
         app:fabSize="auto"
         android:contentDescription="validation"
+        android:backgroundTint="@color/colorOnPrimary"
         tools:targetApi="lollipop" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="200dp"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/restaurant_name"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:textColor="#ffff"
-            android:textStyle="bold|italic"
             android:layout_marginStart="35dp"
             android:layout_marginTop="7dp"
-            android:text="" />
+            android:text=""
+            android:textColor="#ffff"
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/restaurant_address"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:textColor="#ffff"
-            android:textStyle="bold|italic"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:text="" />
+            android:text=""
+            android:textColor="#ffff"
+            android:textStyle="bold|italic" />
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rating_bar"
@@ -63,16 +65,16 @@
             android:layout_marginTop="35dp"
             android:numStars="3"
             android:text=""
-            android:theme="@style/RatingBarRestaurant"
-            />
+            android:theme="@style/RatingBarRestaurant" />
 
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/frame_action_btn"
-        android:layout_marginTop="270dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:layout_marginTop="260dp"
+        android:background="@drawable/frame_layout_border">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/phone_btn"
@@ -80,9 +82,9 @@
             android:layout_height="95dp"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="20dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="#ECECEC"
             android:drawableTop="@drawable/activity_restaurant_phone"
-            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTint="@color/colorOnPrimary"
             android:text="@string/call_btn"
             android:textAlignment="center"
             android:textStyle="bold"
@@ -93,14 +95,13 @@
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:layout_gravity="center|center_vertical"
+            android:backgroundTint="#ECECEC"
             android:drawableTop="@drawable/activity_restaurant_star"
-            android:backgroundTint="#FFFFFF"
-            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTint="@color/colorOnPrimary"
             android:text="@string/like_btn"
             android:textAlignment="center"
             android:textStyle="bold"
-            tools:ignore="RtlCompat"
-            />
+            tools:ignore="RtlCompat" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/internet_btn"
@@ -108,9 +109,9 @@
             android:layout_height="95dp"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="20dp"
+            android:backgroundTint="#ECECEC"
             android:drawableTop="@drawable/activity_restaurant_internet"
-            android:backgroundTint="#FFFFFF"
-            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTint="@color/colorOnPrimary"
             android:text="@string/website_btn"
             android:textAlignment="center"
             android:textStyle="bold"

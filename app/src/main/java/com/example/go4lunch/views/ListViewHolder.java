@@ -160,7 +160,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                             Log.d("numberWorkmates", documentSnapshot.getId() + " " + documentSnapshot.getData());
                         }
                         int numberCoworkers = task.getResult().size();
-                        String coworkersNumber = "(" + numberCoworkers + ")";
+                        String coworkersNumber = "" + numberCoworkers + "";
                         mCoworkers.setText(coworkersNumber);
                     } else {
                         //ERREUR

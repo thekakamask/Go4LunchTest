@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/button_radius_primary_color.xml" value="0.1" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/frame_layout_border.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/ic_chat_message_background.xml" value="0.1" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/restaurant_button_border.xml" value="0.1" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/round_background.xml" value="0.1" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/round_background_facebook_blue.xml" value="0.1" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/drawable/round_background_google_red.xml" value="0.1705" />
@@ -12,16 +14,16 @@
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-large/activity_login.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-normal/activity_login.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-small/activity_login.xml" value="1.3470394736842106" />
-        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/activity_restaurant.xml" value="0.16145833333333334" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/activity_restaurant.xml" value="0.2573018080667594" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/activity_restaurant_item.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/fragment_coworkers_item.xml" value="0.16145833333333334" />
-        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/fragment_list_item.xml" value="0.6" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/fragment_list_item.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-v21/setting_activity.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-xlarge/activity_login.xml" value="0.11993114001530222" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout-xlarge/activity_main.xml" value="0.244921875" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_login.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_restaurant.xml" value="0.1" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_restaurant.xml" value="0.22" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_restaurant_item.xml" value="0.10371376811594203" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_setting.xml" value="0.10371376811594203" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/activity_test.xml" value="0.15881458966565348" />
@@ -31,7 +33,7 @@
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_coworkers.xml" value="0.15881458966565348" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_coworkers_item.xml" value="0.15881458966565348" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_list.xml" value="0.15881458966565348" />
-        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_list_item.xml" value="0.15881458966565348" />
+        <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_list_item.xml" value="0.22" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/fragment_map.xml" value="0.15881458966565348" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/list_fragment_action_search.xml" value="0.15881458966565348" />
         <entry key="..\:/Users/adech/AndroidStudioProjects/Go4Lunch/app/src/main/res/layout/main_activity_menu_drawer_nav_header.xml" value="0.22" />

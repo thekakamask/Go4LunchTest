@@ -20,16 +20,15 @@
         android:id="@+id/header_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="140dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="195dp" />
 
     <TextView
         android:id="@+id/header_name"
         android:layout_width="200dp"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="200dp"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -42,7 +41,7 @@
         android:layout_width="200dp"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="225dp"
         android:textAlignment="center"
         android:textColor="@color/white"
