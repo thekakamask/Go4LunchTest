@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -76,6 +79,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     private final CollectionReference collectionUsers = db.collection("users");
     private RestaurantAdapter restaurantAdapter;
     private static final int REQUEST_CALL=100;
+    private String formattedPhoneNumber;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
     @Override
@@ -86,6 +90,8 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
 
     // 1µ : AVANT CHANGEMENT : protected void onCreate (au lieu de public) et setContentView(R.layout.activity_restaurant)
     // et ButterKnife.bind(this);
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,9 +123,15 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
                         //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
                         // par binding.starBtn (star_btn (id de l'xml) sans le _)
 
-                        binding.starBtn.setBackgroundColor(Color.BLUE);
+                        //binding.starBtn.setBackgroundColor(Color.BLUE);
+                        //Drawable restaurantStarImg = getDrawable(R.drawable.activity_restaurant_star);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star), null, null);
+                        //binding.starBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_star));
                     } else {
+                        //Drawable restaurantStarHollowImg = getDrawable(R.drawable.activity_restaurant_star);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star_hollow), null, null);
                         //binding.starBtn.setBackgroundColor(Color.TRANSPARENT);
+                        //binding.starBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_star_hollow));
                     }
                 }
             });
@@ -203,7 +215,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
         if(placeDetailsResult != null) {
             userManager.updateIdOfPlace(Objects.requireNonNull(userManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
-            binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.fui_ic_check_circle_black_128dp));
+            binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_unvalid));
             binding.floatingActBtn.setTag(UNSELECTED);
         }
     }
@@ -214,7 +226,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     public void removeRestaurant() {
         userManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(userManager.getCurrentUser().getUid())));
         binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
-        binding.floatingActBtn.setTag(UNSELECTED);
+        binding.floatingActBtn.setTag(SELECTED);
     }
 
     //1µ : remplacement de mRestaurantRecyclerView (qui etait lié avec @BindView(R.id.restaurant_RV) RecyclerView mRestaurantRecyclerView;
@@ -301,26 +313,38 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     }
 
     private void makePhoneCall (String formattedPhoneNumber) {
-
-        if (ContextCompat.checkSelfPermission(RestaurantActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(RestaurantActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-        } else if (formattedPhoneNumber != null && !formattedPhoneNumber.isEmpty()) {
+        if ( formattedPhoneNumber != null && !formattedPhoneNumber.isEmpty()) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel" + formattedPhoneNumber));
+            intent.setData(Uri.parse("tel:" + formattedPhoneNumber));
             Log.d("PhoneNumber", formattedPhoneNumber);
-            startActivity(intent);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                showSnackBar(getString(R.string.error_unknown));
+            }
         } else {
             showSnackBar(getString(R.string.error_no_phone_available));
         }
+
+        /*if (ContextCompat.checkSelfPermission(RestaurantActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RestaurantActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        } else if (formattedPhoneNumber != null && !formattedPhoneNumber.isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + formattedPhoneNumber));
+            Log.d("PhoneNumber", formattedPhoneNumber);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                showSnackBar(getString(R.string.error_unknown));
+            }
+        } else {
+            showSnackBar(getString(R.string.error_no_phone_available));
+        }*/
     }
 
-
-
-    @SuppressLint("MissingSuperCall")
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        String formattedPhoneNumber = null;
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 makePhoneCall(formattedPhoneNumber);
@@ -328,7 +352,23 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
                 Toast.makeText(this, R.string.error_permission_denied, Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
+
+
+
+
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall(formattedPhoneNumber);
+            } else {
+                Toast.makeText(this, R.string.error_permission_denied, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }*/
 
     //1µ : remplacement de mInternetButton (qui etait lié avec @BindView(R.id.internet_btn) Button mInternetButton;
     // par binding.internetBtn (internet_btn (id de l'xml) sans le _)

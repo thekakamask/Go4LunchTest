@@ -3,6 +3,7 @@ package com.example.go4lunch.activities.ui.fragments.list;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +26,17 @@ import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.utils.ItemClickSupport;
 import com.example.go4lunch.views.ListFragmentAdapter;
+import com.example.go4lunch.views.ListViewHolder;
+import com.google.android.libraries.places.api.model.Place;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -52,6 +63,7 @@ public class ListFragment extends BaseFragment implements Serializable {
     private ListFragmentAdapter mAdapter;
     private String mPosition;
     public Disposable mDisposable;
+    private final float[] distanceResults = new float[3];
 
     public ListFragment() {
         // EMPTY PUBLIC CONSTRUCTOR
@@ -83,6 +95,11 @@ public class ListFragment extends BaseFragment implements Serializable {
     public void onViewCreated(@androidx.annotation.NonNull View view, Bundle saveInstanceState) {
         super.onViewCreated(view, saveInstanceState);
         getActionBar().setTitle(R.string.listFragment_bar);
+
+        if (placeDetails != null && placeDetails.size()==0) {
+
+            executeHttpRequestWithRetrofit();
+        }
     }
 
     /*@Override
@@ -109,9 +126,9 @@ public class ListFragment extends BaseFragment implements Serializable {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.isEmpty()) {
+                /*if (newText.isEmpty()) {
                     executeHttpRequestWithRetrofit();
-                }
+                }*/
                 executeHttpRequestWithRetrofitAutocomplete(newText);
                 return true;
             }
@@ -125,7 +142,16 @@ public class ListFragment extends BaseFragment implements Serializable {
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
                     @Override
                     public void onSuccess(@NonNull List<PlaceDetail> placeDetails) {
+                        Collections.sort(placeDetails, new Comparator<PlaceDetail>() {
+
+                            @Override
+                            public int compare(PlaceDetail o1, PlaceDetail o2) {
+                                return o1.getResult().getName().compareTo(o2.getResult().getName());
+                            }
+                        });
+
                         updateUI(placeDetails);
+
                         Log.d("TestPlaceDetail", String.valueOf(placeDetails.size()));
                     }
 
@@ -146,7 +172,7 @@ public class ListFragment extends BaseFragment implements Serializable {
 
                     @Override
                     public void onSuccess(@NonNull List<PlaceDetail> placeDetails) {
-                        updateUI(placeDetails);
+                        updateUIAutoComplete(placeDetails);
 
                         Log.d("TestPlaceDetail", String.valueOf(placeDetails.size()));
                     }
@@ -159,8 +185,43 @@ public class ListFragment extends BaseFragment implements Serializable {
 
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateUI(List<PlaceDetail> placeDetails) {
+
+        //this.placeDetails.clear();
+
+        //int distance = Math.round(distanceResults[0]);
+
+
+        //Collections.sort(placeDetails,Comparator.comparing(o -> o.getResult().getName()));
+
+        /*placeDetails
+                .stream()
+                .sorted(Comparator.comparing(object -> object.getResult().getName()));*/
+
+        this.placeDetails.addAll(placeDetails);
+
+
+
+
+
+        Log.d("TestUI", placeDetails.toString());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /*private void restaurantDistance(String startLocation, com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsLocation endLocation ) {
+        String[] separatedStart = startLocation.split(",");
+        double startLatitude= Double.parseDouble(separatedStart[0]);
+        double startLongitude=Double.parseDouble(separatedStart[1]);
+        double endLatitude=endLocation.getLat();
+        double endLongitude=endLocation.getLng();
+        android.location.Location.distanceBetween(startLatitude,startLongitude, endLatitude,endLongitude,distanceResults);
+
+    }*/
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateUIAutoComplete(List<PlaceDetail> placeDetails) {
 
         this.placeDetails.clear();
         this.placeDetails.addAll(placeDetails);
@@ -179,7 +240,10 @@ public class ListFragment extends BaseFragment implements Serializable {
         //RESET LIST
         this.placeDetails= new ArrayList<>();
         //CREATION OF THE ADAPTER PASSING THE RESTAURANTS LIST
-        this.mAdapter = new ListFragmentAdapter(this.placeDetails, Glide.with(this), this.mPosition);
+        this.mAdapter = new ListFragmentAdapter(this.placeDetails
+                , Glide.with(this)
+                , this.mPosition);
+
         //ADAPTER TO RV TO ITEMS
         this.mRecyclerView.setAdapter(mAdapter);
         // SET LAYOUTMANAGER WITH POSITON TO ITEMS

@@ -54,6 +54,7 @@
     <string name="error_no_phone_available">No Phone Available</string>
     <string name="error_permission_denied">Permission Denied</string>
     <string name="error_no_website">No Website</string>
+    <string name="error_unknown">Unknown error</string>
 
     <!--  RestaurantViewHolder -->
     <string name="eat_at">eat at</string>
