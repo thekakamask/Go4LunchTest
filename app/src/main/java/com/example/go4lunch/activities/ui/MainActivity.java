@@ -1,5 +1,7 @@
 package com.example.go4lunch.activities.ui;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -244,6 +246,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         Intent intent = new Intent(this, RestaurantActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("placeDetailsResult", detail.getResult());
+        intent.putExtras(bundle);
+        Log.d(TAG, "startForLunch: "+ detail.getResult().getName());
         this.startActivity(intent);
 
     }

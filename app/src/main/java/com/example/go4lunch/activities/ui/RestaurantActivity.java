@@ -1,5 +1,7 @@
 package com.example.go4lunch.activities.ui;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -33,6 +35,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import static com.example.go4lunch.utils.DatesHours.getCurrentTime;
 
@@ -80,6 +84,7 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     private RestaurantAdapter restaurantAdapter;
     private static final int REQUEST_CALL=100;
     private String formattedPhoneNumber;
+    //private List<String> userLike;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_restaurant)
     @Override
@@ -98,19 +103,19 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         /*setContentView(R.layout.activity_restaurant);
         ButterKnife.bind(this);*/
 
-        this.starBtn();
-        this.floatingBtn();
-        this.setUpRV(placeId);
-        this.retrieveData();
-
         //retrieve data when activity is open
         Intent intent= this.getIntent();
         Bundle bundle = intent.getExtras();
+        Log.d(TAG, "restaurantLiked: placeDetailsResultBundle" + (bundle == null));
+
 
         //for like when activity is open
         PlaceDetailsResult placeDetailsResult = null;
         if(bundle != null) {
             placeDetailsResult = (PlaceDetailsResult) bundle.getSerializable("placeDetailsResult");
+            Log.d(TAG, "restaurantLiked: placeDetailsResult1 " + placeDetailsResult.getName());
+            Log.d(TAG, "restaurantLiked: placeDetailsResult1 " + placeDetailsResult.getPhotos());
+
         }
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
@@ -137,6 +142,11 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
             });
         }
 
+        this.starBtn();
+        this.floatingBtn();
+        this.setUpRV(placeId);
+        this.retrieveData();
+
         //for action bar hiding
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -147,37 +157,61 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     // LIKE BUTTON
     //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
     // par binding.starBtn (star_btn (id de l'xml) sans le _)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void starBtn() {
         binding.starBtn.setOnClickListener(view -> restaurantLiked());
     }
 
 
     // LIKE/DISLIKE
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void restaurantLiked() {
 
         Intent intent = this.getIntent();
+        //Bundle bundle = intent.getBundleExtra("placeDetailsResult");
         Bundle bundle = intent.getExtras();
-
         PlaceDetailsResult placeDetailsResult = null;
         if (bundle != null) {
             placeDetailsResult= (PlaceDetailsResult) bundle.getSerializable("placeDetailsResult");
         }
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
+            Log.d(TAG, "restaurantLiked:" + placeDetailsResult);
             UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
-                if (user!= null) {
+                Log.d(TAG, "restaurantLiked:" + user);
+                if (user != null) {
+
+                    /*if (binding.starBtn.equals(R.drawable.activity_restaurant_star_hollow)) {
+                        Log.d(TAG, "restaurantLiked: testest");
+
+                        userManager.updateLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star), null, null);
+
+                    } else if (binding.starBtn.equals(R.drawable.activity_restaurant_star)) {
+
+                        userManager.deleteLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star_hollow), null, null);
+                        Log.d(TAG, "restaurantLiked: testest2");
+                    }*/
+
+                    //userLike = user.getLike();
+
                     //ERREUR
                     //java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.util.ArrayList.isEmpty()' on a null object reference
                     //        at com.example.go4lunch.activities.ui.RestaurantActivity.lambda$restaurantLiked$1$RestaurantActivity(RestaurantActivity.java:160)
+                    if (user.getLike() == null) {
+                        user.setLike(new ArrayList<String>());
+                    }
+
                     if(!user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
                         userManager.deleteLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
                         //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
                         // par binding.starBtn (star_btn (id de l'xml) sans le _)
-                        binding.starBtn.setBackgroundResource(R.color.starButt_transparent);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star_hollow), null, null);
                     }else{
                         userManager.updateLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
-                        binding.starBtn.setBackgroundResource(R.color.starButt_yellow);
+                        binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star), null, null);
                     }
                 }
             });
