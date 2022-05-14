@@ -15,7 +15,7 @@ import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsOpeningHoursPeriod;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
-import com.example.go4lunch.utils.UserManager;
+import com.example.go4lunch.viewModels.UserManager;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Calendar;
 import java.util.Objects;

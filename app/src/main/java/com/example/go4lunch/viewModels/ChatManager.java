@@ -1,4 +1,4 @@
-package com.example.go4lunch.utils;
+package com.example.go4lunch.viewModels;
 
 import android.net.Uri;
 import com.example.go4lunch.models.User;

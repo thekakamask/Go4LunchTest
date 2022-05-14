@@ -12,6 +12,7 @@
             android:id="@+id/lunch_menu_drawer"
             android:icon="@drawable/main_activity_menu_drawer_black_lunch"
             android:title="@string/menu_activity_menu_drawer_lunch"
+            app:iconTint= "@color/white"
             />
 
         <item

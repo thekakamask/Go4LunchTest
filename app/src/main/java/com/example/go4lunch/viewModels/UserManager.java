@@ -1,4 +1,4 @@
-package com.example.go4lunch.utils;
+package com.example.go4lunch.viewModels;
 
 import android.annotation.SuppressLint;
 import com.example.go4lunch.repository.UserRepository;

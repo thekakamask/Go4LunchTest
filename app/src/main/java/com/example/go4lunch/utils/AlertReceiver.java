@@ -11,6 +11,7 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
+import com.example.go4lunch.viewModels.UserManager;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Objects;
 import io.reactivex.rxjava3.annotations.NonNull;

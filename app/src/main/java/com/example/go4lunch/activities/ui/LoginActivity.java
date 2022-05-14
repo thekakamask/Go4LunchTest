@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.databinding.ActivityLoginBinding;
-import com.example.go4lunch.utils.UserManager;
+import com.example.go4lunch.viewModels.UserManager;
 import com.example.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;

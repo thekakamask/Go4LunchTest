@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.RequestManager;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.Message;
-import com.example.go4lunch.utils.UserManager;
+import com.example.go4lunch.viewModels.UserManager;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 

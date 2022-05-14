@@ -7,6 +7,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -33,7 +35,8 @@ import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.utils.AlertReceiver;
-import com.example.go4lunch.utils.UserManager;
+import com.example.go4lunch.viewModels.UserManager;
+import com.example.go4lunch.viewModels.UserViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -68,6 +71,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     private String idResto;
     private PlaceDetail detail;
     private final UserManager userManager = UserManager.getInstance();
+    private UserViewModel userViewModel;
 
     //private DrawerLayout drawerLayout; USE FINDVIEW BY ID METHOD
     //private NavigationView navigationView; USE FINDVIEW BY ID METHOD
@@ -90,6 +94,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         //ButterKnife.bind(this);
+
+        //INIT VIEWMODEL WITH PROVIDERS
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // A°6 CONFIGURE ALL VIEWS
         this.configureToolbar();
