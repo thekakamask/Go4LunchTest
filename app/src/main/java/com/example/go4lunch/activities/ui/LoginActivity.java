@@ -2,6 +2,8 @@ package com.example.go4lunch.activities.ui;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import butterknife.OnClick;
 import android.annotation.SuppressLint;
@@ -14,6 +16,7 @@ import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.databinding.ActivityLoginBinding;
 import com.example.go4lunch.viewModels.UserManager;
 import com.example.go4lunch.R;
+import com.example.go4lunch.viewModels.UserViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -22,6 +25,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 // 1µ = CHANGEMENTS DU BIND DES VIEWS DE L'XML ; AVANT UTILISATION DE BUTTERKNIFE ET MAINTENANT
 // UTILISATION DE L'HERITAGE DE LA CLASSE BASEACTIVITY QUI ELLE S'OCCUPE DE BINDER LES VIEWS
@@ -40,6 +44,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     Button mFacebookBtn;*/
 
     private final UserManager userManager = UserManager.getInstance();
+    //private UserViewModel userViewModel;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_login)
     @Override
@@ -54,6 +59,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //userViewModel = new ViewModelProvider(this).get(UserViewModel.class)
+
         //setContentView(R.layout.activity_login);
         Log.d(TAG, "onCreate: " + BuildConfig.API_KEY);
         //ButterKnife.bind(this);
@@ -164,6 +171,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
             //SUCCESSFULLY SIGN IN
             showSnackBar(getString(R.string.connection_succeed));
             String uid = userManager.getCurrentUser().getUid();
+            //INSTEAD I USE LIGNE 174
+            //String uid = Objects.requireNonNull(userViewModel.getCurrentUser().getValue()).getUid();
             this.createUserInFirestore(uid);
             Intent loginIntent = new Intent(this, MainActivity.class);
             startActivity(loginIntent);
@@ -223,6 +232,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
     private void createUserInFirestore(String uid){
         userManager.createUser(uid);
-
+        //INSTEAD I USE LGINE 233
+        //userViewModel.createUser(uid);
     }
 }

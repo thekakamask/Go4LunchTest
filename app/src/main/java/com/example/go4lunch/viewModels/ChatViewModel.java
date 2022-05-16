@@ -30,7 +30,7 @@ public class ChatViewModel extends ViewModel {
         this.executor = executor;
     }
 
-    public void init(Uri imageUri) {
+    public void init() {
 
         allMessage.setValue(chatDataSource.getAllMessageForChat());
 //        uploadImage.setValue(chatDataSource.uploadImage(imageUri));
