@@ -33,15 +33,15 @@ public class StreamViewModel extends ViewModel {
         fetchAutoCompleteInfos.setValue(StreamRepository.streamFetchAutocompleteInfos(input,radius,location,type));
     }
 
-    public MutableLiveData<Observable<PlaceDetail>> getStreamFetchDetails() {
+    public MutableLiveData<Observable<PlaceDetail>> getStreamFetchDetails(String placeId) {
         return fetchDetails;
     }
 
-    public MutableLiveData<Single<List<PlaceDetail>>> getStreamFetchRestaurantDetails() {
+    public MutableLiveData<Single<List<PlaceDetail>>> getStreamFetchRestaurantDetails(String location,int radius, String type) {
         return fetchRestaurantDetails;
     }
 
-    public MutableLiveData<Single<List<PlaceDetail>>> getStreamFetchAutoCompleteInfos() {
+    public MutableLiveData<Single<List<PlaceDetail>>> getStreamFetchAutoCompleteInfos(String input,int radius,String location,String type) {
         return fetchAutoCompleteInfos;
     }
 

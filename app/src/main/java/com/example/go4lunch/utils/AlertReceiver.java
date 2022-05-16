@@ -7,11 +7,17 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.viewModels.UserManager;
+import com.example.go4lunch.viewModels.UserViewModel;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Objects;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -20,7 +26,8 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 
 public class AlertReceiver extends BroadcastReceiver {
 
-    private final UserManager userManager = UserManager.getInstance();
+    //private final UserManager userManager = UserManager.getInstance();
+    //I USE VIEWMODEL INSTEAD
     private String userIdNotif;
     private PlaceDetail detail;
     private String restoNameNotif;
@@ -35,8 +42,17 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
+
+        //INIT VIEWMODEL WITH PROVIDERS
+        UserViewModel userViewModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserViewModel.class);
+
         // PLACEID AND TIME REQUEST
-        UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+        //UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+        //INSTEAD I USE LINE 52
+
+        Task<DocumentSnapshot> userUID = userViewModel.getUserData(userViewModel.getCurrentUser().getValue().getUid()).getValue();
+
+        userUID.addOnSuccessListener(documentSnapshot -> {
             User user = documentSnapshot.toObject(User.class);
             if (user != null) {
                 if (!user.getIdOfPlace().isEmpty() && (user.getCurrentTime() <= 1200) && (user.getCurrentTime() > 0)) {
@@ -86,7 +102,12 @@ public class AlertReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void notifCoworkers(String userIdNotif, int timeUser) {
 
-        userManager.getUsersCollection()
+        //INIT VIEWMODEL WITH PROVIDERS
+        UserViewModel userViewModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserViewModel.class);
+
+        //userManager.getUsersCollection() INSTEAD I USE LIGNE 109
+
+        userViewModel.getUsersCollection().getValue()
                 .whereEqualTo("placeId", userIdNotif)
                 .whereEqualTo("currentTime", timeUser)
                 .whereLessThan("currentTime", 1200)

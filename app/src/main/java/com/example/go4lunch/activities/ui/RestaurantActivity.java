@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -21,10 +22,13 @@ import com.example.go4lunch.databinding.ActivityRestaurantBinding;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.viewModels.UserManager;
+import com.example.go4lunch.viewModels.UserViewModel;
 import com.example.go4lunch.views.RestaurantAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.io.Serializable;
@@ -64,7 +68,8 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
 
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
-    private final UserManager userManager = UserManager.getInstance();
+    //private final UserManager userManager = UserManager.getInstance(); I USE VIEWMODEL INTEAD
+    private UserViewModel userViewModel;
     private String placeId;
     private RequestManager mGlide;
     private static final String SELECTED = "SELECTED";
@@ -95,6 +100,9 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         /*setContentView(R.layout.activity_restaurant);
         ButterKnife.bind(this);*/
 
+        //INIT VIEWMODEL WITH PROVIDERS
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
         //retrieve data when activity is open
         Intent intent= this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -112,7 +120,11 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
             //UserManager.getInstance().getUserData(Objects.requireNonNull(UserManager.getCurrentUser()).getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+            //UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+            //INSTEAD I USE LINE 125
+            Task<DocumentSnapshot> userUID = userViewModel.getUserData(userViewModel.getCurrentUser().getValue().getUid()).getValue();
+
+            userUID.addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 if (user != null){
                     if (user.getLike() != null && !user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
@@ -169,7 +181,11 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         if (placeDetailsResult != null) {
             final String placeRestaurantId = placeDetailsResult.getPlaceId();
             Log.d(TAG, "restaurantLiked:" + placeDetailsResult);
-            UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+            //UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+            //INSTEAD I USE LINE 185
+            Task<DocumentSnapshot> userUID = userViewModel.getUserData(userViewModel.getCurrentUser().getValue().getUid()).getValue();
+
+            userUID.addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 Log.d(TAG, "restaurantLiked:" + user);
                 if (user != null) {
@@ -197,12 +213,17 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
                     }
 
                     if(!user.getLike().isEmpty() && user.getLike().contains(placeRestaurantId)) {
-                        userManager.deleteLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
+
+                        //userManager.deleteLike(userManager.getCurrentUser().getUid(), placeRestaurantId); INSTEAD I USE LINE 219
+
+                        userViewModel.deleteLike(userViewModel.getCurrentUser().getValue().getUid(), placeRestaurantId);
                         //1µ : remplacement de mStarButton (qui etait lié avec @BindView(R.id.star_btn) Button mStarButton;
                         // par binding.starBtn (star_btn (id de l'xml) sans le _)
                         binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star_hollow), null, null);
                     }else{
-                        userManager.updateLike(userManager.getCurrentUser().getUid(), placeRestaurantId);
+                        //userManager.updateLike(userManager.getCurrentUser().getUid(), placeRestaurantId); INSTEAD I USE LINE 226
+
+                        userViewModel.updateLike(userViewModel.getCurrentUser().getValue().getUid(), placeRestaurantId);
                         binding.starBtn.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.drawable.activity_restaurant_star), null, null);
                     }
                 }
@@ -240,7 +261,10 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
         //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
         // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
         if(placeDetailsResult != null) {
-            userManager.updateIdOfPlace(Objects.requireNonNull(userManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
+            //userManager.updateIdOfPlace(Objects.requireNonNull(userManager.getCurrentUser()).getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
+            //INSTEAD I USE LINE 267
+
+            userViewModel.updateIdOfPlace(Objects.requireNonNull(userViewModel.getCurrentUser()).getValue().getUid(), placeDetailsResult.getPlaceId(), getCurrentTime());
             binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_unvalid));
             binding.floatingActBtn.setTag(UNSELECTED);
         }
@@ -250,7 +274,10 @@ public class RestaurantActivity extends BaseActivity<ActivityRestaurantBinding> 
     //1µ : remplacement de mFloatingActionButton (qui etait lié avec @BindView(R.id.floating_act_btn) FloatingActionButton mFloatingActionButton;
     // par binding.floatingActBtn (floating_act_btn (id de l'xml) sans le _)
     public void removeRestaurant() {
-        userManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(userManager.getCurrentUser().getUid())));
+        //userManager.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(userManager.getCurrentUser().getUid())));
+        //INTEAD I USE LINE 280
+
+        userViewModel.deleteIdOfPlace(Objects.requireNonNull(Objects.requireNonNull(userViewModel.getCurrentUser().getValue().getUid())));
         binding.floatingActBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activity_restaurant_valid_done));
         binding.floatingActBtn.setTag(SELECTED);
     }

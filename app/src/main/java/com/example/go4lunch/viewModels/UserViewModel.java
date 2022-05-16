@@ -59,7 +59,8 @@ public class UserViewModel extends ViewModel {
         SOIT LIGNE 43 SOIT CETTE METHODE LA
     }*/
 
-    public MutableLiveData<Task<DocumentSnapshot>> getUserData () {
+    public MutableLiveData<Task<DocumentSnapshot>> getUserData (String uid) {
+
         return userData;
     }
 

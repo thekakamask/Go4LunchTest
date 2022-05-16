@@ -17,12 +17,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.go4lunch.R;
 import com.example.go4lunch.activities.ui.RestaurantActivity;
 import com.example.go4lunch.activities.ui.fragments.BaseFragment;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
+import com.example.go4lunch.viewModels.StreamViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -44,6 +47,7 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
     private String mPosition;
     private Marker positionMarker;
     private static final String TAG = "MapFragment";
+    private StreamViewModel streamViewModel;
 
 
 
@@ -62,6 +66,9 @@ public class MapFragment extends BaseFragment implements LocationListener, Seria
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
+
+        //INIT VIEWMODEL WITH PROVIDERS
+        streamViewModel = new ViewModelProvider(this).get(StreamViewModel.class);
 
         //for SearchView
         setHasOptionsMenu(true);

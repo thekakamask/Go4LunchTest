@@ -35,13 +35,17 @@ import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.utils.AlertReceiver;
+import com.example.go4lunch.viewModels.StreamViewModel;
 import com.example.go4lunch.viewModels.UserManager;
 import com.example.go4lunch.viewModels.UserViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.Calendar;
 import java.util.Objects;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -70,8 +74,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     private Disposable mDisposable;
     private String idResto;
     private PlaceDetail detail;
-    private final UserManager userManager = UserManager.getInstance();
+    //private final UserManager userManager = UserManager.getInstance(); I USE VIEWMODEL INSTEAD
     private UserViewModel userViewModel;
+    private StreamViewModel streamViewModel;
+    // DECLARATION OF STREAMVIEWMODEL (I WILL NOT DIRECTLY CALL STREAMREPOSITORY)
 
     //private DrawerLayout drawerLayout; USE FINDVIEW BY ID METHOD
     //private NavigationView navigationView; USE FINDVIEW BY ID METHOD
@@ -97,6 +103,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 
         //INIT VIEWMODEL WITH PROVIDERS
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        //INIT VIEWMODEL WITH PROVIDERS
+        streamViewModel = new ViewModelProvider(this).get(StreamViewModel.class);
 
         // A°6 CONFIGURE ALL VIEWS
         this.configureToolbar();
@@ -188,9 +196,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         int id = item.getItemId();
         switch(id) {
             case R.id.lunch_menu_drawer :
-                if(userManager.getCurrentUser() != null) {
-                    UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+                //if(userManager.getCurrentUser() != null) INSTEAD I USE LINE 192
+                if(userViewModel.getCurrentUser() != null) {
+                    //UserManager.getInstance().getUserData(userManager.getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+                    //INSTEAD I USE LINE 195
+                    Task<DocumentSnapshot> userUID = userViewModel.getUserData(userViewModel.getCurrentUser().getValue().getUid()).getValue();
+
+                    userUID.addOnSuccessListener(documentSnapshot -> {
+
                         User user =documentSnapshot.toObject(User.class);
+
                         if (Objects.requireNonNull(user).getIdOfPlace() != null) {
                             userResto(user);
 
@@ -225,7 +240,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     }
 
     private void executeHttpRequestWithRetrofit() {
-       this.mDisposable = StreamRepository.streamFetchDetails(idResto)
+        //this.mDisposable = StreamRepository.streamFetchDetails(idResto) I USE INSTEAD LINE 245
+
+       this.mDisposable = streamViewModel.getStreamFetchDetails(idResto).getValue()
                .subscribeWith(new DisposableObserver<PlaceDetail>() {
                    @Override
                    public void onNext(PlaceDetail placeDetail) {
@@ -260,7 +277,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     }
 
     private void signOutFromUserFirebase() {
-        if (userManager.getCurrentUser() != null) {
+        if (userViewModel.getCurrentUser() != null) {
             AuthUI.getInstance()
                     .signOut(this)
                     .addOnSuccessListener(this, this.updateUIAfterRestRequestsCompleted());
@@ -294,16 +311,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     //1µ : remplacement de mNavigationView (qui etait lié avec @BindView(R.id.main_activity_nav_view) NavigationView mNavigationView;
     //  par binding.mainActivityNavView (main_activity_nav_view (id de l'xml) sans le _)
     private void configureUINavHeader() {
-        if (userManager.getCurrentUser() != null) {
+        if (userViewModel.getCurrentUser() != null) {
             //RETURN LAYOUT
             View headerContainer = binding.mainActivityNavView.getHeaderView(0);
             ImageView mPhotoHead = headerContainer.findViewById(R.id.header_photo);
             TextView mNameHead = headerContainer.findViewById(R.id.header_name);
             TextView mMailHead = headerContainer.findViewById(R.id.header_mail);
             //GET PHOTO IN FIREBASE
-            if(userManager.getCurrentUser().getPhotoUrl() != null) {
+            if(userViewModel.getCurrentUser().getValue().getPhotoUrl() != null) {
                 Glide.with(this)
-                        .load(userManager.getCurrentUser().getPhotoUrl())
+                        .load(userViewModel.getCurrentUser().getValue().getPhotoUrl())
                         .apply(RequestOptions.circleCropTransform())
                         .into(mPhotoHead);
             } else {
@@ -311,11 +328,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             }
 
             //GET NAME
-            String name = TextUtils.isEmpty(userManager.getCurrentUser().getDisplayName()) ?
-                    ("No Username") : userManager.getCurrentUser().getDisplayName();
+            String name = TextUtils.isEmpty(userViewModel.getCurrentUser().getValue().getDisplayName()) ?
+                    ("No Username") : userViewModel.getCurrentUser().getValue().getDisplayName();
             //GET EMAIL
-            String email = TextUtils.isEmpty(userManager.getCurrentUser().getEmail()) ?
-                    ("No Email Found") : userManager.getCurrentUser().getEmail();
+            String email = TextUtils.isEmpty(userViewModel.getCurrentUser().getValue().getEmail()) ?
+                    ("No Email Found") : userViewModel.getCurrentUser().getValue().getEmail();
             //Update With data
             mNameHead.setText(name);
             mMailHead.setText(email);

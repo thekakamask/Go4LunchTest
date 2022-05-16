@@ -43,8 +43,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     @BindView(R.id.facebook_btn)
     Button mFacebookBtn;*/
 
-    private final UserManager userManager = UserManager.getInstance();
-    //private UserViewModel userViewModel;
+    //private final UserManager userManager = UserManager.getInstance(); I USE VIEWMODEL INSTEAD
+    private UserViewModel userViewModel;
 
     //1µ : DEBUT AJOUT (inflate du layout de activity_login)
     @Override
@@ -59,7 +59,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //userViewModel = new ViewModelProvider(this).get(UserViewModel.class)
+
+        //INIT VIEWMODEL WITH PROVIDERS
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         //setContentView(R.layout.activity_login);
         Log.d(TAG, "onCreate: " + BuildConfig.API_KEY);
@@ -170,9 +172,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
         if (result.getResultCode() == RESULT_OK) {
             //SUCCESSFULLY SIGN IN
             showSnackBar(getString(R.string.connection_succeed));
-            String uid = userManager.getCurrentUser().getUid();
-            //INSTEAD I USE LIGNE 174
-            //String uid = Objects.requireNonNull(userViewModel.getCurrentUser().getValue()).getUid();
+            //String uid = userManager.getCurrentUser().getUid(); INSTEAD I USE LIGNE 174
+            String uid = Objects.requireNonNull(userViewModel.getCurrentUser().getValue()).getUid();
             this.createUserInFirestore(uid);
             Intent loginIntent = new Intent(this, MainActivity.class);
             startActivity(loginIntent);
@@ -231,8 +232,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
     }*/
 
     private void createUserInFirestore(String uid){
-        userManager.createUser(uid);
-        //INSTEAD I USE LGINE 233
-        //userViewModel.createUser(uid);
+        //userManager.createUser(uid); INSTEAD I USE LGINE 233
+        userViewModel.createUser(uid);
     }
 }

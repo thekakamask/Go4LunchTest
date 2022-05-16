@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetail;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.repository.StreamRepository;
 import com.example.go4lunch.utils.ItemClickSupport;
+import com.example.go4lunch.viewModels.StreamViewModel;
 import com.example.go4lunch.views.ListFragmentAdapter;
 import com.example.go4lunch.views.ListViewHolder;
 import com.google.android.libraries.places.api.model.Place;
@@ -64,6 +66,8 @@ public class ListFragment extends BaseFragment implements Serializable {
     private String mPosition;
     public Disposable mDisposable;
     private final float[] distanceResults = new float[3];
+    private StreamViewModel streamViewModel;
+    //I DONT DIRECTLY CALL STREAM REPOSITORY SO I WILL USE STREAMVIEWMODEL
 
     public ListFragment() {
         // EMPTY PUBLIC CONSTRUCTOR
@@ -84,9 +88,13 @@ public class ListFragment extends BaseFragment implements Serializable {
         //SEARCHVIEW
         setHasOptionsMenu(true);
 
+        //INIT VIEWMODEL WITH PROVIDERS
+        streamViewModel = new ViewModelProvider(this).get(StreamViewModel.class);
+
         this.configureRV();
         this.configureOnClickRV();
         return view;
+
 
     }
 
@@ -137,8 +145,10 @@ public class ListFragment extends BaseFragment implements Serializable {
 
 
     private void executeHttpRequestWithRetrofit() {
+        //this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 3000, "restaurant|cafe|bakery|bar|meal_takeaway|meal_delivery")
+        // I USE INSTEAD LINE 151
 
-        this.mDisposable = StreamRepository.streamFetchRestaurantDetails(mPosition, 3000, "restaurant|cafe|bakery|bar|meal_takeaway|meal_delivery")
+        this.mDisposable = streamViewModel.getStreamFetchRestaurantDetails(mPosition, 3000, "restaurant|cafe|bakery|bar|meal_takeaway|meal_delivery").getValue()
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
                     @Override
                     public void onSuccess(@NonNull List<PlaceDetail> placeDetails) {
@@ -165,8 +175,9 @@ public class ListFragment extends BaseFragment implements Serializable {
     }
 
     private void executeHttpRequestWithRetrofitAutocomplete(String input) {
+        //this.mDisposable = StreamRepository.streamFetchAutocompleteInfos(input, 2000, mPosition, "establishment") INSTEAD I USE LINE 180
 
-        this.mDisposable = StreamRepository.streamFetchAutocompleteInfos(input, 2000, mPosition, "establishment")
+        this.mDisposable = streamViewModel.getStreamFetchAutoCompleteInfos(input, 2000, mPosition, "establishment").getValue()
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>(){
 
 

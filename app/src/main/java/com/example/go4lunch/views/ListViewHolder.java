@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,6 +18,7 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsOpeningHoursPeriod;
 import com.example.go4lunch.models.API.PlaceDetailsAPI.PlaceDetailsResult;
 import com.example.go4lunch.viewModels.UserManager;
+import com.example.go4lunch.viewModels.UserViewModel;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Calendar;
 import java.util.Objects;
@@ -50,7 +53,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
     String GOOGLE_MAP_API_KEY = BuildConfig.API_KEY;
     private final float[] distanceResults = new float[3];
-    private final UserManager userManager = UserManager.getInstance();
+    //private final UserManager userManager = UserManager.getInstance();
+    //INSTEAD I USE VIEWMODEL
 
 
     public ListViewHolder(@NonNull View itemView) {
@@ -151,7 +155,13 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void numberCoworkers(String idOfPlace) {
-        userManager.getUsersCollection()
+
+        //INIT VIEWMODEL WITH PROVIDERS
+        UserViewModel userViewModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserViewModel.class);
+
+        //userManager.getUsersCollection() INSTEAD I USE LIGNE 163
+
+        userViewModel.getUsersCollection().getValue()
                 .whereEqualTo("idOfPlace", idOfPlace)
                 .get()
                 .addOnCompleteListener(task -> {

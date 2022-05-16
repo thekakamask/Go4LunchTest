@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -29,10 +30,14 @@ import com.example.go4lunch.activities.ui.fragments.BaseFragment;
 import com.example.go4lunch.models.Message;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.viewModels.ChatManager;
+import com.example.go4lunch.viewModels.ChatViewModel;
 import com.example.go4lunch.viewModels.UserManager;
+import com.example.go4lunch.viewModels.UserViewModel;
 import com.example.go4lunch.views.ChatAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,8 +82,12 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
     //    DECLARATION
     private ChatAdapter chatAdapter;
-    private final ChatManager chatManager = ChatManager.getInstance();
-    private final UserManager userManager = UserManager.getInstance();
+    //private final ChatManager chatManager = ChatManager.getInstance();
+    // INSTEAD I USE VIEWMODEL
+    private ChatViewModel chatViewModel;
+    //private final UserManager userManager = UserManager.getInstance();
+    // INSTEAD I USE VIEWMODEL
+    private UserViewModel userViewModel;
 
 
     private User currentUser;
@@ -95,6 +104,11 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
         View view = inflater.inflate(R.layout.fragment_chat, container, false );
         ButterKnife.bind(this,view);
 
+        //INIT VIEWMODEL WITH PROVIDERS
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        //INIT VIEWMODEL WITH PROVIDERS
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+
 
         this.configureRecyclerView();
         this.setupListeners();
@@ -105,11 +119,19 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
 
 
     private void getCurrentUserFromFirestore() {
-        userManager.getUserData(Objects.requireNonNull(userManager.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
+        //userManager.getUserData(Objects.requireNonNull(userManager.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
+        // INTEAD I USE LINE 113
+
+        Task<DocumentSnapshot> userUID = userViewModel.getUserData(Objects.requireNonNull(userViewModel.getCurrentUser()).getValue().getUid()).getValue();
+        userUID.addOnSuccessListener(documentSnapshot -> currentUser = documentSnapshot.toObject(User.class));
     }
 
     private void configureRecyclerView() {
-        chatAdapter = new ChatAdapter(generateOptionsForAdapter(chatManager.getAllMessageForChat()),
+
+        //chatAdapter = new ChatAdapter(generateOptionsForAdapter(chatManager.getAllMessageForChat()),
+        // INSTEAD I USE LINE 131
+
+        chatAdapter = new ChatAdapter(generateOptionsForAdapter(chatViewModel.getAllMessage().getValue()),
                 Glide.with(this), this);
 
         chatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -142,13 +164,18 @@ public class ChatFragment extends BaseFragment implements ChatAdapter.Listener {
             if (imagePreviewContainer.getDrawable() == null) {
 
                 //CREATE NEW MESSAGE FOR CHAT
-                chatManager.createMessageForChat(messageText, currentUser);
+                //chatManager.createMessageForChat(messageText, currentUser); INSTEAD I USE LINE 169
+
+                chatViewModel.createMessageForChat(messageText, currentUser);
 
 
 
             } else {
                 // CREATE NEW MESSAGE WITH IMAGE
-                chatManager.sendMessageWithImageForChat(this.uriImageSelected, messageText, currentUser );
+                //chatManager.sendMessageWithImageForChat(this.uriImageSelected, messageText, currentUser );
+                //INSTEAD USE LINE 178
+
+                chatViewModel.sendMessageWithImageForChat(this.uriImageSelected, messageText, currentUser );
                 imagePreviewContainer.setImageDrawable(null);
             }
         }

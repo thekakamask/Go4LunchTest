@@ -5,7 +5,10 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
+
+import com.example.go4lunch.viewModels.UserViewModel;
 
 //ACTIVITY CLASS THAT ALLOW TO MANAGE ALL THE COMMON CODE FOR THE ACTIVITIES
 // <T> SHOULD BE THE TYPE OF THE VIEWBINDING OF YOUR ACTIVITY
